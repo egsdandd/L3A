@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Ladda upp textfil</title>
+</head>
+<body>
+  <h1>Välj en textfil</h1>
+  <form ref="uploadForm" id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="textfile" accept=".txt,.md" required>
+    <input type="submit" value="Ladda upp och visa">
+  </form>
+  <!-- Om du vill visa resultatet på sidan kan du lägga till ett <pre id="file-content"></pre> och fylla i det med JavaScript. -->
+</body>
+</html>

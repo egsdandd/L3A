@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/style.css">
+  <title>Visar innehåll i textfil</title>
+</head>
+<body>
+  <div class="categories">
+    <button type="button" onclick="showMethods('TextAnalyzer')">Statistik</button>
+    <button type="button" onclick="showMethods('TextFormatter')">Formatting..</button>
+    <button type="button" onclick="showMethods('TextTransformer')">Transformation..</button>
+    <button type="button" onclick="showMethods('TextSearcher')">Find..</button>
+    <button type="button" onclick="showMethods('TextReverser')">Reverse..</button>
+  </div>
+
+  <h2>Innehåll i filen "<%= filename %>"</h2>
+  <div class="scrollbox"><%- content %></div>
+
+  <div id="methodList"></div>
+
+  <a href="/">Tillbaka</a>
+
+  <script src="/showFile.js"></script>
+
+</body>
+</html>

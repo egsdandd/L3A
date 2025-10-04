@@ -2,14 +2,18 @@
   "name": "l3a",
   "version": "1.0.0",
   "description": "Test App for texttoolkit",
-  "license": "ISC",
+  "license": "MIT",
   "author": "",
   "type": "module",
-  "main": "index.js",
+  "main": "src/app.js",
   "scripts": {
+    "start": "node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.2",
     "texttoolkit": "^1.0.0"
   }
 }
