@@ -1,0 +1,15 @@
+{
+  "name": "l3a",
+  "version": "1.0.0",
+  "description": "Test App for texttoolkit",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "texttoolkit": "^1.0.0"
+  }
+}
