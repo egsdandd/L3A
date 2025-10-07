@@ -125,11 +125,17 @@ function showReverserResult(title, content) {
 
 function getReverserText() {
   const textArea = document.querySelector('#fileContent textarea, .scrollbox');
-  if (!textArea || !textArea.value.trim()) {
+  if (!textArea) {
     alert('Skriv eller ladda text först!');
     return null;
   }
-  return textArea.value;
+  
+  const text = textArea.value || textArea.textContent || textArea.innerText || '';
+  if (!text.trim()) {
+    alert('Skriv eller ladda text först!');
+    return null;
+  }
+  return text;
 }
 
 // Make function available globally for showFile.js

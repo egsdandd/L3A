@@ -11,8 +11,8 @@ function createSimpleTransformerInterface() {
       <p>Transformera och manipulera text på olika sätt</p>
       
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-        <button onclick="reverseText()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🔁 Vänd Text
+        <button onclick="rot13Transform()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+          � ROT13 Kryptering
         </button>
         <button onclick="shuffleWords()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
           🔀 Blanda Ord
@@ -45,14 +45,22 @@ function createSimpleTransformerInterface() {
 
 let transformedCache = '';
 
-window.reverseText = function() {
-  const text = document.querySelector('.scrollbox').innerText;
-  const result = text.split('').reverse().join('');
+window.rot13Transform = function() {
+  const text = getTransformerText();
+  if (!text) return;
+  
+  const result = text.replace(/[a-zA-Z]/g, function(c) {
+    return String.fromCharCode(
+      (c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26
+    );
+  });
   showTransformerResults(result);
 };
 
 window.shuffleWords = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getTransformerText();
+  if (!text) return;
+  
   const words = text.split(' ');
   for (let i = words.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -62,7 +70,9 @@ window.shuffleWords = function() {
 };
 
 window.alternateCase = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getTransformerText();
+  if (!text) return;
+  
   const result = text.split('').map((char, index) => 
     index % 2 === 0 ? char.toLowerCase() : char.toUpperCase()
   ).join('');
@@ -70,19 +80,25 @@ window.alternateCase = function() {
 };
 
 window.repeatText = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getTransformerText();
+  if (!text) return;
+  
   const result = (text + '\n').repeat(3);
   showTransformerResults(result);
 };
 
 window.removeVowels = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getTransformerText();
+  if (!text) return;
+  
   const result = text.replace(/[aeiouåäöAEIOUÅÄÖ]/g, '');
   showTransformerResults(result);
 };
 
 window.encodeText = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getTransformerText();
+  if (!text) return;
+  
   const result = encodeURIComponent(text);
   showTransformerResults(result);
 };
@@ -95,6 +111,21 @@ function showTransformerResults(result) {
     contentDiv.textContent = result;
     resultsDiv.style.display = 'block';
   }
+}
+
+function getTransformerText() {
+  const textArea = document.querySelector('#fileContent textarea, .scrollbox');
+  if (!textArea) {
+    alert('Skriv eller ladda text först!');
+    return null;
+  }
+  
+  const text = textArea.value || textArea.textContent || textArea.innerText || '';
+  if (!text.trim()) {
+    alert('Skriv eller ladda text först!');
+    return null;
+  }
+  return text;
 }
 
 window.copyTransformedText = async function() {
