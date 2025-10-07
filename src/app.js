@@ -23,6 +23,10 @@ import formatterRouter from './routes/formatter.js';
 import transformerRouter from './routes/transformer.js';
 import searcherRouter from './routes/searcher.js';
 import reverserRouter from './routes/reverser.js';
+import wordOptimizerRouter from './routes/wordOptimizer.js';
+import textGamingRouter from './routes/textGaming.js';
+import textForensicsRouter from './routes/textForensics.js';
+import moodEngineRouter from './routes/moodEngine.js';
 import uploadRouter from './routes/upload.js';
 
 app.use('/analyzer', analyzerRouter);
@@ -30,6 +34,10 @@ app.use('/formatter', formatterRouter);
 app.use('/transformer', transformerRouter);
 app.use('/searcher', searcherRouter);
 app.use('/reverser', reverserRouter);
+app.use('/wordoptimizer', wordOptimizerRouter);
+app.use('/textgaming', textGamingRouter);
+app.use('/textforensics', textForensicsRouter);
+app.use('/moodengine', moodEngineRouter);
 app.use('/upload', uploadRouter);
 
 const port = 3000;
