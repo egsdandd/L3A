@@ -44,242 +44,334 @@ function createSimpleMoodInterface() {
 }
 
 // Global mood analysis functions
-window.analyzeSentiment = function() {
+window.analyzeSentiment = async function() {
   const text = getMoodText();
   if (!text) return;
   
-  // Simple sentiment analysis
-  const positiveWords = ['bra', 'bäst', 'glad', 'lycklig', 'fantastisk', 'underbar', 'perfekt', 'älskar', 'positiv', 'härlig'];
-  const negativeWords = ['dålig', 'hemsk', 'ledsen', 'arg', 'förfärlig', 'hemskt', 'hatar', 'negativ', 'elak', 'tråkig'];
-  
-  const lowerText = text.toLowerCase();
-  const positiveCount = positiveWords.filter(word => lowerText.includes(word)).length;
-  const negativeCount = negativeWords.filter(word => lowerText.includes(word)).length;
-  
-  let sentiment, score;
-  if (positiveCount > negativeCount) {
-    sentiment = 'Positiv';
-    score = Math.min(100, (positiveCount / (positiveCount + negativeCount)) * 100);
-  } else if (negativeCount > positiveCount) {
-    sentiment = 'Negativ';
-    score = Math.min(100, (negativeCount / (positiveCount + negativeCount)) * 100);
-  } else {
-    sentiment = 'Neutral';
-    score = 50;
-  }
-  
-  const result = `
-    <h4>😊 Sentiment Analys:</h4>
-    <div class="mood-result">
-      <h3>Sentiment: ${sentiment}</h3>
-      <p>Sentiment Score: ${score.toFixed(1)}%</p>
-      <p>Positiva ord: ${positiveCount} | Negativa ord: ${negativeCount}</p>
-    </div>
-  `;
-  
-  showMoodResult(result);
-};
-
-window.detectEmotions = function() {
-  const text = getMoodText();
-  if (!text) return;
-  
-  // Emotion detection based on keywords
-  const emotions = {
-    'Glädje': ['glad', 'lycklig', 'skratta', 'le', 'nöjd', 'euforisk'],
-    'Sorg': ['ledsen', 'gråta', 'deprimerad', 'melankolisk', 'sörja'],
-    'Ilska': ['arg', 'förbannad', 'irriterad', 'rasande', 'vänd'],
-    'Rädsla': ['rädd', 'skrämd', 'orolig', 'nervös', 'ängslig'],
-    'Överraskning': ['överraskad', 'chockad', 'förvånad', 'häpen'],
-    'Avsky': ['äcklad', 'avskyr', 'motbjudande', 'vidrigt']
-  };
-  
-  const lowerText = text.toLowerCase();
-  const detectedEmotions = [];
-  
-  for (const [emotion, keywords] of Object.entries(emotions)) {
-    const found = keywords.filter(keyword => lowerText.includes(keyword));
-    if (found.length > 0) {
-      detectedEmotions.push({
-        emotion: emotion,
-        intensity: found.length,
-        keywords: found
-      });
-    }
-  }
-  
-  const result = `
-    <h4>💭 Detekterade Känslor:</h4>
-    ${detectedEmotions.length > 0 
-      ? detectedEmotions.map(e => `
+  try {
+    showMoodResult('<div class="loading">🔄 Analyserar sentiment...</div>');
+    
+    const response = await fetch('/moodengine/sentiment-timeline', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: text })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      const timeline = data.timeline;
+      const summary = data.summary;
+      
+      const result = `
+        <h4>😊 Sentiment Timeline Analys:</h4>
         <div class="mood-result">
-          <h3>${e.emotion}</h3>
-          <p>Intensitet: ${e.intensity}/6</p>
-          <p>Nyckelord: ${e.keywords.join(', ')}</p>
+          <h3>Genomsnittlig Sentiment: ${summary.averageSentiment.toFixed(2)}</h3>
+          <p>Trend: ${summary.trend}</p>
+          <p>Antal segment: ${summary.totalSegments}</p>
+          <p>Känslomässig räckvidd: ${summary.emotionalRange}</p>
         </div>
-      `).join('')
-      : '<p>Inga tydliga känslor detekterades i texten.</p>'
+        <h5>Timeline detaljer:</h5>
+        ${timeline.map(segment => `
+          <div style="margin: 10px 0; padding: 10px; border-left: 4px solid ${
+            segment.sentiment > 0 ? 'green' : segment.sentiment < 0 ? 'red' : 'gray'
+          }; background: #f9f9f9;">
+            <strong>Segment ${segment.segment} (${segment.timestamp}):</strong><br>
+            <em>"${segment.text}"</em><br>
+            Sentiment: ${segment.sentiment}, Känsla: ${segment.emotion}, Intensitet: ${segment.intensity}
+          </div>
+        `).join('')}
+      `;
+      
+      showMoodResult(result);
+    } else {
+      showMoodResult(`<div class="error">❌ Fel: ${data.error}</div>`);
     }
-  `;
-  
-  showMoodResult(result);
-};
-
-window.analyzeMood = function() {
-  const text = getMoodText();
-  if (!text) return;
-  
-  // Mood analysis based on text characteristics
-  const exclamations = (text.match(/!/g) || []).length;
-  const questions = (text.match(/\?/g) || []).length;
-  const avgWordLength = text.split(/\s+/).reduce((sum, word) => sum + word.length, 0) / text.split(/\s+/).length;
-  
-  let mood, description;
-  
-  if (exclamations > 3) {
-    mood = 'Energisk/Upphetsad';
-    description = 'Texten innehåller många utropstecken vilket tyder på hög energi och känslointensitet.';
-  } else if (questions > 2) {
-    mood = 'Reflekterande/Undrande';
-    description = 'Många frågetecken indikerar reflektion och nyfikenhet.';
-  } else if (avgWordLength > 6) {
-    mood = 'Formell/Analytisk';
-    description = 'Långa ord tyder på en mer formell och genomtänkt ton.';
-  } else if (avgWordLength < 4) {
-    mood = 'Avslappnad/Informell';
-    description = 'Korta ord indikerar en mer avslappnad och informell stil.';
-  } else {
-    mood = 'Balanserad/Neutral';
-    description = 'Texten har en balanserad och neutral ton.';
+  } catch (error) {
+    showMoodResult(`<div class="error">❌ Nätverksfel: ${error.message}</div>`);
   }
-  
-  const result = `
-    <h4>🌈 Stämnings Analys:</h4>
-    <div class="mood-result">
-      <h3>Identifierad Stämning: ${mood}</h3>
-      <p>${description}</p>
-    </div>
-    <ul>
-      <li><strong>Utropstecken:</strong> ${exclamations} (energi-indikator)</li>
-      <li><strong>Frågetecken:</strong> ${questions} (reflektion-indikator)</li>
-      <li><strong>Genomsnittlig ordlängd:</strong> ${avgWordLength.toFixed(1)} tecken</li>
-    </ul>
-  `;
-  
-  showMoodResult(result);
 };
 
-window.detectStress = function() {
+window.detectEmotions = async function() {
   const text = getMoodText();
   if (!text) return;
   
-  // Stress indicators
-  const stressWords = ['stress', 'ångest', 'press', 'deadline', 'oro', 'panik', 'överbelastad', 'utmattad'];
-  const urgencyWords = ['snabbt', 'omedelbart', 'akut', 'brådskande', 'nu', 'genast'];
-  
-  const lowerText = text.toLowerCase();
-  const stressCount = stressWords.filter(word => lowerText.includes(word)).length;
-  const urgencyCount = urgencyWords.filter(word => lowerText.includes(word)).length;
-  
-  let stressLevel, description;
-  const totalIndicators = stressCount + urgencyCount;
-  
-  if (totalIndicators >= 4) {
-    stressLevel = 'Hög stress';
-    description = 'Texten innehåller många stressindikatorer. Kanske dags att ta en paus?';
-  } else if (totalIndicators >= 2) {
-    stressLevel = 'Måttlig stress';
-    description = 'Vissa tecken på stress är närvarande i texten.';
-  } else {
-    stressLevel = 'Låg stress';
-    description = 'Texten verkar relativt avslappnad och stressfri.';
-  }
-  
-  const result = `
-    <h4>😰 Stress Analys:</h4>
-    <div class="mood-result">
-      <h3>Stressnivå: ${stressLevel}</h3>
-      <p>${description}</p>
-      <p>Stressord: ${stressCount} | Brådskande ord: ${urgencyCount}</p>
-    </div>
-  `;
-  
-  showMoodResult(result);
-};
-
-window.analyzeEnergy = function() {
-  const text = getMoodText();
-  if (!text) return;
-  
-  // Energy level analysis
-  const highEnergyWords = ['energisk', 'entusiastisk', 'aktiv', 'livlig', 'dynamisk', 'kraftfull'];
-  const lowEnergyWords = ['trött', 'utmattad', 'lat', 'slö', 'passiv', 'svag'];
-  
-  const capsPercentage = (text.match(/[A-ZÅÄÖ]/g) || []).length / text.length * 100;
-  const exclamations = (text.match(/!/g) || []).length;
-  
-  const lowerText = text.toLowerCase();
-  const highEnergyCount = highEnergyWords.filter(word => lowerText.includes(word)).length;
-  const lowEnergyCount = lowEnergyWords.filter(word => lowerText.includes(word)).length;
-  
-  let energyLevel;
-  if (highEnergyCount > lowEnergyCount || capsPercentage > 10 || exclamations > 2) {
-    energyLevel = 'Hög energi';
-  } else if (lowEnergyCount > highEnergyCount) {
-    energyLevel = 'Låg energi';
-  } else {
-    energyLevel = 'Måttlig energi';
-  }
-  
-  const result = `
-    <h4>⚡ Energi Analys:</h4>
-    <div class="mood-result">
-      <h3>Energinivå: ${energyLevel}</h3>
-      <p>Versaler: ${capsPercentage.toFixed(1)}%</p>
-      <p>Utropstecken: ${exclamations}</p>
-      <p>Högenergiska ord: ${highEnergyCount}</p>
-      <p>Lågenergiska ord: ${lowEnergyCount}</p>
-    </div>
-  `;
-  
-  showMoodResult(result);
-};
-
-window.createMoodMap = function() {
-  const text = getMoodText();
-  if (!text) return;
-  
-  // Create a comprehensive mood map
-  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-  const moodMap = sentences.slice(0, 5).map((sentence, index) => {
-    const positiveWords = ['bra', 'glad', 'lycklig', 'fantastisk'].filter(word => 
-      sentence.toLowerCase().includes(word)
-    ).length;
-    const negativeWords = ['dålig', 'ledsen', 'arg', 'förfärlig'].filter(word => 
-      sentence.toLowerCase().includes(word)
-    ).length;
+  try {
+    showMoodResult('<div class="loading">🔄 Analyserar känslor...</div>');
     
-    let mood = 'Neutral';
-    if (positiveWords > negativeWords) mood = 'Positiv';
-    else if (negativeWords > positiveWords) mood = 'Negativ';
+    const response = await fetch('/moodengine/emotion-heatmap', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: text })
+    });
     
-    return { sentence: sentence.trim(), mood, index: index + 1 };
-  });
+    const data = await response.json();
+    
+    if (data.success) {
+      const result = `
+        <h4>💭 Emotion Heatmap:</h4>
+        <div class="mood-result">
+          <h3>Känslomässig fördelning:</h3>
+          ${Object.entries(data.emotionDistribution || {}).map(([emotion, intensity]) => `
+            <div style="margin: 5px 0; padding: 8px; background: #f0f0f0; border-radius: 4px;">
+              <strong>${emotion}:</strong> ${intensity.toFixed(2)}
+            </div>
+          `).join('')}
+        </div>
+        <h5>Ord-analys (första 10 ord):</h5>
+        ${(data.heatmap || []).slice(0, 10).map(item => `
+          <div style="margin: 10px 0; padding: 10px; border-left: 4px solid ${item.color}; background: ${item.color}; border-radius: 4px;">
+            <strong>"${item.word}"</strong> (${item.emotion})<br>
+            Intensitet: ${item.intensity.toFixed(2)}<br>
+            Position: ${item.position}
+          </div>
+        `).join('')}
+        <h5>Känslomässiga hotspots:</h5>
+        ${(data.hotspots || []).map(hotspot => `
+          <div style="margin: 5px 0; padding: 8px; background: ${hotspot.color}; border-radius: 4px; color: white;">
+            <strong>"${hotspot.word}"</strong> - ${hotspot.emotion} (${hotspot.intensity.toFixed(2)})
+          </div>
+        `).join('')}
+      `;
+      
+      showMoodResult(result);
+    } else {
+      showMoodResult(`<div class="error">❌ Fel: ${data.error}</div>`);
+    }
+  } catch (error) {
+    showMoodResult(`<div class="error">❌ Nätverksfel: ${error.message}</div>`);
+  }
+};
+
+window.analyzeMood = async function() {
+  const text = getMoodText();
+  if (!text) return;
   
-  const result = `
-    <h4>🗺️ Stämnings Karta:</h4>
-    <p>Analys av stämning per mening (första 5 meningarna):</p>
-    ${moodMap.map(item => `
-      <div style="margin: 10px 0; padding: 10px; border-left: 4px solid ${
-        item.mood === 'Positiv' ? 'green' : item.mood === 'Negativ' ? 'red' : 'gray'
-      }; background: #f9f9f9;">
-        <strong>Mening ${item.index}:</strong> ${item.mood}<br>
-        <em>"${item.sentence.substring(0, 100)}${item.sentence.length > 100 ? '...' : ''}"</em>
-      </div>
-    `).join('')}
-  `;
+  try {
+    showMoodResult('<div class="loading">🔄 Analyserar stämning...</div>');
+    
+    const response = await fetch('/moodengine/mood-analytics', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: text })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      const analysis = data.analysis;
+      const summary = data.summary;
+      
+      const result = `
+        <h4>🌈 Comprehensive Mood Analytics:</h4>
+        <div class="mood-result">
+          <h3>Övergripande stämning: ${summary.overallMood}</h3>
+          <p>Sentiment score: ${summary.sentimentScore}</p>
+          <p>Stress-nivå: ${summary.stressLevel}</p>
+          <p>Energi-nivå: ${summary.energyLevel}</p>
+          <p>Emotionell stabilitet: ${summary.emotionalStability}</p>
+        </div>
+        <h5>Sentiment analys:</h5>
+        <div style="margin: 10px 0; padding: 10px; background: #f0f0f0; border-radius: 4px;">
+          <strong>Dominerande känsla:</strong> ${analysis.sentiment.dominantEmotion}<br>
+          <strong>Positiva ord:</strong> ${analysis.sentiment.positiveScore}<br>
+          <strong>Negativa ord:</strong> ${analysis.sentiment.negativeScore}
+        </div>
+        <h5>Psykologisk profil:</h5>
+        <div style="margin: 10px 0; padding: 10px; background: #e8f4fd; border-radius: 4px;">
+          <strong>Själv-fokus:</strong> ${analysis.psychological.selfFocus ? 'Ja' : 'Nej'}<br>
+          <strong>Framtidsorienterad:</strong> ${analysis.psychological.futureOriented ? 'Ja' : 'Nej'}<br>
+          <strong>Tidsorientering:</strong> ${analysis.psychological.timeOrientation}
+        </div>
+        <h5>Insikter:</h5>
+        ${(data.insights || []).map(insight => `
+          <div style="margin: 5px 0; padding: 8px; background: #f0f8e8; border-radius: 4px;">
+            � ${insight}
+          </div>
+        `).join('')}
+        <h5>Rekommendationer:</h5>
+        ${(data.recommendations || []).map(rec => `
+          <div style="margin: 5px 0; padding: 8px; background: #fff4e6; border-radius: 4px;">
+            � ${rec}
+          </div>
+        `).join('')}
+      `;
+      
+      showMoodResult(result);
+    } else {
+      showMoodResult(`<div class="error">❌ Fel: ${data.error}</div>`);
+    }
+  } catch (error) {
+    showMoodResult(`<div class="error">❌ Nätverksfel: ${error.message}</div>`);
+  }
+};
+
+window.detectStress = async function() {
+  const text = getMoodText();
+  if (!text) return;
   
-  showMoodResult(result);
+  try {
+    showMoodResult('<div class="loading">🔄 Analyserar stress...</div>');
+    
+    const response = await fetch('/moodengine/stress-detector', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: text })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      const result = `
+        <h4>😰 Stress Detector Analys:</h4>
+        <div class="mood-result">
+          <h3>Stressnivå: ${data.overallStressLevel.toFixed(2)} (${data.stressCategory})</h3>
+        </div>
+        <h5>Detaljerad analys:</h5>
+        <div style="margin: 10px 0; padding: 10px; background: #f0f0f0; border-radius: 4px;">
+          <strong>Vokabulär stress:</strong> Nivå ${data.analysis.vocabulary.level}, Score: ${data.analysis.vocabulary.score}<br>
+          <strong>Språklig stress:</strong> Nivå ${data.analysis.linguistic.level}<br>
+          <strong>Temporal stress:</strong> Nivå ${data.analysis.temporal.level}
+        </div>
+        <h5>Identifierade stressindikatorer:</h5>
+        ${data.stressIndicators.slice(0, 5).map(indicator => `
+          <div style="margin: 5px 0; padding: 8px; background: #ffe6e6; border-radius: 4px;">
+            <strong>${indicator.word}</strong> (${indicator.type}) - Position: ${indicator.position}<br>
+            <em>Kontext: "${indicator.context}"</em>
+          </div>
+        `).join('')}
+        <h5>Rekommendationer:</h5>
+        ${data.recommendations.map(rec => `
+          <div style="margin: 5px 0; padding: 8px; background: #e8f4fd; border-radius: 4px;">
+            💡 ${rec}
+          </div>
+        `).join('')}
+      `;
+      
+      showMoodResult(result);
+    } else {
+      showMoodResult(`<div class="error">❌ Fel: ${data.error}</div>`);
+    }
+  } catch (error) {
+    showMoodResult(`<div class="error">❌ Nätverksfel: ${error.message}</div>`);
+  }
+};
+
+window.analyzeEnergy = async function() {
+  const text = getMoodText();
+  if (!text) return;
+  
+  try {
+    showMoodResult('<div class="loading">🔄 Analyserar lycklighetsförutsägelse...</div>');
+    
+    const response = await fetch('/moodengine/happiness-predictor', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: text })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      const result = `
+        <h4>⚡ Happiness Predictor:</h4>
+        <div class="mood-result">
+          <h3>Lycklighetspoäng: ${data.happinessScore.toFixed(2)}</h3>
+          <p>Positivitetspoäng: ${data.positivityScore}</p>
+          <p>Optimismnivå: ${data.optimismLevel}</p>
+          <p>Förutsagd stämning: ${data.predictedMood.mood} (${data.predictedMood.confidence} konfidenskänsla)</p>
+        </div>
+        <h5>Stämningsfaktorer:</h5>
+        <div style="margin: 10px 0; padding: 10px; background: #f0f8e8; border-radius: 4px;">
+          <strong>Positiva ord:</strong> ${data.moodFactors.positiveWords}<br>
+          <strong>Negativa ord:</strong> ${data.moodFactors.negativeWords}<br>
+          <strong>Neutrala ord:</strong> ${data.moodFactors.neutralWords}
+        </div>
+        <h5>Emotionell balans:</h5>
+        <div style="margin: 10px 0; padding: 10px; background: #e8f4fd; border-radius: 4px;">
+          <strong>Balanserad:</strong> ${data.emotionalBalance.balanced ? 'Ja' : 'Nej'}<br>
+          <strong>Poäng:</strong> ${data.emotionalBalance.score}<br>
+          <strong>Beskrivning:</strong> ${data.emotionalBalance.description}
+        </div>
+        <h5>Rekommendationer:</h5>
+        ${data.recommendations.map(rec => `
+          <div style="margin: 5px 0; padding: 8px; background: #fff4e6; border-radius: 4px;">
+            💡 ${rec}
+          </div>
+        `).join('')}
+      `;
+      
+      showMoodResult(result);
+    } else {
+      showMoodResult(`<div class="error">❌ Fel: ${data.error}</div>`);
+    }
+  } catch (error) {
+    showMoodResult(`<div class="error">❌ Nätverksfel: ${error.message}</div>`);
+  }
+};
+
+window.createMoodMap = async function() {
+  const text = getMoodText();
+  if (!text) return;
+  
+  try {
+    showMoodResult('<div class="loading">🔄 Skapar färgkodad känslokarta...</div>');
+    
+    const response = await fetch('/moodengine/emotion-coloring', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: text })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      const result = `
+        <h4>🗺️ Emotion Color Coding:</h4>
+        <div class="mood-result">
+          <h3>Dominerande känsla: ${data.dominantEmotion}</h3>
+          <p>Original text: "${data.originalText}"</p>
+        </div>
+        <h5>Färgkodade ord:</h5>
+        ${data.coloredText.map(item => `
+          <div style="margin: 10px 0; padding: 10px; border-left: 8px solid ${item.color}; background: ${item.color}; border-radius: 4px;">
+            <strong>"${item.word}"</strong> (${item.emotion})<br>
+            <small>Intensitet: ${item.intensity.toFixed(2)} | Färg: ${item.color}</small>
+          </div>
+        `).join('')}
+        <h5>Känslomässig statistik:</h5>
+        ${Object.entries(data.statistics).map(([emotion, count]) => `
+          <div style="margin: 5px 0; padding: 8px; background: #f0f0f0; border-radius: 4px;">
+            <strong>${emotion}:</strong> ${count} ord
+          </div>
+        `).join('')}
+        <h5>Färglegend:</h5>
+        ${Object.entries(data.legend).map(([emotion, info]) => `
+          <div style="margin: 5px 0; padding: 8px; background: ${info.color}20; border-left: 4px solid ${info.color}; border-radius: 4px;">
+            <strong style="color: ${info.color};">${emotion}:</strong> ${info.description}
+          </div>
+        `).join('')}
+      `;
+      
+      showMoodResult(result);
+    } else {
+      showMoodResult(`<div class="error">❌ Fel: ${data.error}</div>`);
+    }
+  } catch (error) {
+    showMoodResult(`<div class="error">❌ Nätverksfel: ${error.message}</div>`);
+  }
 };
 
 function showMoodResult(content) {
@@ -289,16 +381,34 @@ function showMoodResult(content) {
   if (resultsDiv && contentDiv) {
     contentDiv.innerHTML = content;
     resultsDiv.style.display = 'block';
+    
+    // Scrolla till resultatet
+    resultsDiv.scrollIntoView({ behavior: 'smooth' });
   }
 }
 
 function getMoodText() {
-  const textArea = document.querySelector('#fileContent textarea, .scrollbox');
-  if (!textArea || !textArea.value.trim()) {
-    alert('Skriv eller ladda text först för känslomässig analys!');
+  // Försök hitta textinnehåll på samma sätt som andra moduler
+  let text = '';
+  
+  // Försök först .scrollbox (som andra moduler använder)
+  const scrollBox = document.querySelector('.scrollbox');
+  if (scrollBox && scrollBox.innerText.trim()) {
+    text = scrollBox.innerText.trim();
+  } else {
+    // Försök textarea som backup
+    const textArea = document.querySelector('#fileContent textarea, textarea');
+    if (textArea && textArea.value && textArea.value.trim()) {
+      text = textArea.value.trim();
+    }
+  }
+  
+  if (!text) {
+    alert('Skriv eller ladda text först för känslomässig analys!\n\nTips: Ladda upp en textfil eller skriv text i textområdet.');
     return null;
   }
-  return textArea.value;
+  
+  return text;
 }
 
 // Make function available globally for showFile.js
