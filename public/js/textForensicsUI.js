@@ -57,11 +57,15 @@ function createSimpleForensicsInterface() {
   return container;
 }
 
+// Forensics analysis functions - Using utility functions
 window.analyzeFingerprint = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getEditorText();
+  if (!text) return;
+  
   const totalChars = text.length;
   const uniqueChars = new Set(text).size;
-  const avgWordLength = text.split(/\s+/).reduce((sum, word) => sum + word.length, 0) / text.split(/\s+/).length;
+  const words = text.split(/\s+/);
+  const avgWordLength = words.reduce((sum, word) => sum + word.length, 0) / words.length;
   const complexity = ((uniqueChars / totalChars) * 100).toFixed(2);
   
   const fingerprint = `
@@ -74,11 +78,13 @@ window.analyzeFingerprint = function() {
       <li><strong>Fingerprint ID:</strong> ${Math.abs(text.split('').reduce((a, b) => a + b.charCodeAt(0), 0)).toString(16).toUpperCase()}</li>
     </ul>
   `;
-  showForensicsResults(fingerprint);
+  showResults('forensicsResults', 'forensicsContent', fingerprint);
 };
 
 window.detectPatterns = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getEditorText();
+  if (!text) return;
+  
   const repeatedWords = {};
   const words = text.toLowerCase().split(/\s+/);
   
@@ -101,11 +107,13 @@ window.detectPatterns = function() {
     </ul>
     <p><strong>Analys:</strong> ${patterns.length > 0 ? 'Återkommande ord kan indikera författarens fokusområden' : 'Inga tydliga mönster upptäckta'}</p>
   `;
-  showForensicsResults(patternHtml);
+  showResults('forensicsResults', 'forensicsContent', patternHtml);
 };
 
 window.analyzeStyle = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getEditorText();
+  if (!text) return;
+  
   const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
   const avgSentenceLength = sentences.reduce((sum, sentence) => sum + sentence.split(/\s+/).length, 0) / sentences.length;
   const complexSentences = sentences.filter(s => s.split(/\s+/).length > 20).length;
@@ -127,11 +135,12 @@ window.analyzeStyle = function() {
       <li><strong>Bedömd stil:</strong> ${style}</li>
     </ul>
   `;
-  showForensicsResults(styleHtml);
+  showResults('forensicsResults', 'forensicsContent', styleHtml);
 };
 
 window.findHiddenText = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getEditorText();
+  if (!text) return;
   const hiddenPatterns = [];
   
   // Leta efter möjliga dolda meddelanden
@@ -150,11 +159,12 @@ window.findHiddenText = function() {
     </ul>
     <p><strong>Forensisk bedömning:</strong> ${numbers.length > 5 ? 'Många siffror kan indikera kodad information' : 'Inga uppenbara dolda meddelanden upptäckta'}</p>
   `;
-  showForensicsResults(hiddenHtml);
+  showResults('forensicsResults', 'forensicsContent', hiddenHtml);
 };
 
 window.compareTexts = function() {
-  const text = document.querySelector('.scrollbox').innerText;
+  const text = getEditorText();
+  if (!text) return;
   const words = text.split(/\s+/).length;
   const chars = text.length;
   const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
@@ -179,11 +189,12 @@ window.compareTexts = function() {
       </tr>
     </table>
   `;
-  showForensicsResults(comparisonHtml);
+  showResults('forensicsResults', 'forensicsContent', comparisonHtml);
 };
 
 window.detectLanguage = function() {
-  const text = document.querySelector('.scrollbox').innerText.toLowerCase();
+  const text = getEditorText().toLowerCase();
+  if (!text) return;
   
   // Enkel språkdetektion baserad på vanliga ord
   const swedishWords = ['och', 'att', 'det', 'är', 'som', 'för', 'på', 'av', 'med', 'till'];
@@ -206,14 +217,6 @@ window.detectLanguage = function() {
     </ul>
     <p><strong>Forensisk not:</strong> Språkanalys kan avslöja författarens bakgrund och målgrupp</p>
   `;
-  showForensicsResults(languageHtml);
+  showResults('forensicsResults', 'forensicsContent', languageHtml);
 };
 
-function showForensicsResults(content) {
-  const resultsDiv = document.getElementById('forensicsResults');
-  const contentDiv = document.getElementById('forensicsContent');
-  if (resultsDiv && contentDiv) {
-    contentDiv.innerHTML = content;
-    resultsDiv.style.display = 'block';
-  }
-}

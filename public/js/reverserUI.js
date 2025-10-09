@@ -61,39 +61,39 @@ function createSimpleReverserInterface() {
 
 // Global reverser functions
 window.reverseText = function() {
-  const text = getReverserText();
+  const text = getEditorText();
   if (!text) return;
   
   const reversed = text.split('').reverse().join('');
-  showReverserResult('Omvänd Text', reversed);
+  showResults('simpleReverserResults', 'reverserResultsContent', `<h4>Omvänd Text:</h4><div style="background: white; border: 1px solid #ccc; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto;">${reversed}</div>`);
 };
 
 window.reverseWords = function() {
-  const text = getReverserText();
+  const text = getEditorText();
   if (!text) return;
   
   const reversedWords = text.split(' ').reverse().join(' ');
-  showReverserResult('Omvänd Ordordning', reversedWords);
+  showResults('simpleReverserResults', 'reverserResultsContent', `<h4>Omvänd Ordordning:</h4><div style="background: white; border: 1px solid #ccc; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto;">${reversedWords}</div>`);
 };
 
 window.reverseLines = function() {
-  const text = getReverserText();
+  const text = getEditorText();
   if (!text) return;
   
   const reversedLines = text.split('\n').reverse().join('\n');
-  showReverserResult('Omvända Rader', reversedLines);
+  showResults('simpleReverserResults', 'reverserResultsContent', `<h4>Omvända Rader:</h4><div style="background: white; border: 1px solid #ccc; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto;">${reversedLines}</div>`);
 };
 
 window.mirrorText = function() {
-  const text = getReverserText();
+  const text = getEditorText();
   if (!text) return;
   
   const mirrored = text + ' | ' + text.split('').reverse().join('');
-  showReverserResult('Spegelvänd Text', mirrored);
+  showResults('simpleReverserResults', 'reverserResultsContent', `<h4>Spegelvänd Text:</h4><div style="background: white; border: 1px solid #ccc; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 200px; overflow-y: auto;">${mirrored}</div>`);
 };
 
 window.findPalindromes = function() {
-  const text = getReverserText();
+  const text = getEditorText();
   if (!text) return;
   
   const words = text.toLowerCase().match(/\b\w+\b/g) || [];
@@ -105,11 +105,11 @@ window.findPalindromes = function() {
     ? `Hittade ${palindromes.length} palindromer: ${palindromes.join(', ')}`
     : 'Inga palindromer hittades i texten';
     
-  showReverserResult('Palindrom-sökning', result);
+  showResults('simpleReverserResults', 'reverserResultsContent', `<h4>Palindrom-sökning:</h4><div style="background: white; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">${result}</div>`);
 };
 
 window.compareReverse = function() {
-  const text = getReverserText();
+  const text = getEditorText();
   if (!text) return;
   
   const reversed = text.split('').reverse().join('');
@@ -126,33 +126,8 @@ window.compareReverse = function() {
     </div>
   `;
   
-  showReverserResult('Jämförelse Original vs Omvänd', comparison);
+  showResults('simpleReverserResults', 'reverserResultsContent', `<h4>Jämförelse Original vs Omvänd:</h4>${comparison}`);
 };
-
-function showReverserResult(title, content) {
-  const resultsDiv = document.getElementById('simpleReverserResults');
-  const contentDiv = document.getElementById('reverserResultsContent');
-  
-  if (resultsDiv && contentDiv) {
-    contentDiv.innerHTML = `<h4>${title}</h4>${content}`;
-    resultsDiv.style.display = 'block';
-  }
-}
-
-function getReverserText() {
-  const textArea = document.querySelector('#fileContent textarea, .scrollbox');
-  if (!textArea) {
-    alert('Skriv eller ladda text först!');
-    return null;
-  }
-  
-  const text = textArea.value || textArea.textContent || textArea.innerText || '';
-  if (!text.trim()) {
-    alert('Skriv eller ladda text först!');
-    return null;
-  }
-  return text;
-}
 
 // Make function available globally for showFile.js
 window.showSimpleReverser = () => createSimpleReverserInterface();

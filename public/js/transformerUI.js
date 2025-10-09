@@ -63,7 +63,7 @@ function createSimpleTransformerInterface() {
 let transformedCache = '';
 
 window.rot13Transform = function() {
-  const text = getTransformerText();
+  const text = getEditorText();
   if (!text) return;
   
   const result = text.replace(/[a-zA-Z]/g, function(c) {
@@ -71,11 +71,12 @@ window.rot13Transform = function() {
       (c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26
     );
   });
-  showTransformerResults(result);
+  transformedCache = result;
+  showResults('transformerResults', 'transformerContent', result);
 };
 
 window.shuffleWords = function() {
-  const text = getTransformerText();
+  const text = getEditorText();
   if (!text) return;
   
   const words = text.split(' ');
@@ -83,73 +84,53 @@ window.shuffleWords = function() {
     const j = Math.floor(Math.random() * (i + 1));
     [words[i], words[j]] = [words[j], words[i]];
   }
-  showTransformerResults(words.join(' '));
+  const result = words.join(' ');
+  transformedCache = result;
+  showResults('transformerResults', 'transformerContent', result);
 };
 
 window.alternateCase = function() {
-  const text = getTransformerText();
+  const text = getEditorText();
   if (!text) return;
   
   const result = text.split('').map((char, index) => 
     index % 2 === 0 ? char.toLowerCase() : char.toUpperCase()
   ).join('');
-  showTransformerResults(result);
+  transformedCache = result;
+  showResults('transformerResults', 'transformerContent', result);
 };
 
 window.repeatText = function() {
-  const text = getTransformerText();
+  const text = getEditorText();
   if (!text) return;
   
   const result = (text + '\n').repeat(3);
-  showTransformerResults(result);
+  transformedCache = result;
+  showResults('transformerResults', 'transformerContent', result);
 };
 
 window.removeVowels = function() {
-  const text = getTransformerText();
+  const text = getEditorText();
   if (!text) return;
   
   const result = text.replace(/[aeiouåäöAEIOUÅÄÖ]/g, '');
-  showTransformerResults(result);
+  transformedCache = result;
+  showResults('transformerResults', 'transformerContent', result);
 };
 
 window.encodeText = function() {
-  const text = getTransformerText();
+  const text = getEditorText();
   if (!text) return;
   
   const result = encodeURIComponent(text);
-  showTransformerResults(result);
+  transformedCache = result;
+  showResults('transformerResults', 'transformerContent', result);
 };
 
-function showTransformerResults(result) {
-  transformedCache = result;
-  const resultsDiv = document.getElementById('transformerResults');
-  const contentDiv = document.getElementById('transformerContent');
-  if (resultsDiv && contentDiv) {
-    contentDiv.textContent = result;
-    resultsDiv.style.display = 'block';
-  }
-}
-
-function getTransformerText() {
-  const textArea = document.querySelector('#fileContent textarea, .scrollbox');
-  if (!textArea) {
-    alert('Skriv eller ladda text först!');
-    return null;
-  }
-  
-  const text = textArea.value || textArea.textContent || textArea.innerText || '';
-  if (!text.trim()) {
-    alert('Skriv eller ladda text först!');
-    return null;
-  }
-  return text;
-}
-
-window.copyTransformedText = async function() {
-  try {
-    await navigator.clipboard.writeText(transformedCache);
-    alert('Transformerad text kopierad!');
-  } catch (err) {
-    alert('Kunde inte kopiera text');
+window.copyTransformedText = function() {
+  if (transformedCache) {
+    copyToClipboard(transformedCache, 'Transformerad text kopierad!');
+  } else {
+    alert('Ingen transformerad text att kopiera');
   }
 };
