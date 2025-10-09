@@ -1,9 +1,37 @@
 // Simple version of textGamingUI.js
-console.log('Loading simple textGamingUI...');
 
 export const textGamingMethods = {
   'Text Gaming Hub': () => createSimpleGamingInterface()
 };
+
+// Game HTML generation helper functions
+function generateGameButtonsHTML(actions) {
+  return actions.map(action => `
+    <button onclick="${action.onclick}" style="background: ${action.color}; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
+      ${action.text}
+    </button>
+  `).join('');
+}
+
+function generateWordGuessGameHTML(randomWord, hiddenWord) {
+  const actions = [
+    { onclick: `showFirstLetter('${randomWord}')`, color: '#2196F3', text: '💡 Första bokstaven' },
+    { onclick: `showFirstAndLast('${randomWord}')`, color: '#FF9800', text: '🔤 Första och sista' },
+    { onclick: `showAnswer('${randomWord}')`, color: '#f44336', text: '👁️ Visa svar' },
+    { onclick: 'startWordGuess()', color: '#9C27B0', text: '🔄 Nytt ord' }
+  ];
+
+  return `
+    <h4>🎯 Gissa Ordet!</h4>
+    <p>Ordet har ${randomWord.length} bokstäver: <strong>${hiddenWord}</strong></p>
+    <div style="margin: 15px 0;">
+      ${generateGameButtonsHTML(actions)}
+    </div>
+    <input type="text" id="guessInput" placeholder="Skriv din gissning...">
+    <button onclick="checkGuess('${randomWord}')">Gissa!</button>
+    <div id="guessResult"></div>
+  `;
+}
 
 function createSimpleGamingInterface() {
   const container = document.createElement('div');
@@ -57,27 +85,7 @@ window.startWordGuess = function() {
   const randomWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
   const hiddenWord = randomWord.replace(/./g, '_');
   
-  const gameHtml = `
-    <h4>🎯 Gissa Ordet!</h4>
-    <p>Ordet har ${randomWord.length} bokstäver: <strong>${hiddenWord}</strong></p>
-    <div style="margin: 15px 0;">
-      <button onclick="showFirstLetter('${randomWord}')" style="background: #2196F3; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
-        💡 Första bokstaven
-      </button>
-      <button onclick="showFirstAndLast('${randomWord}')" style="background: #FF9800; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
-        🔤 Första och sista
-      </button>
-      <button onclick="showAnswer('${randomWord}')" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
-        👁️ Visa svar
-      </button>
-      <button onclick="startWordGuess()" style="background: #9C27B0; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
-        🔄 Nytt ord
-      </button>
-    </div>
-    <input type="text" id="guessInput" placeholder="Skriv din gissning...">
-    <button onclick="checkGuess('${randomWord}')">Gissa!</button>
-    <div id="guessResult"></div>
-  `;
+  const gameHtml = generateWordGuessGameHTML(randomWord, hiddenWord);
   
   showGamingResult(gameHtml);
 };
@@ -642,4 +650,3 @@ function getGamingText() {
 // Make function available globally for showFile.js
 window.showSimpleTextGaming = () => createSimpleGamingInterface();
 
-console.log('Simple textGamingUI loaded successfully');

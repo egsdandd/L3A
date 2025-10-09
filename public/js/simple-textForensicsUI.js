@@ -3,40 +3,57 @@ export const textForensicsMethods = {
   'Text Forensics Detective': () => createSimpleForensicsInterface()
 };
 
-function createSimpleForensicsInterface() {
-  const container = document.createElement('div');
-  container.innerHTML = `
+// HTML Helper Functions
+function generateForensicsInterfaceHTML() {
+  return `
     <div class="module-container forensics">
       <h1>🕵️ Text Forensics Detective (Simple Version)</h1>
       <p>Forensisk textanalys för att upptäcka mönster och hemligheter</p>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-        <button onclick="analyzeFingerprint()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🔍 Text Fingerprint
-        </button>
-        <button onclick="detectPatterns()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          📊 Mönster Detektor
-        </button>
-        <button onclick="analyzeStyle()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          ✍️ Skriv-stil Analys
-        </button>
-        <button onclick="findHiddenText()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🕵️ Hitta Dold Text
-        </button>
-        <button onclick="compareTexts()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          ⚖️ Jämför Texter
-        </button>
-        <button onclick="detectLanguage()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🌍 Språk Detektor
-        </button>
-      </div>
+      ${generateForensicsButtonsHTML()}
       
-      <div id="forensicsResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
-        <h3>🔍 Forensisk Analys:</h3>
-        <div id="forensicsContent"></div>
-      </div>
+      ${generateForensicsResultsHTML()}
     </div>
   `;
+}
+
+function generateForensicsButtonsHTML() {
+  return `
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <button onclick="analyzeFingerprint()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        🔍 Text Fingerprint
+      </button>
+      <button onclick="detectPatterns()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        📊 Mönster Detektor
+      </button>
+      <button onclick="analyzeStyle()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        ✍️ Skriv-stil Analys
+      </button>
+      <button onclick="findHiddenText()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        🕵️ Hitta Dold Text
+      </button>
+      <button onclick="compareTexts()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        ⚖️ Jämför Texter
+      </button>
+      <button onclick="detectLanguage()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        🌍 Språk Detektor
+      </button>
+    </div>
+  `;
+}
+
+function generateForensicsResultsHTML() {
+  return `
+    <div id="forensicsResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
+      <h3>🔍 Forensisk Analys:</h3>
+      <div id="forensicsContent"></div>
+    </div>
+  `;
+}
+
+function createSimpleForensicsInterface() {
+  const container = document.createElement('div');
+  container.innerHTML = generateForensicsInterfaceHTML();
   return container;
 }
 

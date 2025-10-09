@@ -3,43 +3,60 @@ export const wordOptimizerMethods = {
   'Word Choice Optimizer': () => createSimpleOptimizerInterface()
 };
 
-function createSimpleOptimizerInterface() {
-  const container = document.createElement('div');
-  container.innerHTML = `
+// HTML Helper Functions  
+function generateOptimizerInterfaceHTML() {
+  return `
     <div class="module-container optimizer">
       <h1>✨ Writing Assistant (Simple Version)</h1>
       <p>Förbättra din text med AI-liknande funktioner</p>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-        <button onclick="improveText()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
-          ✨ Förbättra Text
-        </button>
-        <button onclick="makeFormal()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🎩 Gör Formell
-        </button>
-        <button onclick="makeCasual()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
-          😊 Gör Vardaglig
-        </button>
-        <button onclick="fixGrammar()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
-          📝 Rätta Grammatik
-        </button>
-        <button onclick="expandText()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
-          📈 Utvidga Text
-        </button>
-        <button onclick="summarizeText()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
-          📊 Sammanfatta
-        </button>
-      </div>
-      
-      <div id="optimizerResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
-        <h3>Optimerat resultat:</h3>
-        <div id="optimizerContent" style="background: white; border: 1px solid #ccc; padding: 15px; border-radius: 5px; max-height: 300px; overflow-y: auto;"></div>
-        <button onclick="copyOptimizedText()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
-          📋 Kopiera
-        </button>
-      </div>
+      ${generateOptimizerButtonsHTML()}
+      ${generateOptimizerResultsHTML()}
     </div>
   `;
+}
+
+function generateOptimizerButtonsHTML() {
+  return `
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <button onclick="improveText()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
+        ✨ Förbättra Text
+      </button>
+      <button onclick="makeFormal()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
+        🎩 Gör Formell
+      </button>
+      <button onclick="makeCasual()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
+        😊 Gör Vardaglig
+      </button>
+      <button onclick="fixGrammar()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
+        📝 Rätta Grammatik
+      </button>
+      <button onclick="expandText()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
+        📈 Utvidga Text
+      </button>
+      <button onclick="summarizeText()" style="background: rgba(0,0,0,0.1); color: #333; border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer;">
+        📊 Sammanfatta
+      </button>
+    </div>
+  `;
+}
+
+function generateOptimizerResultsHTML() {
+  return `
+    <div id="optimizerResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
+      <h3>Optimerat resultat:</h3>
+      <div id="optimizerContent" style="background: white; border: 1px solid #ccc; padding: 15px; border-radius: 5px; max-height: 300px; overflow-y: auto;"></div>
+      <button onclick="copyOptimizedText()" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+        📋 Kopiera
+      </button>
+    </div>
+  `;
+}
+
+function createSimpleOptimizerInterface() {
+  const container = document.createElement('div');
+  container.innerHTML = generateOptimizerInterfaceHTML();
+  return container;
   return container;
 }
 

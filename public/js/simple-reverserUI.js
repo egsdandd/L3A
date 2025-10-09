@@ -1,44 +1,60 @@
 // Simple version of reverserUI.js
-console.log('Loading simple reverserUI...');
 
 export const reverserMethods = {
   'Text Reverser': () => createSimpleReverserInterface()
 };
 
-function createSimpleReverserInterface() {
-  const container = document.createElement('div');
-  container.innerHTML = `
+// HTML Helper Functions
+function generateReverserInterfaceHTML() {
+  return `
     <div class="module-container reverser">
       <h1>🔁 Text Reverser (Simple Version)</h1>
       <p>Specialiserade verktyg för att vända text åt olika håll</p>
       
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-        <button onclick="reverseText()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🔄 Vänd Text
-        </button>
-        <button onclick="reverseWords()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🔀 Vänd Ordordning
-        </button>
-        <button onclick="reverseLines()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          📝 Vänd Rader
-        </button>
-        <button onclick="mirrorText()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🪞 Spegelvänd
-        </button>
-        <button onclick="findPalindromes()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          🔍 Hitta Palindromer
-        </button>
-        <button onclick="compareReverse()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
-          ⚖️ Jämför Original/Vänd
-        </button>
-      </div>
-      
-      <div id="simpleReverserResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
-        <h3>Resultat:</h3>
-        <div id="reverserResultsContent"></div>
-      </div>
+      ${generateReverserButtonsHTML()}
+      ${generateReverserResultsHTML()}
     </div>
   `;
+}
+
+function generateReverserButtonsHTML() {
+  return `
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+      <button onclick="reverseText()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        🔄 Vänd Text
+      </button>
+      <button onclick="reverseWords()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        🔀 Vänd Ordordning
+      </button>
+      <button onclick="reverseLines()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        📝 Vänd Rader
+      </button>
+      <button onclick="mirrorText()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        🪞 Spegelvänd
+      </button>
+      <button onclick="findPalindromes()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        🔍 Hitta Palindromer
+      </button>
+      <button onclick="compareReverse()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+        ⚖️ Jämför Original/Vänd
+      </button>
+    </div>
+  `;
+}
+
+function generateReverserResultsHTML() {
+  return `
+    <div id="simpleReverserResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
+      <h3>Resultat:</h3>
+      <div id="reverserResultsContent"></div>
+    </div>
+  `;
+}
+
+function createSimpleReverserInterface() {
+  const container = document.createElement('div');
+  container.innerHTML = generateReverserInterfaceHTML();
+  return container;
   
   return container;
 }
@@ -141,4 +157,3 @@ function getReverserText() {
 // Make function available globally for showFile.js
 window.showSimpleReverser = () => createSimpleReverserInterface();
 
-console.log('Simple reverserUI loaded successfully');

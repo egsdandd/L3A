@@ -6,13 +6,8 @@ const methods = {};
 
 // Gör showMethods tillgängligt globalt OMEDELBART när filen laddas
 window.showMethods = function(category) {
-  console.log('showMethods called with category:', category);
-  console.log('Available methods for', category, ':', methods[category]);
-  console.log('All methods object:', methods);
-  
   // Om modulerna inte är laddade än, försök ladda dem dynamiskt
   if (!methods[category]) {
-    console.log('Methods not loaded for', category, ', attempting to load...');
     loadSingleModule(category).then(() => {
       renderMethods(category);
     }).catch(error => {
@@ -25,47 +20,34 @@ window.showMethods = function(category) {
   renderMethods(category);
 };
 
-// Säkerställ att showMethods finns även om något går fel
-console.log('showMethods defined:', typeof window.showMethods);
 async function loadModules() {
   try {
     const analyzerModule = await import('./simple-analyzerUI.js');
     methods.TextAnalyzer = analyzerModule.analyzerMethods;
-    console.log('Loaded TextAnalyzer:', analyzerModule.analyzerMethods);
 
     const searcherModule = await import('./simple-searcherUI.js');
     methods.TextSearcher = searcherModule.searcherMethods;
-    console.log('Loaded TextSearcher:', searcherModule.searcherMethods);
 
     const formatterModule = await import('./simple-formatterUI.js');
     methods.TextFormatter = formatterModule.formatterMethods;
-    console.log('Loaded TextFormatter:', formatterModule.formatterMethods);
 
     const transformerModule = await import('./simple-transformerUI.js');
     methods.TextTransformer = transformerModule.transformerMethods;
-    console.log('Loaded TextTransformer:', transformerModule.transformerMethods);
 
     const reverserModule = await import('./simple-reverserUI.js');
     methods.TextReverser = reverserModule.reverserMethods;
-    console.log('Loaded TextReverser:', reverserModule.reverserMethods);
 
     const wordOptimizerModule = await import('./simple-wordOptimizerUI.js');
     methods.WordOptimizer = wordOptimizerModule.wordOptimizerMethods;
-    console.log('Loaded WordOptimizer:', wordOptimizerModule.wordOptimizerMethods);
 
     const textGamingModule = await import('./simple-textGamingUI.js');
     methods.TextGaming = textGamingModule.textGamingMethods;
-    console.log('Loaded TextGaming:', textGamingModule.textGamingMethods);
 
     const textForensicsModule = await import('./simple-textForensicsUI.js');
     methods.TextForensics = textForensicsModule.textForensicsMethods;
-    console.log('Loaded TextForensics:', textForensicsModule.textForensicsMethods);
 
     const moodEngineModule = await import('./simple-moodEngineUI.js');
     methods.MoodEngine = moodEngineModule.moodEngineMethods;
-    console.log('Loaded MoodEngine:', moodEngineModule.moodEngineMethods);
-
-    console.log('All modules loaded successfully:', methods);
   } catch (error) {
     console.error('Error loading modules:', error);
   }
@@ -118,11 +100,8 @@ async function loadSingleModule(category) {
         throw new Error(`Unknown category: ${category}`);
     }
     
-    console.log(`Loading ${category} from ${moduleFile}...`);
     const module = await import(moduleFile);
-    console.log(`Module loaded:`, module);
     methods[category] = module[methodsProperty];
-    console.log(`${category} methods assigned:`, methods[category]);
     
   } catch (error) {
     console.error(`Error loading ${category}:`, error);
@@ -149,14 +128,10 @@ function showErrorMessage(category) {
 
 // Funktion för att rendera metodknappar
 function renderMethods(moduleType) {
-  console.log('renderMethods called with moduleType:', moduleType);
   const container = document.getElementById('methodList');
-  console.log('Container found:', container);
   if (!container) return;
 
   container.innerHTML = '';
-  console.log('methods object:', methods);
-  console.log('methods[moduleType]:', methods[moduleType]);
   
   if (methods[moduleType]) {
     // Alla moderniserade moduler använder UI-komponent struktur
@@ -211,10 +186,7 @@ function activateWritingAssistant() {
 
 // Eventlisteners när sidan laddas
 document.addEventListener('DOMContentLoaded', async function() {
-  console.log('showFile.js loaded, loading modules...');
   await loadModules();
-  console.log('All modules loaded, methods available:', Object.keys(methods));
-  console.log('Full methods object after loading:', methods);
 });
 
 // Backup-funktion för moduler som inte konverterats än
