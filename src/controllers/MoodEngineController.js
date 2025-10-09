@@ -463,10 +463,20 @@ export default class MoodEngineController {
    */
   #calculateEmotionDistribution(heatmap) {
     const distribution = {};
+    let totalIntensity = 0;
     
+    // Summera intensiteter för varje känsla
     heatmap.forEach(item => {
       distribution[item.emotion] = (distribution[item.emotion] || 0) + item.intensity;
+      totalIntensity += item.intensity;
     });
+    
+    // Normalisera till procent (värden mellan 0 och 1)
+    if (totalIntensity > 0) {
+      Object.keys(distribution).forEach(emotion => {
+        distribution[emotion] = distribution[emotion] / totalIntensity;
+      });
+    }
     
     return distribution;
   }

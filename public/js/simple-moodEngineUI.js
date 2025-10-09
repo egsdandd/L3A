@@ -112,16 +112,35 @@ window.detectEmotions = async function() {
     const data = await response.json();
     
     if (data.success) {
+      console.log('API data:', data); // Debug
+      console.log('EmotionDistribution:', data.emotionDistribution); // Extra debug
+      
+      // Använd emotionDistribution direkt från API-svaret
+      const distributionToShow = data.emotionDistribution || {};
+      console.log('DistributionToShow:', distributionToShow); // Debug
+      console.log('Keys:', Object.keys(distributionToShow)); // Debug
+      
       const result = `
         <h4>💭 Emotion Heatmap:</h4>
         <div class="mood-result">
           <h3>Känslomässig fördelning:</h3>
-          ${Object.entries(data.emotionDistribution || {}).map(([emotion, intensity]) => `
-            <div style="margin: 5px 0; padding: 8px; background: #f0f0f0; border-radius: 4px;">
-              <strong>${emotion}:</strong> ${intensity.toFixed(2)}
-            </div>
-          `).join('')}
+          ${Object.keys(distributionToShow).length > 0 ? 
+            Object.entries(distributionToShow).map(([emotion, value]) => `
+              <div style="margin: 5px 0; padding: 8px; background: #f0f0f0; border-radius: 4px; color: #333;">
+                <strong style="color: #000;">${emotion}:</strong> ${typeof value === 'number' ? (value * 100).toFixed(1) + '%' : value}
+              </div>
+            `).join('') : 
+            '<p style="color: #333;">Ingen känslomässig data tillgänglig</p>'
+          }
         </div>
+        <h5>Känslomässiga zoner:</h5>
+        ${(data.zones || []).map(zone => `
+          <div style="margin: 10px 0; padding: 10px; border-left: 4px solid gold; background: #fffbf0; border-radius: 4px;">
+            <strong>Zone:</strong> ${zone.emotion}<br>
+            <strong>Intensitet:</strong> ${zone.intensity.toFixed(2)}<br>
+            <strong>Ord:</strong> ${zone.words.join(', ')}
+          </div>
+        `).join('')}
         <h5>Ord-analys (första 10 ord):</h5>
         ${(data.heatmap || []).slice(0, 10).map(item => `
           <div style="margin: 10px 0; padding: 10px; border-left: 4px solid ${item.color}; background: ${item.color}; border-radius: 4px;">
