@@ -60,7 +60,20 @@ window.startWordGuess = function() {
   const gameHtml = `
     <h4>🎯 Gissa Ordet!</h4>
     <p>Ordet har ${randomWord.length} bokstäver: <strong>${hiddenWord}</strong></p>
-    <p>Ledtråd: Ordet finns i texten du laddade upp</p>
+    <div style="margin: 15px 0;">
+      <button onclick="showFirstLetter('${randomWord}')" style="background: #2196F3; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
+        💡 Första bokstaven
+      </button>
+      <button onclick="showFirstAndLast('${randomWord}')" style="background: #FF9800; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
+        🔤 Första och sista
+      </button>
+      <button onclick="showAnswer('${randomWord}')" style="background: #f44336; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
+        👁️ Visa svar
+      </button>
+      <button onclick="startWordGuess()" style="background: #9C27B0; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
+        🔄 Nytt ord
+      </button>
+    </div>
     <input type="text" id="guessInput" placeholder="Skriv din gissning...">
     <button onclick="checkGuess('${randomWord}')">Gissa!</button>
     <div id="guessResult"></div>
@@ -74,7 +87,25 @@ window.checkGuess = function(correctWord) {
   const result = document.getElementById('guessResult');
   
   if (guess === correctWord) {
-    result.innerHTML = '🎉 Rätt! Du gissade ordet: ' + correctWord;
+    result.innerHTML = `
+      <div style="margin: 15px 0;">
+        🎉 Rätt! Du gissade ordet: <strong>${correctWord}</strong>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+        <button onclick="startWordGuess()" style="background: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          🎯 Gissa nytt ord
+        </button>
+        <button onclick="showWordHint('${correctWord}')" style="background: #2196F3; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          💡 Visa ledtråd
+        </button>
+        <button onclick="showWordInfo('${correctWord}')" style="background: #FF9800; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          📝 Visa info
+        </button>
+        <button onclick="startWordScramble()" style="background: #9C27B0; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          🔀 Ordpussel
+        </button>
+      </div>
+    `;
     result.className = 'result-success';
   } else {
     result.innerHTML = '❌ Fel! Försök igen...';
@@ -132,6 +163,9 @@ function showScrambleGame(scrambledWord, originalWord) {
     <button onclick="showScrambleAnswer()" style="background: #f44336; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; margin: 5px;">
       👁️ Visa svar
     </button>
+    <button onclick="startWordScramble()" style="background: #9C27B0; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; margin: 5px;">
+      🔀 Nytt ordpussel
+    </button>
     <div id="scrambleResult"></div>
   `;
   
@@ -149,18 +183,29 @@ window.checkScramble = function() {
   }
   
   if (answer === window.currentScrambleWord) {
-    result.innerHTML = `🎉 Perfekt! Du löste pusslet! Ordet var: <strong>${window.currentScrambleWord.toUpperCase()}</strong>`;
+    result.innerHTML = `
+      <div style="margin: 15px 0;">
+        🎉 Perfekt! Du löste pusslet! Ordet var: <strong>${window.currentScrambleWord.toUpperCase()}</strong>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+        <button onclick="startWordScramble()" style="background: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          🔀 Nytt ordpussel
+        </button>
+        <button onclick="showWordHint('${window.currentScrambleWord}')" style="background: #2196F3; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          💡 Visa ledtråd
+        </button>
+        <button onclick="showWordInfo('${window.currentScrambleWord}')" style="background: #FF9800; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          📝 Visa info
+        </button>
+        <button onclick="startWordGuess()" style="background: #9C27B0; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+          🎯 Gissa ord
+        </button>
+      </div>
+    `;
     result.className = 'result-success';
     result.style.padding = '15px';
     result.style.borderRadius = '8px';
     result.style.marginTop = '15px';
-    
-    // Möjlighet att spela igen
-    setTimeout(() => {
-      if (confirm('Bra jobbat! Vill du prova ett nytt ordpussel?')) {
-        window.startWordScramble();
-      }
-    }, 2000);
     
   } else {
     result.innerHTML = `❌ Tyvärr fel! "${answer}" är inte rätt ord. Försök igen!`;
@@ -507,6 +552,66 @@ window.showAnswers = function() {
   result.style.padding = '15px';
   result.style.marginTop = '15px';
   result.style.borderRadius = '8px';
+};
+
+// Hjälpfunktioner för ordspel-knapparna
+window.showFirstLetter = function(word) {
+  const result = document.getElementById('guessResult');
+  result.innerHTML = `💡 <strong>Ledtråd:</strong> Ordet börjar med "${word[0].toUpperCase()}"`;
+  result.className = 'result-success';
+  result.style.padding = '10px';
+  result.style.borderRadius = '5px';
+  result.style.marginTop = '10px';
+};
+
+window.showFirstAndLast = function(word) {
+  const result = document.getElementById('guessResult');
+  result.innerHTML = `🔤 <strong>Ledtråd:</strong> Ordet börjar med "${word[0].toUpperCase()}" och slutar med "${word[word.length-1].toUpperCase()}"`;
+  result.className = 'result-success';
+  result.style.padding = '10px';
+  result.style.borderRadius = '5px';
+  result.style.marginTop = '10px';
+};
+
+window.showAnswer = function(word) {
+  const result = document.getElementById('guessResult');
+  result.innerHTML = `👁️ <strong>Svaret är:</strong> ${word.toUpperCase()}`;
+  result.className = 'result-success';
+  result.style.padding = '10px';
+  result.style.borderRadius = '5px';
+  result.style.marginTop = '10px';
+  result.style.background = '#ffeb3b';
+  result.style.color = '#333';
+};
+
+window.showWordHint = function(word) {
+  const hints = {
+    'katt': 'Ett mysigt husdjur som spinnare',
+    'hund': 'Människans bästa vän som skäller',
+    'bok': 'Något man läser med många sidor',
+    'bil': 'Fordon med fyra hjul',
+    'hus': 'Byggnad där man bor',
+    'träd': 'Växer högt och har löv',
+    'sol': 'Lyser på himlen på dagen',
+    'måne': 'Syns på himlen på natten'
+  };
+  
+  const hint = hints[word.toLowerCase()] || `Ett ord som börjar med "${word[0]}" och har ${word.length} bokstäver`;
+  
+  alert(`💡 Ledtråd för "${word}": ${hint}`);
+};
+
+window.showWordInfo = function(word) {
+  const info = `
+📝 Information om ordet "${word}":
+• Längd: ${word.length} bokstäver
+• Första bokstav: ${word[0].toUpperCase()}
+• Sista bokstav: ${word[word.length-1].toUpperCase()}
+• Vokaler: ${word.toLowerCase().match(/[aeiouyåäö]/g)?.join(', ') || 'Inga'}
+• Konsonanter: ${word.toLowerCase().match(/[bcdfghjklmnpqrstvwxz]/g)?.join(', ') || 'Inga'}
+  `;
+  
+  alert(info);
 };
 
 function showGamingResult(content) {

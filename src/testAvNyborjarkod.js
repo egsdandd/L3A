@@ -1,61 +1,109 @@
 // src/formatters/TextFormatter.js
 
-class TF {
-  constructor(tekst) {
-    this.t = tekst
+class TextFormatter {
+  // Privat attribut
+  #text;
+
+  constructor(text) {
+    this.#text = text;
+  }
+
+  // Privat hjälpmetod för validering
+  #validateText() {
+    if (!this.#text || typeof this.#text !== 'string') {
+      throw new Error('Invalid text provided to TextFormatter');
+    }
+    return this.#text.trim().length > 0;
+  }
+
+  // Privat hjälpmetod för att säkerställa att text finns
+  #ensureText() {
+    if (!this.#validateText()) {
+      throw new Error('No valid text to format');
+    }
   }
 
   // Versaler
-  upp() {
-    return this.t.toUpperCase() 
+  toUpperCase() {
+    this.#ensureText();
+    return this.#text.toUpperCase();
   }
 
   // Gemener
-  low() {
-    if (this.t && this.t.length > 0) {
-      return this.t.toLowerCase()
-    }
+  toLowerCase() {
+    this.#ensureText();
+    return this.#text.toLowerCase();
   }
+
   // Versal på varje ord
-  capWords() {
-    var arr = this.t.split(" ");
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].length > 0) {
-        arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
-      }
-    }
-    return arr.join(" ");
+  capitalizeWords() {
+    this.#ensureText();
+    return this.#text.split(' ')
+      .map(word => word.length > 0 
+        ? word[0].toUpperCase() + word.slice(1).toLowerCase()
+        : word
+      )
+      .join(' ');
   }
-  // camel Case 
-  camel() {
-    var parts = this.t.trim().split(/\s+/); // Split on any whitespace, remove leading/trailing spaces
+
+  // camelCase
+  toCamelCase() {
+    this.#ensureText();
+    const parts = this.#text.trim().split(/\s+/);
     if (parts.length === 0) return '';
-    var out = parts[0].toLowerCase();
-    for (var j = 1; j < parts.length; j++) {
-      if (parts[j].length > 0) {
-        out += parts[j][0].toUpperCase() + parts[j].slice(1).toLowerCase();
-      }
-    }
-    return out;
+    
+    const first = parts[0].toLowerCase();
+    const rest = parts.slice(1)
+      .map(part => part.length > 0 
+        ? part[0].toUpperCase() + part.slice(1).toLowerCase()
+        : part
+      );
+    
+    return first + rest.join('');
   }
-  // inga mellanslag
-  snake() {
-    return this.t.replaceAll(' ', '_')
+
+  // snake_case
+  toSnakeCase() {
+    this.#ensureText();
+    return this.#text.trim()
+      .toLowerCase()
+      .replace(/\s+/g, '_')
+      .replace(/[^a-z0-9_]/g, '');
   }
-  // ta bort onödiga mellanslag
-  trim() {
-    if (this.t) {
-      return this.t.trim()
-    }
+
+  // Ta bort onödiga mellanslag
+  trimWhitespace() {
+    if (!this.#text) return '';
+    return this.#text.trim().replace(/\s+/g, ' ');
+  }
+
+  // Ny metod: getter för originaltext (read-only)
+  get originalText() {
+    return this.#text;
+  }
+
+  // Ny metod: sätt ny text
+  setText(newText) {
+    this.#text = newText;
+    return this;
   }
 }
 
-// Exempel på användning
-var f = new TF("    hej världen och Otto, paddlar kajak!   ")
-console.log(f.upp())
-console.log(f.low())
-console.log(f.capWords())
-console.log(f.camel())
-console.log(f.snake())
-console.log(f.trim())
+// Exempel på användning med nya metoder
+const formatter = new TextFormatter("    hej världen och Otto, paddlar kajak!   ");
+console.log('Versaler:', formatter.toUpperCase());
+console.log('Gemener:', formatter.toLowerCase());
+console.log('Kapitaliserad:', formatter.capitalizeWords());
+console.log('CamelCase:', formatter.toCamelCase());
+console.log('Snake_case:', formatter.toSnakeCase());
+console.log('Trimmed:', formatter.trimWhitespace());
+console.log('Original:', formatter.originalText);
+
+// Exempel med metodkedja
+const chained = new TextFormatter("hello world")
+  .setText("new text here")
+  .capitalizeWords();
+console.log('Chained result:', chained);
+
+export default TextFormatter;
 

@@ -1,67 +1,83 @@
 
 import { Router } from 'express';
-import TextDocument from 'texttoolkit';
+import TextAnalyzerController from '../controllers/TextAnalyzerController.js';
 
 const router = Router();
+const analyzerController = new TextAnalyzerController();
 
 // Räkna tecken (inklusive mellanslag)
-router.post('/countcharacters', (req, res) => {
+router.post('/countcharacters', async (req, res) => {
   const { text } = req.body || {};
   if (!text) return res.status(400).json({ error: "Text is missing" });
-  const doc = new TextDocument(text);
-  const count = doc.countCharacters(true); // true = inkludera mellanslag
-  res.json({ count });
+  
+  const result = await analyzerController.countCharacters(text, true);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ count: result.count });
 });
 
 // Bokstavsfrekvens
-router.post('/letterfrequency', (req, res) => {
+router.post('/letterfrequency', async (req, res) => {
   const { text } = req.body || {};
   if (!text) return res.status(400).json({ error: "Text is missing" });
-  const doc = new TextDocument(text);
-  const frequency = doc.letterFrequency();
-  res.json({ frequency });
+  
+  const result = await analyzerController.getLetterFrequency(text);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ frequency: result.frequency });
 });
 
 // Hitta palindromer
-router.post('/findpalindromes', (req, res) => {
+router.post('/findpalindromes', async (req, res) => {
   const { text } = req.body || {};
   if (!text) return res.status(400).json({ error: "Text is missing" });
-  const doc = new TextDocument(text);
-  const palindromes = doc.findPalindromes();
-  res.json({ palindromes });
+  
+  const result = await analyzerController.findPalindromes(text);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ palindromes: result.palindromes });
 });
 
-router.post('/countwords', (req, res) => {
+router.post('/countwords', async (req, res) => {
   const { text, word } = req.body || {};
   if (!text || !word) {
     return res.status(400).json({ error: "Text eller ord saknas" });
   }
-  const doc = new TextDocument(text);
-  const count = doc.count(word); // använder modulens count-funktion för att räkna förekomster
-  res.json({ count });
+  
+  const result = await analyzerController.countWordOccurrences(text, word);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ count: result.count });
 });
 
-
-
 // Räkna alla ord i texten
-router.post('/counttotalwords', (req, res) => {
+router.post('/counttotalwords', async (req, res) => {
   const { text } = req.body || {};
   if (!text) {
     return res.status(400).json({ error: "Text saknas" });
   }
-  const doc = new TextDocument(text);
-  const count = doc.countWords();
-  res.json({ count });
+  
+  const result = await analyzerController.countTotalWords(text);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ count: result.count });
 });
 
 // Räkna meningar i texten
-
-router.post('/countsentences', (req, res) => {
+router.post('/countsentences', async (req, res) => {
   const { text } = req.body || {};
   if (!text) return res.status(400).json({ error: "Text is missing" });
-  const doc = new TextDocument(text);
-  const count = doc.countSentences();
-  res.json({ count });
+  
+  const result = await analyzerController.countSentences(text);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ count: result.count });
 });
 
 export default router;

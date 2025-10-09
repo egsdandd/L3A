@@ -1,86 +1,92 @@
 
 import { Router } from 'express';
-import TextDocument from 'texttoolkit';
+import TextSearcherController from '../controllers/TextSearcherController.js';
 
 const router = Router();
+const searcherController = new TextSearcherController();
 
 // Exists
-router.post('/exists', (req, res) => {
+router.post('/exists', async (req, res) => {
   const { text, query } = req.body;
   if (!text || !query) return res.status(400).json({ error: 'Text or query missing' });
-  const doc = new TextDocument(text);
-  const exists = doc.exists(query);
-  res.json({ exists });
+  
+  const result = await searcherController.checkExists(text, query);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ exists: result.exists });
 });
 
 // Count occurrences
-router.post('/count', (req, res) => {
+router.post('/count', async (req, res) => {
   const { text, query } = req.body;
   if (!text || !query) return res.status(400).json({ error: 'Text or query missing' });
-  const doc = new TextDocument(text);
-  const count = doc.count(query);
-  res.json({ count });
+  
+  const result = await searcherController.countOccurrences(text, query);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ count: result.count });
 });
 
 // Match pattern (RegExp)
-router.post('/matchpattern', (req, res) => {
+router.post('/matchpattern', async (req, res) => {
   const { text, pattern } = req.body;
   if (!text || !pattern) return res.status(400).json({ error: 'Text or pattern missing' });
-  const doc = new TextDocument(text);
-  let matches = [];
-  try {
-    matches = doc.matchPattern(new RegExp(pattern, 'g'));
-  } catch (e) {
-    return res.status(400).json({ error: 'Invalid RegExp pattern' });
+  
+  const result = await searcherController.matchPattern(text, pattern);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
   }
-  res.json({ matches });
+  res.json({ matches: result.matches });
 });
 
 // Search RegExp index
-router.post('/searchregexp', (req, res) => {
+router.post('/searchregexp', async (req, res) => {
   const { text, pattern } = req.body;
   if (!text || !pattern) return res.status(400).json({ error: 'Text or pattern missing' });
-  const doc = new TextDocument(text);
-  let index = -1;
-  try {
-    index = doc.searchRegexp(new RegExp(pattern));
-  } catch (e) {
-    return res.status(400).json({ error: 'Invalid RegExp pattern' });
+  
+  const result = await searcherController.searchRegExp(text, pattern);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
   }
-  res.json({ index });
+  res.json({ index: result.index });
 });
 
 // Test RegExp pattern
-router.post('/testpattern', (req, res) => {
+router.post('/testpattern', async (req, res) => {
   const { text, pattern } = req.body;
   if (!text || !pattern) return res.status(400).json({ error: 'Text or pattern missing' });
-  const doc = new TextDocument(text);
-  let matches = false;
-  try {
-    matches = doc.testPattern(new RegExp(pattern));
-  } catch (e) {
-    return res.status(400).json({ error: 'Invalid RegExp pattern' });
+  
+  const result = await searcherController.testPattern(text, pattern);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
   }
-  res.json({ matches });
+  res.json({ matches: result.matches });
 });
 
-
 // Find first occurrence
-router.post('/findfirst', (req, res) => {
+router.post('/findfirst', async (req, res) => {
   const { text, query } = req.body;
   if (!text || !query) return res.status(400).json({ error: 'Text or query missing' });
-  const doc = new TextDocument(text);
-  const index = doc.findFirst(query);
-  res.json({ index });
+  
+  const result = await searcherController.findFirst(text, query);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ index: result.index });
 });
 
 // Find all occurrences
-router.post('/findall', (req, res) => {
+router.post('/findall', async (req, res) => {
   const { text, query } = req.body;
   if (!text || !query) return res.status(400).json({ error: 'Text or query missing' });
-  const doc = new TextDocument(text);
-  const indexes = doc.findAll(query);
-  res.json({ indexes });
+  
+  const result = await searcherController.findAll(text, query);
+  if (!result.success) {
+    return res.status(400).json({ error: result.error });
+  }
+  res.json({ indexes: result.indexes });
 });
 
 export default router;
