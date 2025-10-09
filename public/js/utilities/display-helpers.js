@@ -9,19 +9,19 @@
  * @param {boolean} scrollIntoView - Whether to scroll to the results (default: true)
  */
 function showResults(containerId, contentId, content, scrollIntoView = true) {
-  const container = document.getElementById(containerId);
-  const contentDiv = document.getElementById(contentId);
+  const container = document.getElementById(containerId)
+  const contentDiv = document.getElementById(contentId)
   
   if (!container || !contentDiv) {
-    console.error(`Results containers not found: ${containerId}, ${contentId}`);
-    return;
+    console.error(`Results containers not found: ${containerId}, ${contentId}`)
+    return
   }
   
-  contentDiv.innerHTML = content;
-  container.style.display = 'block';
+  contentDiv.innerHTML = content
+  container.style.display = 'block'
   
   if (scrollIntoView) {
-    container.scrollIntoView({ behavior: 'smooth' });
+    container.scrollIntoView({ behavior: 'smooth' })
   }
 }
 
@@ -33,8 +33,8 @@ function showResults(containerId, contentId, content, scrollIntoView = true) {
  * @returns {string} - CSS style string
  */
 function getButtonStyle(backgroundColor, textColor, borderColor = null) {
-  const border = borderColor ? `1px solid ${borderColor}` : 'none';
-  return `background: ${backgroundColor}; color: ${textColor}; border: ${border}; padding: 15px; border-radius: 8px; cursor: pointer;`;
+  const border = borderColor ? `1px solid ${borderColor}` : 'none'
+  return `background: ${backgroundColor}; color: ${textColor}; border: ${border}; padding: 15px; border-radius: 8px; cursor: pointer;`
 }
 
 /**
@@ -44,5 +44,5 @@ function getButtonStyle(backgroundColor, textColor, borderColor = null) {
  * @returns {string} - CSS style string for grid container
  */
 function getGridContainerStyle(minWidth = '200px', gap = '15px') {
-  return `display: grid; grid-template-columns: repeat(auto-fit, minmax(${minWidth}, 1fr)); gap: ${gap}; margin: 20px 0;`;
+  return `display: grid; grid-template-columns: repeat(auto-fit, minmax(${minWidth}, 1fr)); gap: ${gap}; margin: 20px 0;`
 }

@@ -1,14 +1,20 @@
 // src/controllers/MoodEngineController.js
-import texttoolkit from 'texttoolkit';
+import texttoolkit from 'texttoolkit'
 
+/**
+ *
+ */
 export default class MoodEngineController {
-  #textDocumentCache = new Map();
-  #lastText = null;
-  #sentimentWords = null;
+  #textDocumentCache = new Map()
+  #lastText = null
+  #sentimentWords = null
   
+  /**
+   *
+   */
   constructor() {
     // Privat cache för TextDocument instanser för bättre prestanda
-    this.#initializeSentimentWords();
+    this.#initializeSentimentWords()
   }
 
   /**
@@ -39,7 +45,7 @@ export default class MoodEngineController {
         medium: ['oro', 'bekymmer', 'tension', 'nervös', 'orolig', 'ängslig'],
         indicators: ['måste', 'borde', 'ska', 'deadline', 'snabbt', 'bråttom', 'tid', 'hinner']
       }
-    };
+    }
   }
 
   /**
@@ -48,62 +54,62 @@ export default class MoodEngineController {
    * @returns {boolean} - True om texten är giltig
    */
   #validateText(text) {
-    return typeof text === 'string' && text.trim().length > 0;
+    return typeof text === 'string' && text.trim().length > 0
   }
 
   /**
    * Privat metod för att få TextDocument instans med caching
    * @param {string} text - Texten som ska analyseras
-   * @returns {Object} - TextDocument instans
+   * @returns {object} - TextDocument instans
    */
   #getTextDocument(text) {
     if (this.#lastText === text && this.#textDocumentCache.has(text)) {
-      return this.#textDocumentCache.get(text);
+      return this.#textDocumentCache.get(text)
     }
     
-    const textDoc = new texttoolkit(text);
-    this.#textDocumentCache.set(text, textDoc);
-    this.#lastText = text;
+    const textDoc = new texttoolkit(text)
+    this.#textDocumentCache.set(text, textDoc)
+    this.#lastText = text
     
     // Begränsa cache-storlek
     if (this.#textDocumentCache.size > 10) {
-      const firstKey = this.#textDocumentCache.keys().next().value;
-      this.#textDocumentCache.delete(firstKey);
+      const firstKey = this.#textDocumentCache.keys().next().value
+      this.#textDocumentCache.delete(firstKey)
     }
     
-    return textDoc;
+    return textDoc
   }
 
   /**
    * Privat metod för felhantering
    * @param {Error} error - Felet som uppstod
-   * @returns {Object} - Standardiserat felmeddelande
+   * @returns {object} - Standardiserat felmeddelande
    */
   #handleError(error) {
-    console.error('MoodEngineController error:', error);
+    console.error('MoodEngineController error:', error)
     return {
       success: false,
       error: error.message || 'An error occurred during mood analysis'
-    };
+    }
   }
 
   /**
    * Analyserar sentiment-tidslinje för text
    * @param {string} text - Text som ska analyseras
-   * @returns {Object} - Sentiment timeline och trend
+   * @returns {object} - Sentiment timeline och trend
    */
   async analyzeSentimentTimeline(text) {
     try {
       if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' };
+        return { success: false, error: 'Valid text is required' }
       }
 
       // Dela upp text i segment (meningar)
-      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-      const timeline = [];
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
+      const timeline = []
       
       sentences.forEach((sentence, index) => {
-        const sentiment = this.#analyzeSentiment(sentence);
+        const sentiment = this.#analyzeSentiment(sentence)
         timeline.push({
           segment: index + 1,
           text: sentence.trim().substring(0, 100) + (sentence.length > 100 ? '...' : ''),
@@ -111,12 +117,12 @@ export default class MoodEngineController {
           emotion: sentiment.dominantEmotion,
           intensity: sentiment.intensity,
           timestamp: `${index + 1}/${sentences.length}`
-        });
-      });
+        })
+      })
       
       // Beräkna trend
-      const avgSentiment = timeline.reduce((sum, item) => sum + item.sentiment, 0) / timeline.length;
-      const trend = this.#calculateTrend(timeline.map(item => item.sentiment));
+      const avgSentiment = timeline.reduce((sum, item) => sum + item.sentiment, 0) / timeline.length
+      const trend = this.#calculateTrend(timeline.map(item => item.sentiment))
       
       return {
         success: true,
@@ -127,30 +133,30 @@ export default class MoodEngineController {
           totalSegments: timeline.length,
           emotionalRange: Math.max(...timeline.map(t => t.sentiment)) - Math.min(...timeline.map(t => t.sentiment))
         }
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
   /**
    * Skapar emotionell heatmap för text
    * @param {string} text - Text som ska analyseras
-   * @returns {Object} - Heatmap med emotionella zoner
+   * @returns {object} - Heatmap med emotionella zoner
    */
   async createEmotionHeatmap(text) {
     try {
       if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' };
+        return { success: false, error: 'Valid text is required' }
       }
 
-      const words = text.split(/\s+/);
-      const heatmap = [];
+      const words = text.split(/\s+/)
+      const heatmap = []
       
       // Analysera varje ord för emotionell intensitet
       words.forEach((word, index) => {
-        const cleanWord = word.toLowerCase().replace(/[^\w]/g, '');
-        const emotion = this.#detectWordEmotion(cleanWord);
+        const cleanWord = word.toLowerCase().replace(/[^\w]/g, '')
+        const emotion = this.#detectWordEmotion(cleanWord)
         
         heatmap.push({
           word: word,
@@ -158,11 +164,11 @@ export default class MoodEngineController {
           emotion: emotion.type,
           intensity: emotion.intensity,
           color: this.#getEmotionColor(emotion.type, emotion.intensity)
-        });
-      });
+        })
+      })
       
       // Skapa emotionella zoner
-      const zones = this.#createEmotionalZones(heatmap);
+      const zones = this.#createEmotionalZones(heatmap)
       
       return {
         success: true,
@@ -170,28 +176,28 @@ export default class MoodEngineController {
         zones: zones,
         emotionDistribution: this.#calculateEmotionDistribution(heatmap),
         hotspots: this.#findEmotionalHotspots(heatmap)
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
   /**
    * Detekterar stress-nivå i text
    * @param {string} text - Text som ska analyseras
-   * @returns {Object} - Stress-analys med rekommendationer
+   * @returns {object} - Stress-analys med rekommendationer
    */
   async detectStress(text) {
     try {
       if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' };
+        return { success: false, error: 'Valid text is required' }
       }
 
-      const stressAnalysis = this.#analyzeStressLevel(text);
-      const linguisticStress = this.#analyzeLinguisticStress(text);
-      const temporalStress = this.#analyzeTemporalStress(text);
+      const stressAnalysis = this.#analyzeStressLevel(text)
+      const linguisticStress = this.#analyzeLinguisticStress(text)
+      const temporalStress = this.#analyzeTemporalStress(text)
       
-      const overallStress = (stressAnalysis.level + linguisticStress.level + temporalStress.level) / 3;
+      const overallStress = (stressAnalysis.level + linguisticStress.level + temporalStress.level) / 3
       
       return {
         success: true,
@@ -204,28 +210,28 @@ export default class MoodEngineController {
         },
         recommendations: this.#generateStressRecommendations(overallStress),
         stressIndicators: this.#findStressIndicators(text)
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
   /**
    * Förutsäger humör baserat på text
    * @param {string} text - Text som ska analyseras
-   * @returns {Object} - Humör-förutsägelse med faktorer
+   * @returns {object} - Humör-förutsägelse med faktorer
    */
   async predictHappiness(text) {
     try {
       if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' };
+        return { success: false, error: 'Valid text is required' }
       }
 
-      const happinessMetrics = this.#analyzeHappiness(text);
-      const positivityScore = this.#calculatePositivity(text);
-      const optimismLevel = this.#detectOptimism(text);
+      const happinessMetrics = this.#analyzeHappiness(text)
+      const positivityScore = this.#calculatePositivity(text)
+      const optimismLevel = this.#detectOptimism(text)
       
-      const predictedMood = this.#predictMood(happinessMetrics, positivityScore, optimismLevel);
+      const predictedMood = this.#predictMood(happinessMetrics, positivityScore, optimismLevel)
       
       return {
         success: true,
@@ -240,25 +246,25 @@ export default class MoodEngineController {
         },
         recommendations: this.#generateMoodRecommendations(predictedMood),
         emotionalBalance: this.#calculateEmotionalBalance(text)
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
   /**
    * Färgkodar text efter känslor
    * @param {string} text - Text som ska färgkodas
-   * @returns {Object} - Färgkodad text med legend
+   * @returns {object} - Färgkodad text med legend
    */
   async colorCodeEmotions(text) {
     try {
       if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' };
+        return { success: false, error: 'Valid text is required' }
       }
 
-      const coloredText = this.#colorCodeText(text);
-      const emotionLegend = this.#getEmotionLegend();
+      const coloredText = this.#colorCodeText(text)
+      const emotionLegend = this.#getEmotionLegend()
       
       return {
         success: true,
@@ -267,21 +273,21 @@ export default class MoodEngineController {
         legend: emotionLegend,
         statistics: this.#calculateColorStatistics(coloredText),
         dominantEmotion: this.#findDominantEmotion(coloredText)
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
   /**
    * Utför djupgående humör-analys
    * @param {string} text - Text som ska analyseras
-   * @returns {Object} - Omfattande humör-analys
+   * @returns {object} - Omfattande humör-analys
    */
   async analyzeMoodComprehensive(text) {
     try {
       if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' };
+        return { success: false, error: 'Valid text is required' }
       }
 
       const comprehensiveAnalysis = {
@@ -293,7 +299,7 @@ export default class MoodEngineController {
         happiness: this.#analyzeHappiness(text),
         energy: this.#analyzeEnergyLevel(text),
         stability: this.#analyzeEmotionalStability(text)
-      };
+      }
       
       return {
         success: true,
@@ -301,9 +307,9 @@ export default class MoodEngineController {
         summary: this.#generateMoodSummary(comprehensiveAnalysis),
         insights: this.#generateMoodInsights(comprehensiveAnalysis),
         recommendations: this.#generateComprehensiveRecommendations(comprehensiveAnalysis)
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
@@ -312,40 +318,40 @@ export default class MoodEngineController {
   /**
    * Analyserar sentiment för en text
    * @param {string} text - Text att analysera
-   * @returns {Object} - Sentiment-resultat
+   * @returns {object} - Sentiment-resultat
    */
   #analyzeSentiment(text) {
-    const words = text.toLowerCase().split(/\s+/);
-    let positiveScore = 0;
-    let negativeScore = 0;
-    let emotions = {};
+    const words = text.toLowerCase().split(/\s+/)
+    let positiveScore = 0
+    let negativeScore = 0
+    let emotions = {}
     
     words.forEach(word => {
-      const cleanWord = word.replace(/[^\w]/g, '');
+      const cleanWord = word.replace(/[^\w]/g, '')
       
       // Kolla positiva ord
-      if (this.#sentimentWords.positive.high.includes(cleanWord)) positiveScore += 3;
-      else if (this.#sentimentWords.positive.medium.includes(cleanWord)) positiveScore += 2;
-      else if (this.#sentimentWords.positive.low.includes(cleanWord)) positiveScore += 1;
+      if (this.#sentimentWords.positive.high.includes(cleanWord)) positiveScore += 3
+      else if (this.#sentimentWords.positive.medium.includes(cleanWord)) positiveScore += 2
+      else if (this.#sentimentWords.positive.low.includes(cleanWord)) positiveScore += 1
       
       // Kolla negativa ord
-      if (this.#sentimentWords.negative.high.includes(cleanWord)) negativeScore += 3;
-      else if (this.#sentimentWords.negative.medium.includes(cleanWord)) negativeScore += 2;
-      else if (this.#sentimentWords.negative.low.includes(cleanWord)) negativeScore += 1;
+      if (this.#sentimentWords.negative.high.includes(cleanWord)) negativeScore += 3
+      else if (this.#sentimentWords.negative.medium.includes(cleanWord)) negativeScore += 2
+      else if (this.#sentimentWords.negative.low.includes(cleanWord)) negativeScore += 1
       
       // Kolla emotioner
       Object.keys(this.#sentimentWords.emotions).forEach(emotion => {
         if (this.#sentimentWords.emotions[emotion].includes(cleanWord)) {
-          emotions[emotion] = (emotions[emotion] || 0) + 1;
+          emotions[emotion] = (emotions[emotion] || 0) + 1
         }
-      });
-    });
+      })
+    })
     
-    const totalScore = positiveScore - negativeScore;
-    const normalizedScore = Math.max(-1, Math.min(1, totalScore / Math.max(words.length * 0.1, 1)));
+    const totalScore = positiveScore - negativeScore
+    const normalizedScore = Math.max(-1, Math.min(1, totalScore / Math.max(words.length * 0.1, 1)))
     
     const dominantEmotion = Object.keys(emotions).reduce((a, b) => 
-      emotions[a] > emotions[b] ? a : b, 'neutral');
+      emotions[a] > emotions[b] ? a : b, 'neutral')
     
     return {
       score: normalizedScore,
@@ -354,7 +360,7 @@ export default class MoodEngineController {
       dominantEmotion,
       emotions,
       intensity: Math.abs(normalizedScore)
-    };
+    }
   }
 
   /**
@@ -363,42 +369,42 @@ export default class MoodEngineController {
    * @returns {string} - Trend-beskrivning
    */
   #calculateTrend(sentiments) {
-    if (sentiments.length < 2) return 'neutral';
+    if (sentiments.length < 2) return 'neutral'
     
-    const first = sentiments.slice(0, Math.floor(sentiments.length / 2));
-    const last = sentiments.slice(Math.floor(sentiments.length / 2));
+    const first = sentiments.slice(0, Math.floor(sentiments.length / 2))
+    const last = sentiments.slice(Math.floor(sentiments.length / 2))
     
-    const firstAvg = first.reduce((a, b) => a + b, 0) / first.length;
-    const lastAvg = last.reduce((a, b) => a + b, 0) / last.length;
+    const firstAvg = first.reduce((a, b) => a + b, 0) / first.length
+    const lastAvg = last.reduce((a, b) => a + b, 0) / last.length
     
-    const diff = lastAvg - firstAvg;
+    const diff = lastAvg - firstAvg
     
-    if (diff > 0.1) return 'förbättras';
-    if (diff < -0.1) return 'försämras';
-    return 'stabil';
+    if (diff > 0.1) return 'förbättras'
+    if (diff < -0.1) return 'försämras'
+    return 'stabil'
   }
 
   /**
    * Detekterar emotion för enskilt ord
    * @param {string} word - Ord att analysera
-   * @returns {Object} - Emotion-data
+   * @returns {object} - Emotion-data
    */
   #detectWordEmotion(word) {
     for (const [emotion, words] of Object.entries(this.#sentimentWords.emotions)) {
       if (words.includes(word)) {
-        return { type: emotion, intensity: 0.8 };
+        return { type: emotion, intensity: 0.8 }
       }
     }
     
     // Kolla positiva/negativa
     if (this.#sentimentWords.positive.high.includes(word)) {
-      return { type: 'joy', intensity: 0.9 };
+      return { type: 'joy', intensity: 0.9 }
     }
     if (this.#sentimentWords.negative.high.includes(word)) {
-      return { type: 'sadness', intensity: 0.9 };
+      return { type: 'sadness', intensity: 0.9 }
     }
     
-    return { type: 'neutral', intensity: 0.1 };
+    return { type: 'neutral', intensity: 0.1 }
   }
 
   /**
@@ -416,9 +422,9 @@ export default class MoodEngineController {
       surprise: `rgba(255, 193, 7, ${intensity})`,  // Orange
       disgust: `rgba(40, 167, 69, ${intensity})`,   // Grön
       neutral: `rgba(173, 181, 189, ${intensity})`  // Ljusgrå
-    };
+    }
     
-    return colors[emotionType] || colors.neutral;
+    return colors[emotionType] || colors.neutral
   }
 
   /**
@@ -427,58 +433,58 @@ export default class MoodEngineController {
    * @returns {Array} - Emotionella zoner
    */
   #createEmotionalZones(heatmap) {
-    const zones = [];
-    let currentZone = null;
+    const zones = []
+    let currentZone = null
     
     heatmap.forEach((item, index) => {
       if (item.intensity > 0.5) {
         if (!currentZone || currentZone.emotion !== item.emotion) {
-          if (currentZone) zones.push(currentZone);
+          if (currentZone) zones.push(currentZone)
           currentZone = {
             emotion: item.emotion,
             start: index,
             end: index,
             intensity: item.intensity,
             words: [item.word]
-          };
+          }
         } else {
-          currentZone.end = index;
-          currentZone.words.push(item.word);
-          currentZone.intensity = Math.max(currentZone.intensity, item.intensity);
+          currentZone.end = index
+          currentZone.words.push(item.word)
+          currentZone.intensity = Math.max(currentZone.intensity, item.intensity)
         }
       } else if (currentZone) {
-        zones.push(currentZone);
-        currentZone = null;
+        zones.push(currentZone)
+        currentZone = null
       }
-    });
+    })
     
-    if (currentZone) zones.push(currentZone);
-    return zones;
+    if (currentZone) zones.push(currentZone)
+    return zones
   }
 
   /**
    * Beräknar emotionsfördelning
    * @param {Array} heatmap - Heatmap-data
-   * @returns {Object} - Emotionsfördelning
+   * @returns {object} - Emotionsfördelning
    */
   #calculateEmotionDistribution(heatmap) {
-    const distribution = {};
-    let totalIntensity = 0;
+    const distribution = {}
+    let totalIntensity = 0
     
     // Summera intensiteter för varje känsla
     heatmap.forEach(item => {
-      distribution[item.emotion] = (distribution[item.emotion] || 0) + item.intensity;
-      totalIntensity += item.intensity;
-    });
+      distribution[item.emotion] = (distribution[item.emotion] || 0) + item.intensity
+      totalIntensity += item.intensity
+    })
     
     // Normalisera till procent (värden mellan 0 och 1)
     if (totalIntensity > 0) {
       Object.keys(distribution).forEach(emotion => {
-        distribution[emotion] = distribution[emotion] / totalIntensity;
-      });
+        distribution[emotion] = distribution[emotion] / totalIntensity
+      })
     }
     
-    return distribution;
+    return distribution
   }
 
   /**
@@ -490,85 +496,85 @@ export default class MoodEngineController {
     return heatmap
       .filter(item => item.intensity > 0.7)
       .sort((a, b) => b.intensity - a.intensity)
-      .slice(0, 5);
+      .slice(0, 5)
   }
 
   /**
    * Analyserar stress-nivå i text
    * @param {string} text - Text att analysera
-   * @returns {Object} - Stress-analys
+   * @returns {object} - Stress-analys
    */
   #analyzeStressLevel(text) {
-    const words = text.toLowerCase().split(/\s+/);
-    let stressScore = 0;
-    const foundIndicators = [];
+    const words = text.toLowerCase().split(/\s+/)
+    let stressScore = 0
+    const foundIndicators = []
     
     words.forEach(word => {
-      const cleanWord = word.replace(/[^\w]/g, '');
+      const cleanWord = word.replace(/[^\w]/g, '')
       
       if (this.#sentimentWords.stress.high.includes(cleanWord)) {
-        stressScore += 3;
-        foundIndicators.push({ word: cleanWord, level: 'high' });
+        stressScore += 3
+        foundIndicators.push({ word: cleanWord, level: 'high' })
       } else if (this.#sentimentWords.stress.medium.includes(cleanWord)) {
-        stressScore += 2;
-        foundIndicators.push({ word: cleanWord, level: 'medium' });
+        stressScore += 2
+        foundIndicators.push({ word: cleanWord, level: 'medium' })
       } else if (this.#sentimentWords.stress.indicators.includes(cleanWord)) {
-        stressScore += 1;
-        foundIndicators.push({ word: cleanWord, level: 'indicator' });
+        stressScore += 1
+        foundIndicators.push({ word: cleanWord, level: 'indicator' })
       }
-    });
+    })
     
-    const normalizedLevel = Math.min(1, stressScore / (words.length * 0.1));
+    const normalizedLevel = Math.min(1, stressScore / (words.length * 0.1))
     
     return {
       level: normalizedLevel,
       indicators: foundIndicators,
       score: stressScore
-    };
+    }
   }
 
   /**
    * Analyserar lingvistisk stress
    * @param {string} text - Text att analysera
-   * @returns {Object} - Lingvistisk stress-analys
+   * @returns {object} - Lingvistisk stress-analys
    */
   #analyzeLinguisticStress(text) {
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    const avgSentenceLength = sentences.reduce((sum, s) => sum + s.split(/\s+/).length, 0) / sentences.length;
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
+    const avgSentenceLength = sentences.reduce((sum, s) => sum + s.split(/\s+/).length, 0) / sentences.length
     
     // Längre meningar kan indikera stress
-    const lengthStress = Math.min(1, (avgSentenceLength - 10) / 20);
+    const lengthStress = Math.min(1, (avgSentenceLength - 10) / 20)
     
     // Många utropstecken kan indikera stress
-    const exclamationCount = (text.match(/!/g) || []).length;
-    const exclamationStress = Math.min(1, exclamationCount / 10);
+    const exclamationCount = (text.match(/!/g) || []).length
+    const exclamationStress = Math.min(1, exclamationCount / 10)
     
     return {
       level: Math.max(lengthStress, exclamationStress),
       avgSentenceLength,
       exclamationCount
-    };
+    }
   }
 
   /**
    * Analyserar temporal stress (tidsmässig stress)
    * @param {string} text - Text att analysera
-   * @returns {Object} - Temporal stress-analys
+   * @returns {object} - Temporal stress-analys
    */
   #analyzeTemporalStress(text) {
-    const timeWords = ['idag', 'imorgon', 'igår', 'snabbt', 'nu', 'direkt', 'genast'];
-    const urgencyWords = ['måste', 'borde', 'ska', 'deadline', 'tid'];
+    const timeWords = ['idag', 'imorgon', 'igår', 'snabbt', 'nu', 'direkt', 'genast']
+    const urgencyWords = ['måste', 'borde', 'ska', 'deadline', 'tid']
     
-    const timeCount = timeWords.filter(word => text.toLowerCase().includes(word)).length;
-    const urgencyCount = urgencyWords.filter(word => text.toLowerCase().includes(word)).length;
+    const timeCount = timeWords.filter(word => text.toLowerCase().includes(word)).length
+    const urgencyCount = urgencyWords.filter(word => text.toLowerCase().includes(word)).length
     
-    const temporalStress = Math.min(1, (timeCount + urgencyCount * 2) / 10);
+    const temporalStress = Math.min(1, (timeCount + urgencyCount * 2) / 10)
     
     return {
       level: temporalStress,
       timeWords: timeCount,
       urgencyWords: urgencyCount
-    };
+    }
   }
 
   /**
@@ -577,11 +583,11 @@ export default class MoodEngineController {
    * @returns {string} - Stress-kategori
    */
   #categorizeStress(stressLevel) {
-    if (stressLevel > 0.8) return 'Mycket hög stress';
-    if (stressLevel > 0.6) return 'Hög stress';
-    if (stressLevel > 0.4) return 'Måttlig stress';
-    if (stressLevel > 0.2) return 'Låg stress';
-    return 'Minimal stress';
+    if (stressLevel > 0.8) return 'Mycket hög stress'
+    if (stressLevel > 0.6) return 'Hög stress'
+    if (stressLevel > 0.4) return 'Måttlig stress'
+    if (stressLevel > 0.2) return 'Låg stress'
+    return 'Minimal stress'
   }
 
   /**
@@ -596,14 +602,14 @@ export default class MoodEngineController {
         'Försök att förenkla meningsstrukturen',
         'Undvik för många deadline-ord',
         'Fokusera på en sak i taget'
-      ];
+      ]
     } else if (stressLevel > 0.3) {
       return [
         'Behåll en lugn skrivstil',
         'Strukturera texten med korta stycken'
-      ];
+      ]
     }
-    return ['Din skrivstil verkar lugn och balanserad'];
+    return ['Din skrivstil verkar lugn och balanserad']
   }
 
   /**
@@ -612,7 +618,7 @@ export default class MoodEngineController {
    * @returns {Array} - Lista med stress-indikatorer
    */
   #findStressIndicators(text) {
-    const indicators = [];
+    const indicators = []
     const words = text.toLowerCase().split(/\s+/);
     
     [...this.#sentimentWords.stress.high, ...this.#sentimentWords.stress.medium, ...this.#sentimentWords.stress.indicators]
@@ -624,46 +630,46 @@ export default class MoodEngineController {
               position: index,
               type: stressWord,
               context: words.slice(Math.max(0, index - 2), index + 3).join(' ')
-            });
+            })
           }
-        });
-      });
+        })
+      })
     
-    return indicators;
+    return indicators
   }
 
   /**
    * Analyserar lycka i text
    * @param {string} text - Text att analysera
-   * @returns {Object} - Lycka-analys
+   * @returns {object} - Lycka-analys
    */
   #analyzeHappiness(text) {
-    const words = text.toLowerCase().split(/\s+/);
-    let positiveWords = 0;
-    let negativeWords = 0;
-    let neutralWords = 0;
+    const words = text.toLowerCase().split(/\s+/)
+    let positiveWords = 0
+    let negativeWords = 0
+    let neutralWords = 0
     
     words.forEach(word => {
-      const cleanWord = word.replace(/[^\w]/g, '');
+      const cleanWord = word.replace(/[^\w]/g, '')
       
       if ([...this.#sentimentWords.positive.high, ...this.#sentimentWords.positive.medium].includes(cleanWord)) {
-        positiveWords++;
+        positiveWords++
       } else if ([...this.#sentimentWords.negative.high, ...this.#sentimentWords.negative.medium].includes(cleanWord)) {
-        negativeWords++;
+        negativeWords++
       } else {
-        neutralWords++;
+        neutralWords++
       }
-    });
+    })
     
-    const totalWords = words.length;
-    const score = (positiveWords - negativeWords) / totalWords;
+    const totalWords = words.length
+    const score = (positiveWords - negativeWords) / totalWords
     
     return {
       score: Math.max(-1, Math.min(1, score)),
       positiveWords,
       negativeWords,
       neutralWords
-    };
+    }
   }
 
   /**
@@ -672,8 +678,8 @@ export default class MoodEngineController {
    * @returns {number} - Positivitets-score
    */
   #calculatePositivity(text) {
-    const sentiment = this.#analyzeSentiment(text);
-    return Math.max(0, sentiment.score);
+    const sentiment = this.#analyzeSentiment(text)
+    return Math.max(0, sentiment.score)
   }
 
   /**
@@ -682,76 +688,76 @@ export default class MoodEngineController {
    * @returns {number} - Optimism-nivå
    */
   #detectOptimism(text) {
-    const optimisticWords = ['kommer', 'kan', 'kommer att', 'möjligt', 'framtid', 'hoppas', 'tror'];
-    const pessimisticWords = ['aldrig', 'omöjligt', 'hopplös', 'ingen', 'inget'];
+    const optimisticWords = ['kommer', 'kan', 'kommer att', 'möjligt', 'framtid', 'hoppas', 'tror']
+    const pessimisticWords = ['aldrig', 'omöjligt', 'hopplös', 'ingen', 'inget']
     
-    let optimisticCount = 0;
-    let pessimisticCount = 0;
+    let optimisticCount = 0
+    let pessimisticCount = 0
     
     optimisticWords.forEach(word => {
-      if (text.toLowerCase().includes(word)) optimisticCount++;
-    });
+      if (text.toLowerCase().includes(word)) optimisticCount++
+    })
     
     pessimisticWords.forEach(word => {
-      if (text.toLowerCase().includes(word)) pessimisticCount++;
-    });
+      if (text.toLowerCase().includes(word)) pessimisticCount++
+    })
     
-    return Math.max(0, Math.min(1, (optimisticCount - pessimisticCount) / 10 + 0.5));
+    return Math.max(0, Math.min(1, (optimisticCount - pessimisticCount) / 10 + 0.5))
   }
 
   /**
    * Förutsäger humör
-   * @param {Object} happinessMetrics - Lycka-metriker
+   * @param {object} happinessMetrics - Lycka-metriker
    * @param {number} positivityScore - Positivitets-score
    * @param {number} optimismLevel - Optimism-nivå
-   * @returns {Object} - Humör-förutsägelse
+   * @returns {object} - Humör-förutsägelse
    */
   #predictMood(happinessMetrics, positivityScore, optimismLevel) {
-    const combinedScore = (happinessMetrics.score + positivityScore + optimismLevel) / 3;
+    const combinedScore = (happinessMetrics.score + positivityScore + optimismLevel) / 3
     
-    if (combinedScore > 0.8) return { mood: 'Mycket lycklig', confidence: 'Hög' };
-    if (combinedScore > 0.6) return { mood: 'Glad', confidence: 'Hög' };
-    if (combinedScore > 0.4) return { mood: 'Neutral', confidence: 'Medium' };
-    if (combinedScore > 0.2) return { mood: 'Något ledsen', confidence: 'Medium' };
-    return { mood: 'Ledsen', confidence: 'Hög' };
+    if (combinedScore > 0.8) return { mood: 'Mycket lycklig', confidence: 'Hög' }
+    if (combinedScore > 0.6) return { mood: 'Glad', confidence: 'Hög' }
+    if (combinedScore > 0.4) return { mood: 'Neutral', confidence: 'Medium' }
+    if (combinedScore > 0.2) return { mood: 'Något ledsen', confidence: 'Medium' }
+    return { mood: 'Ledsen', confidence: 'Hög' }
   }
 
   /**
    * Genererar humör-rekommendationer
-   * @param {Object} predictedMood - Förutsagt humör
+   * @param {object} predictedMood - Förutsagt humör
    * @returns {Array} - Lista med rekommendationer
    */
   #generateMoodRecommendations(predictedMood) {
     switch (predictedMood.mood) {
       case 'Mycket lycklig':
-        return ['Fortsätt med den positiva energin!', 'Dela din glädje med andra'];
+        return ['Fortsätt med den positiva energin!', 'Dela din glädje med andra']
       case 'Glad':
-        return ['Behåll det positiva mindset', 'Fokusera på det som fungerar bra'];
+        return ['Behåll det positiva mindset', 'Fokusera på det som fungerar bra']
       case 'Neutral':
-        return ['Försök hitta något positivt att fokusera på', 'Små förändringar kan göra stor skillnad'];
+        return ['Försök hitta något positivt att fokusera på', 'Små förändringar kan göra stor skillnad']
       case 'Något ledsen':
-        return ['Ta pauser och vila', 'Prata med någon du litar på', 'Fokusera på små positiva saker'];
+        return ['Ta pauser och vila', 'Prata med någon du litar på', 'Fokusera på små positiva saker']
       case 'Ledsen':
-        return ['Sök stöd från vänner eller familj', 'Överväg professionell hjälp', 'Var snäll mot dig själv'];
+        return ['Sök stöd från vänner eller familj', 'Överväg professionell hjälp', 'Var snäll mot dig själv']
       default:
-        return ['Fortsätt skriva och uttrycka dina känslor'];
+        return ['Fortsätt skriva och uttrycka dina känslor']
     }
   }
 
   /**
    * Beräknar emotionell balans
    * @param {string} text - Text att analysera
-   * @returns {Object} - Emotionell balans
+   * @returns {object} - Emotionell balans
    */
   #calculateEmotionalBalance(text) {
-    const sentiment = this.#analyzeSentiment(text);
-    const balance = Math.abs(sentiment.positiveScore - sentiment.negativeScore);
+    const sentiment = this.#analyzeSentiment(text)
+    const balance = Math.abs(sentiment.positiveScore - sentiment.negativeScore)
     
     return {
       balanced: balance < 2,
       score: 1 - (balance / Math.max(sentiment.positiveScore + sentiment.negativeScore, 1)),
       description: balance < 2 ? 'Balanserad' : 'Obalanserad'
-    };
+    }
   }
 
   /**
@@ -760,24 +766,24 @@ export default class MoodEngineController {
    * @returns {Array} - Färgkodad text
    */
   #colorCodeText(text) {
-    const words = text.split(/\s+/);
+    const words = text.split(/\s+/)
     
     return words.map(word => {
-      const cleanWord = word.toLowerCase().replace(/[^\w]/g, '');
-      const emotion = this.#detectWordEmotion(cleanWord);
+      const cleanWord = word.toLowerCase().replace(/[^\w]/g, '')
+      const emotion = this.#detectWordEmotion(cleanWord)
       
       return {
         word: word,
         emotion: emotion.type,
         intensity: emotion.intensity,
         color: this.#getEmotionColor(emotion.type, emotion.intensity)
-      };
-    });
+      }
+    })
   }
 
   /**
    * Får emotions-legend
-   * @returns {Object} - Legend för emotioner
+   * @returns {object} - Legend för emotioner
    */
   #getEmotionLegend() {
     return {
@@ -788,22 +794,22 @@ export default class MoodEngineController {
       surprise: { color: 'rgba(255, 193, 7, 1)', description: 'Överraskning' },
       disgust: { color: 'rgba(40, 167, 69, 1)', description: 'Avsky' },
       neutral: { color: 'rgba(173, 181, 189, 1)', description: 'Neutral' }
-    };
+    }
   }
 
   /**
    * Beräknar färg-statistik
    * @param {Array} coloredText - Färgkodad text
-   * @returns {Object} - Färg-statistik
+   * @returns {object} - Färg-statistik
    */
   #calculateColorStatistics(coloredText) {
-    const stats = {};
+    const stats = {}
     
     coloredText.forEach(item => {
-      stats[item.emotion] = (stats[item.emotion] || 0) + 1;
-    });
+      stats[item.emotion] = (stats[item.emotion] || 0) + 1
+    })
     
-    return stats;
+    return stats
   }
 
   /**
@@ -812,107 +818,107 @@ export default class MoodEngineController {
    * @returns {string} - Dominant emotion
    */
   #findDominantEmotion(coloredText) {
-    const stats = this.#calculateColorStatistics(coloredText);
-    return Object.keys(stats).reduce((a, b) => stats[a] > stats[b] ? a : b);
+    const stats = this.#calculateColorStatistics(coloredText)
+    return Object.keys(stats).reduce((a, b) => stats[a] > stats[b] ? a : b)
   }
 
   /**
    * Analyserar alla emotioner
    * @param {string} text - Text att analysera
-   * @returns {Object} - Alla emotioner
+   * @returns {object} - Alla emotioner
    */
   #analyzeAllEmotions(text) {
-    const sentiment = this.#analyzeSentiment(text);
-    return sentiment.emotions;
+    const sentiment = this.#analyzeSentiment(text)
+    return sentiment.emotions
   }
 
   /**
    * Analyserar humör-mönster
    * @param {string} text - Text att analysera
-   * @returns {Object} - Humör-mönster
+   * @returns {object} - Humör-mönster
    */
   #analyzeMoodPatterns(text) {
-    const sentiment = this.#analyzeSentiment(text);
+    const sentiment = this.#analyzeSentiment(text)
     return {
       pattern: sentiment.score > 0 ? 'positiv' : sentiment.score < 0 ? 'negativ' : 'neutral',
       stability: sentiment.intensity < 0.3 ? 'stabil' : 'instabil',
       intensity: sentiment.intensity
-    };
+    }
   }
 
   /**
    * Analyserar psykologiska markörer
    * @param {string} text - Text att analysera
-   * @returns {Object} - Psykologiska markörer
+   * @returns {object} - Psykologiska markörer
    */
   #analyzePsychologicalMarkers(text) {
-    const selfReferences = (text.match(/\b(jag|mig|min|mitt|mina)\b/gi) || []).length;
-    const futureReferences = (text.match(/\b(kommer|ska|planerar|hoppas)\b/gi) || []).length;
-    const pastReferences = (text.match(/\b(var|hade|gjorde|sa)\b/gi) || []).length;
+    const selfReferences = (text.match(/\b(jag|mig|min|mitt|mina)\b/gi) || []).length
+    const futureReferences = (text.match(/\b(kommer|ska|planerar|hoppas)\b/gi) || []).length
+    const pastReferences = (text.match(/\b(var|hade|gjorde|sa)\b/gi) || []).length
     
     return {
       selfFocus: selfReferences > text.split(/\s+/).length * 0.05,
       futureOriented: futureReferences > pastReferences,
       timeOrientation: futureReferences > pastReferences ? 'framtid' : 'dåtid'
-    };
+    }
   }
 
   /**
    * Analyserar energi-nivå
    * @param {string} text - Text att analysera
-   * @returns {Object} - Energi-analys
+   * @returns {object} - Energi-analys
    */
   #analyzeEnergyLevel(text) {
-    const energyWords = ['energi', 'kraft', 'stark', 'aktiv', 'livlig', 'pigg'];
-    const tiredWords = ['trött', 'utmattad', 'slö', 'orkeslös', 'svag'];
+    const energyWords = ['energi', 'kraft', 'stark', 'aktiv', 'livlig', 'pigg']
+    const tiredWords = ['trött', 'utmattad', 'slö', 'orkeslös', 'svag']
     
-    let energyCount = 0;
-    let tiredCount = 0;
+    let energyCount = 0
+    let tiredCount = 0
     
     energyWords.forEach(word => {
-      if (text.toLowerCase().includes(word)) energyCount++;
-    });
+      if (text.toLowerCase().includes(word)) energyCount++
+    })
     
     tiredWords.forEach(word => {
-      if (text.toLowerCase().includes(word)) tiredCount++;
-    });
+      if (text.toLowerCase().includes(word)) tiredCount++
+    })
     
-    const energyLevel = (energyCount - tiredCount + 1) / 2;
+    const energyLevel = (energyCount - tiredCount + 1) / 2
     
     return {
       level: Math.max(0, Math.min(1, energyLevel)),
       energyWords: energyCount,
       tiredWords: tiredCount
-    };
+    }
   }
 
   /**
    * Analyserar emotionell stabilitet
    * @param {string} text - Text att analysera
-   * @returns {Object} - Stabilitet-analys
+   * @returns {object} - Stabilitet-analys
    */
   #analyzeEmotionalStability(text) {
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    const sentiments = sentences.map(s => this.#analyzeSentiment(s).score);
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
+    const sentiments = sentences.map(s => this.#analyzeSentiment(s).score)
     
     if (sentiments.length < 2) {
-      return { stable: true, variance: 0 };
+      return { stable: true, variance: 0 }
     }
     
-    const mean = sentiments.reduce((a, b) => a + b, 0) / sentiments.length;
-    const variance = sentiments.reduce((sum, sentiment) => sum + Math.pow(sentiment - mean, 2), 0) / sentiments.length;
+    const mean = sentiments.reduce((a, b) => a + b, 0) / sentiments.length
+    const variance = sentiments.reduce((sum, sentiment) => sum + Math.pow(sentiment - mean, 2), 0) / sentiments.length
     
     return {
       stable: variance < 0.3,
       variance: variance,
       consistency: 1 - variance
-    };
+    }
   }
 
   /**
    * Genererar humör-sammanfattning
-   * @param {Object} analysis - Omfattande analys
-   * @returns {Object} - Sammanfattning
+   * @param {object} analysis - Omfattande analys
+   * @returns {object} - Sammanfattning
    */
   #generateMoodSummary(analysis) {
     return {
@@ -921,60 +927,60 @@ export default class MoodEngineController {
       stressLevel: analysis.stress.level,
       energyLevel: analysis.energy.level,
       emotionalStability: analysis.stability.stable ? 'Stabil' : 'Instabil'
-    };
+    }
   }
 
   /**
    * Genererar humör-insikter
-   * @param {Object} analysis - Omfattande analys
+   * @param {object} analysis - Omfattande analys
    * @returns {Array} - Lista med insikter
    */
   #generateMoodInsights(analysis) {
-    const insights = [];
+    const insights = []
     
     if (analysis.sentiment.score > 0.5) {
-      insights.push('Din text visar en generellt positiv inställning');
+      insights.push('Din text visar en generellt positiv inställning')
     }
     
     if (analysis.stress.level > 0.6) {
-      insights.push('Det finns tecken på stress i din skrivstil');
+      insights.push('Det finns tecken på stress i din skrivstil')
     }
     
     if (analysis.energy.level > 0.7) {
-      insights.push('Du uttrycker hög energi och vitalitet');
+      insights.push('Du uttrycker hög energi och vitalitet')
     }
     
     if (analysis.stability.stable) {
-      insights.push('Din emotionella ton är konsekvent genom texten');
+      insights.push('Din emotionella ton är konsekvent genom texten')
     }
     
-    return insights.length > 0 ? insights : ['Din text visar en balanserad emotionell profil'];
+    return insights.length > 0 ? insights : ['Din text visar en balanserad emotionell profil']
   }
 
   /**
    * Genererar omfattande rekommendationer
-   * @param {Object} analysis - Omfattande analys
+   * @param {object} analysis - Omfattande analys
    * @returns {Array} - Lista med rekommendationer
    */
   #generateComprehensiveRecommendations(analysis) {
-    const recommendations = [];
+    const recommendations = []
     
     if (analysis.stress.level > 0.5) {
-      recommendations.push('Överväg att inkludera mer positiva ord för att minska stress-intryck');
+      recommendations.push('Överväg att inkludera mer positiva ord för att minska stress-intryck')
     }
     
     if (analysis.sentiment.score < -0.3) {
-      recommendations.push('Försök balansera negativa uttryck med positiva perspektiv');
+      recommendations.push('Försök balansera negativa uttryck med positiva perspektiv')
     }
     
     if (analysis.energy.level < 0.3) {
-      recommendations.push('Lägg till mer energiska och aktiva ord för att höja tonläget');
+      recommendations.push('Lägg till mer energiska och aktiva ord för att höja tonläget')
     }
     
     if (!analysis.stability.stable) {
-      recommendations.push('Försök hålla en mer konsekvent emotionell ton genom texten');
+      recommendations.push('Försök hålla en mer konsekvent emotionell ton genom texten')
     }
     
-    return recommendations.length > 0 ? recommendations : ['Din text har en bra emotionell balans'];
+    return recommendations.length > 0 ? recommendations : ['Din text har en bra emotionell balans']
   }
 }

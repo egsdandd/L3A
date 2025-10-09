@@ -2,66 +2,69 @@
 
 // Define global functions FIRST before creating UI - Using utility functions
 window.toUpperCase = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  showResults('simpleFormatterResults', 'formatterResultsContent', text.toUpperCase());
-};
+  showResults('simpleFormatterResults', 'formatterResultsContent', text.toUpperCase())
+}
 
 window.toLowerCase = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  showResults('simpleFormatterResults', 'formatterResultsContent', text.toLowerCase());
-};
+  showResults('simpleFormatterResults', 'formatterResultsContent', text.toLowerCase())
+}
 
 window.toTitleCase = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
   const titleCase = text.replace(/\w\S*/g, (txt) => 
     txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-  );
-  showResults('simpleFormatterResults', 'formatterResultsContent', titleCase);
-};
+  )
+  showResults('simpleFormatterResults', 'formatterResultsContent', titleCase)
+}
 
 window.trimWhitespace = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const trimmed = text.split('\n').map(line => line.trim()).join('\n');
-  showResults('simpleFormatterResults', 'formatterResultsContent', trimmed);
-};
+  const trimmed = text.split('\n').map(line => line.trim()).join('\n')
+  showResults('simpleFormatterResults', 'formatterResultsContent', trimmed)
+}
 
 window.removeLineBreaks = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const noBreaks = text.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim();
-  showResults('simpleFormatterResults', 'formatterResultsContent', noBreaks);
-};
+  const noBreaks = text.replace(/\n+/g, ' ').replace(/\s+/g, ' ').trim()
+  showResults('simpleFormatterResults', 'formatterResultsContent', noBreaks)
+}
 
 window.addLineNumbers = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const lines = text.split('\n');
-  const result = lines.map((line, index) => `${index + 1}: ${line}`).join('\n');
-  showResults('simpleFormatterResults', 'formatterResultsContent', result);
-};
+  const lines = text.split('\n')
+  const result = lines.map((line, index) => `${index + 1}: ${line}`).join('\n')
+  showResults('simpleFormatterResults', 'formatterResultsContent', result)
+}
 
 window.copyFormattedText = function() {
-  const content = document.getElementById('formatterResultsContent');
+  const content = document.getElementById('formatterResultsContent')
   if (content) {
-    copyToClipboard(content.textContent);
+    copyToClipboard(content.textContent)
   }
-};
+}
 
 export const formatterMethods = {
   'Text Formatter': () => createSimpleFormatterInterface()
-};
+}
 
 // HTML Helper Functions
+/**
+ *
+ */
 function generateFormatterInterfaceHTML() {
   return `
     <div class="module-container formatter">
@@ -72,9 +75,12 @@ function generateFormatterInterfaceHTML() {
       
       ${generateFormatterResultsHTML()}
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function generateFormatterButtonsHTML() {
   return `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
@@ -97,9 +103,12 @@ function generateFormatterButtonsHTML() {
         🔢 Lägg Till Radnummer
       </button>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function generateFormatterResultsHTML() {
   return `
     <div id="simpleFormatterResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
@@ -109,15 +118,18 @@ function generateFormatterResultsHTML() {
         📋 Kopiera Text
       </button>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function createSimpleFormatterInterface() {
-  const container = document.createElement('div');
-  container.innerHTML = generateFormatterInterfaceHTML();
-  return container;
+  const container = document.createElement('div')
+  container.innerHTML = generateFormatterInterfaceHTML()
+  return container
 }
 
 // Make function available globally for showFile.js
-window.showSimpleFormatter = () => createSimpleFormatterInterface();
+window.showSimpleFormatter = () => createSimpleFormatterInterface()
 

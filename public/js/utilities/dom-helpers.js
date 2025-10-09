@@ -7,21 +7,21 @@
  * @returns {string|null} - The text content or null if validation fails
  */
 function getEditorText(allowEmpty = false) {
-  const textBox = document.querySelector('.scrollbox');
+  const textBox = document.querySelector('.scrollbox')
   
   if (!textBox) {
-    console.error('Text editor (.scrollbox) not found');
-    return null;
+    console.error('Text editor (.scrollbox) not found')
+    return null
   }
   
-  const text = textBox.innerText.trim();
+  const text = textBox.innerText.trim()
   
   if (!allowEmpty && !text) {
-    alert('Skriv lite text först!');
-    return null;
+    alert('Skriv lite text först!')
+    return null
   }
   
-  return text;
+  return text
 }
 
 /**
@@ -31,14 +31,14 @@ function getEditorText(allowEmpty = false) {
  * @returns {string} - The input value or default value
  */
 function getInputValue(elementId, defaultValue = '') {
-  const element = document.getElementById(elementId);
+  const element = document.getElementById(elementId)
   
   if (!element) {
-    console.error(`Input element not found: ${elementId}`);
-    return defaultValue;
+    console.error(`Input element not found: ${elementId}`)
+    return defaultValue
   }
   
-  return element.value || defaultValue;
+  return element.value || defaultValue
 }
 
 /**
@@ -47,14 +47,14 @@ function getInputValue(elementId, defaultValue = '') {
  * @param {string} value - Value to set
  */
 function setInputValue(elementId, value) {
-  const element = document.getElementById(elementId);
+  const element = document.getElementById(elementId)
   
   if (!element) {
-    console.error(`Input element not found: ${elementId}`);
-    return;
+    console.error(`Input element not found: ${elementId}`)
+    return
   }
   
-  element.value = value;
+  element.value = value
 }
 
 /**
@@ -63,12 +63,12 @@ function setInputValue(elementId, value) {
  * @param {string} content - HTML content to set
  */
 function setElementContent(elementId, content) {
-  const element = document.getElementById(elementId);
+  const element = document.getElementById(elementId)
   
   if (!element) {
-    console.error(`Element not found: ${elementId}`);
-    return;
+    console.error(`Element not found: ${elementId}`)
+    return
   }
   
-  element.innerHTML = content;
+  element.innerHTML = content
 }

@@ -1,9 +1,12 @@
 // Simple test version of wordOptimizerUI.js
 export const wordOptimizerMethods = {
   'Word Choice Optimizer': () => createSimpleOptimizerInterface()
-};
+}
 
 // HTML Helper Functions  
+/**
+ *
+ */
 function generateOptimizerInterfaceHTML() {
   return `
     <div class="module-container optimizer">
@@ -13,9 +16,12 @@ function generateOptimizerInterfaceHTML() {
       ${generateOptimizerButtonsHTML()}
       ${generateOptimizerResultsHTML()}
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function generateOptimizerButtonsHTML() {
   return `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
@@ -38,9 +44,12 @@ function generateOptimizerButtonsHTML() {
         📊 Sammanfatta
       </button>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function generateOptimizerResultsHTML() {
   return `
     <div id="optimizerResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
@@ -50,93 +59,96 @@ function generateOptimizerResultsHTML() {
         📋 Kopiera
       </button>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function createSimpleOptimizerInterface() {
-  const container = document.createElement('div');
-  container.innerHTML = generateOptimizerInterfaceHTML();
-  return container;
-  return container;
+  const container = document.createElement('div')
+  container.innerHTML = generateOptimizerInterfaceHTML()
+  return container
+  return container
 }
 
-let optimizedCache = '';
+let optimizedCache = ''
 
 // Writing Assistant functions - Using utility functions
 window.improveText = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
   const result = text
     .replace(/\s+/g, ' ')
     .replace(/([.!?])\s*([a-zåäö])/g, '$1 $2')
-    .trim();
-  optimizedCache = result;
-  showResults('optimizerResults', 'optimizerContent', result + '\n\n[Simulerad AI-förbättring: Lagt till bättre interpunktion och raderat extra mellanslag]');
-};
+    .trim()
+  optimizedCache = result
+  showResults('optimizerResults', 'optimizerContent', result + '\n\n[Simulerad AI-förbättring: Lagt till bättre interpunktion och raderat extra mellanslag]')
+}
 
 window.makeFormal = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
   const result = text
     .replace(/\bdu\b/gi, 'ni')
     .replace(/\bhej\b/gi, 'God dag')
-    .replace(/\bokej\b/gi, 'mycket bra');
-  optimizedCache = result;
-  showResults('optimizerResults', 'optimizerContent', result + '\n\n[Simulerad formalisering: Bytt ut vardagliga uttryck mot mer formella]');
-};
+    .replace(/\bokej\b/gi, 'mycket bra')
+  optimizedCache = result
+  showResults('optimizerResults', 'optimizerContent', result + '\n\n[Simulerad formalisering: Bytt ut vardagliga uttryck mot mer formella]')
+}
 
 window.makeCasual = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
   const result = text
     .replace(/\bni\b/gi, 'du')
     .replace(/\bGod dag\b/gi, 'Hej')
-    .replace(/\bmycket bra\b/gi, 'okej');
-  optimizedCache = result;
-  showResults('optimizerResults', 'optimizerContent', result + '\n\n[Simulerad avformalisering: Gjort språket mer vardagligt och personligt]');
-};
+    .replace(/\bmycket bra\b/gi, 'okej')
+  optimizedCache = result
+  showResults('optimizerResults', 'optimizerContent', result + '\n\n[Simulerad avformalisering: Gjort språket mer vardagligt och personligt]')
+}
 
 window.fixGrammar = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
   const result = text
     .replace(/\s+/g, ' ')
     .replace(/([.!?])\s*([a-zåäö])/g, '$1 $2')
-    .trim();
-  optimizedCache = result;
-  showResults('optimizerResults', 'optimizerContent', `<h4>Grammatikrättning:</h4><p style="white-space: pre-wrap;">${result}\n\n[Simulerad grammatikrättning: Korrigerat interpunktion och meningsbyggnad]</p>`);
-};
+    .trim()
+  optimizedCache = result
+  showResults('optimizerResults', 'optimizerContent', `<h4>Grammatikrättning:</h4><p style="white-space: pre-wrap;">${result}\n\n[Simulerad grammatikrättning: Korrigerat interpunktion och meningsbyggnad]</p>`)
+}
 
 window.expandText = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
   const expanded = sentences.map(sentence => {
-    return sentence.trim() + ', vilket är intressant att notera';
-  }).join('. ') + '.';
-  optimizedCache = expanded;
-  showResults('optimizerResults', 'optimizerContent', `<h4>Utvidgad text:</h4><p style="white-space: pre-wrap;">${expanded}\n\n[Simulerad utvidgning: Lagt till fördjupande kommentarer]</p>`);
-};
+    return sentence.trim() + ', vilket är intressant att notera'
+  }).join('. ') + '.'
+  optimizedCache = expanded
+  showResults('optimizerResults', 'optimizerContent', `<h4>Utvidgad text:</h4><p style="white-space: pre-wrap;">${expanded}\n\n[Simulerad utvidgning: Lagt till fördjupande kommentarer]</p>`)
+}
 
 window.summarizeText = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-  const summary = sentences.slice(0, Math.max(1, Math.floor(sentences.length / 3))).join('. ') + '.';
-  optimizedCache = summary;
-  showResults('optimizerResults', 'optimizerContent', `<h4>Sammanfattning:</h4><p style="white-space: pre-wrap;">${summary}\n\n[Simulerad sammanfattning: Behållit de viktigaste meningarna]</p>`);
-};
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
+  const summary = sentences.slice(0, Math.max(1, Math.floor(sentences.length / 3))).join('. ') + '.'
+  optimizedCache = summary
+  showResults('optimizerResults', 'optimizerContent', `<h4>Sammanfattning:</h4><p style="white-space: pre-wrap;">${summary}\n\n[Simulerad sammanfattning: Behållit de viktigaste meningarna]</p>`)
+}
 
 window.copyOptimizedText = function() {
   if (optimizedCache) {
-    copyToClipboard(optimizedCache, 'Optimerad text kopierad!');
+    copyToClipboard(optimizedCache, 'Optimerad text kopierad!')
   } else {
-    alert('Ingen optimerad text att kopiera');
+    alert('Ingen optimerad text att kopiera')
   }
-};
+}

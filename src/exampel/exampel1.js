@@ -1,6 +1,6 @@
-import TextDocument from 'texttoolkit';
+import TextDocument from 'texttoolkit'
 
-const doc = new TextDocument("Anna swims quickly, Otto laughs loudly.")
+const doc = new TextDocument('Anna swims quickly, Otto laughs loudly.')
 
 // Analysis
 console.log(doc.countWords()) // 6

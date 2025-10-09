@@ -1,9 +1,13 @@
 // UI Renderer - Handles rendering of UI components and error messages
-import { methods } from './module-loader.js';
+import { methods } from './module-loader.js'
 
 // Visa felmeddelande om modul inte kan laddas
+/**
+ *
+ * @param category
+ */
 export function showErrorMessage(category) {
-  const container = document.getElementById('methodList');
+  const container = document.getElementById('methodList')
   if (container) {
     container.innerHTML = `
       <div style="padding: 40px; text-align: center; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); border-radius: 15px; color: white; margin: 20px 0;">
@@ -14,16 +18,20 @@ export function showErrorMessage(category) {
           Ladda om sidan
         </button>
       </div>
-    `;
+    `
   }
 }
 
 // Funktion för att rendera metodknappar
+/**
+ *
+ * @param moduleType
+ */
 export function renderMethods(moduleType) {
-  const container = document.getElementById('methodList');
-  if (!container) return;
+  const container = document.getElementById('methodList')
+  if (!container) return
 
-  container.innerHTML = '';
+  container.innerHTML = ''
   
   if (methods[moduleType]) {
     // Alla moderniserade moduler använder UI-komponent struktur
@@ -33,30 +41,30 @@ export function renderMethods(moduleType) {
         moduleType === 'TextGaming' || moduleType === 'TextForensics' || 
         moduleType === 'MoodEngine') {
       
-      let uiComponent;
+      let uiComponent
       
       if (moduleType === 'TextAnalyzer') {
-        uiComponent = methods[moduleType]['Text Analyzer']();
+        uiComponent = methods[moduleType]['Text Analyzer']()
       } else if (moduleType === 'TextSearcher') {
-        uiComponent = methods[moduleType]['Text Searcher']();
+        uiComponent = methods[moduleType]['Text Searcher']()
       } else if (moduleType === 'TextFormatter') {
-        uiComponent = methods[moduleType]['Text Formatter']();
+        uiComponent = methods[moduleType]['Text Formatter']()
       } else if (moduleType === 'TextTransformer') {
-        uiComponent = methods[moduleType]['Text Transformer']();
+        uiComponent = methods[moduleType]['Text Transformer']()
       } else if (moduleType === 'TextReverser') {
-        uiComponent = methods[moduleType]['Text Reverser']();
+        uiComponent = methods[moduleType]['Text Reverser']()
       } else if (moduleType === 'WordOptimizer') {
-        uiComponent = methods[moduleType]['Word Choice Optimizer']();
+        uiComponent = methods[moduleType]['Word Choice Optimizer']()
       } else if (moduleType === 'TextGaming') {
-        uiComponent = methods[moduleType]['Text Gaming Hub']();
+        uiComponent = methods[moduleType]['Text Gaming Hub']()
       } else if (moduleType === 'TextForensics') {
-        uiComponent = methods[moduleType]['Text Forensics Detective']();
+        uiComponent = methods[moduleType]['Text Forensics Detective']()
       } else if (moduleType === 'MoodEngine') {
-        uiComponent = methods[moduleType]['Mood & Emotion Engine']();
+        uiComponent = methods[moduleType]['Mood & Emotion Engine']()
       }
       
       if (uiComponent) {
-        container.appendChild(uiComponent);
+        container.appendChild(uiComponent)
       }
     } else {
       // Fallback för moduler som inte är konverterade än
@@ -66,26 +74,33 @@ export function renderMethods(moduleType) {
           <p>Denna modul håller på att konverteras till den nya designen.</p>
           <p>Använd de andra modulerna som redan är klara!</p>
         </div>
-      `;
+      `
     }
   }
 }
 
 // Funktion för att aktivera Writing Assistant
+/**
+ *
+ */
 export function activateWritingAssistant() {
-  renderMethods('WordOptimizer');
+  renderMethods('WordOptimizer')
 }
 
 // Backup-funktion för moduler som inte konverterats än
+/**
+ *
+ * @param category
+ */
 export function showBackupModule(category) {
   const colors = {
     TextForensics: '#17a2b8',
     MoodEngine: '#667eea'
-  };
+  }
   
-  const color = colors[category] || '#6c757d';
+  const color = colors[category] || '#6c757d'
   
-  const container = document.getElementById('methodList');
+  const container = document.getElementById('methodList')
   if (container) {
     container.innerHTML = `
       <div style="background: linear-gradient(135deg, ${color} 0%, ${color}dd 100%); padding: 30px; border-radius: 15px; color: white; margin: 20px 0; text-align: center;">
@@ -97,6 +112,6 @@ export function showBackupModule(category) {
           Testa ${category} (Demo)
         </button>
       </div>
-    `;
+    `
   }
 }

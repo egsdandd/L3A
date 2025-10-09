@@ -1,13 +1,18 @@
 // Word Games - Word guessing and scramble games
 // Contains word-based games like guessing and unscrambling
 
+/**
+ *
+ * @param randomWord
+ * @param hiddenWord
+ */
 function generateWordGuessGameHTML(randomWord, hiddenWord) {
   const actions = [
     { onclick: `showFirstLetter('${randomWord}')`, color: '#2196F3', text: '💡 Första bokstaven' },
     { onclick: `showFirstAndLast('${randomWord}')`, color: '#FF9800', text: '🔤 Första och sista' },
     { onclick: `showAnswer('${randomWord}')`, color: '#f44336', text: '👁️ Visa svar' },
     { onclick: 'startWordGuess()', color: '#9C27B0', text: '🔄 Nytt ord' }
-  ];
+  ]
 
   return `
     <h4>🎯 Gissa Ordet!</h4>
@@ -18,31 +23,31 @@ function generateWordGuessGameHTML(randomWord, hiddenWord) {
     <input type="text" id="guessInput" placeholder="Skriv din gissning...">
     <button onclick="checkGuess('${randomWord}')">Gissa!</button>
     <div id="guessResult"></div>
-  `;
+  `
 }
 
 // Word Guessing Game
 window.startWordGuess = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const words = text.split(/\s+/).filter(w => w.length > 3);
+  const words = text.split(/\s+/).filter(w => w.length > 3)
   if (words.length === 0) {
-    alert('Texten innehåller inga ord som är längre än 3 tecken!');
-    return;
+    alert('Texten innehåller inga ord som är längre än 3 tecken!')
+    return
   }
   
-  const randomWord = words[Math.floor(Math.random() * words.length)].toLowerCase();
-  const hiddenWord = randomWord.replace(/./g, '_');
+  const randomWord = words[Math.floor(Math.random() * words.length)].toLowerCase()
+  const hiddenWord = randomWord.replace(/./g, '_')
   
-  const gameHtml = generateWordGuessGameHTML(randomWord, hiddenWord);
+  const gameHtml = generateWordGuessGameHTML(randomWord, hiddenWord)
   
-  showGamingResult(gameHtml);
-};
+  showGamingResult(gameHtml)
+}
 
 window.checkGuess = function(correctWord) {
-  const guess = document.getElementById('guessInput').value.toLowerCase();
-  const result = document.getElementById('guessResult');
+  const guess = document.getElementById('guessInput').value.toLowerCase()
+  const result = document.getElementById('guessResult')
   
   if (guess === correctWord) {
     result.innerHTML = `
@@ -63,46 +68,51 @@ window.checkGuess = function(correctWord) {
           🔀 Ordpussel
         </button>
       </div>
-    `;
-    result.className = 'result-success';
+    `
+    result.className = 'result-success'
   } else {
-    result.innerHTML = '❌ Fel! Försök igen...';
-    result.className = 'result-error';
+    result.innerHTML = '❌ Fel! Försök igen...'
+    result.className = 'result-error'
   }
-};
+}
 
 // Word Scramble Game
 window.startWordScramble = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const words = text.split(/\s+/).filter(w => w.length > 3 && w.length < 10);
+  const words = text.split(/\s+/).filter(w => w.length > 3 && w.length < 10)
   
   if (words.length === 0) {
-    alert('Texten behöver ord mellan 4-9 bokstäver för ordpusslet!');
-    return;
+    alert('Texten behöver ord mellan 4-9 bokstäver för ordpusslet!')
+    return
   }
   
-  const word = words[Math.floor(Math.random() * words.length)];
-  const scrambled = word.split('').sort(() => Math.random() - 0.5).join('');
+  const word = words[Math.floor(Math.random() * words.length)]
+  const scrambled = word.split('').sort(() => Math.random() - 0.5).join('')
   
   // Kontrollera att ordet verkligen är blandat
   if (scrambled.toLowerCase() === word.toLowerCase()) {
     // Om ordet inte blev blandat, blanda om
-    const letters = word.split('');
+    const letters = word.split('')
     for (let i = letters.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [letters[i], letters[j]] = [letters[j], letters[i]];
+      [letters[i], letters[j]] = [letters[j], letters[i]]
     }
-    const newScrambled = letters.join('');
-    window.currentScrambleWord = word.toLowerCase();
-    showScrambleGame(newScrambled, word);
+    const newScrambled = letters.join('')
+    window.currentScrambleWord = word.toLowerCase()
+    showScrambleGame(newScrambled, word)
   } else {
-    window.currentScrambleWord = word.toLowerCase();
-    showScrambleGame(scrambled, word);
+    window.currentScrambleWord = word.toLowerCase()
+    showScrambleGame(scrambled, word)
   }
-};
+}
 
+/**
+ *
+ * @param scrambledWord
+ * @param originalWord
+ */
 function showScrambleGame(scrambledWord, originalWord) {
   const gameHtml = `
     <h4>🔀 Ordpussel!</h4>
@@ -126,19 +136,19 @@ function showScrambleGame(scrambledWord, originalWord) {
       🔀 Nytt ordpussel
     </button>
     <div id="scrambleResult"></div>
-  `;
+  `
   
-  showGamingResult(gameHtml);
+  showGamingResult(gameHtml)
 };
 
 window.checkScramble = function() {
-  const answer = document.getElementById('scrambleInput').value.trim().toLowerCase();
-  const result = document.getElementById('scrambleResult');
+  const answer = document.getElementById('scrambleInput').value.trim().toLowerCase()
+  const result = document.getElementById('scrambleResult')
   
   if (!answer) {
-    result.innerHTML = '❌ Skriv in ett ord först!';
-    result.className = 'result-error';
-    return;
+    result.innerHTML = '❌ Skriv in ett ord först!'
+    result.className = 'result-error'
+    return
   }
   
   if (answer === window.currentScrambleWord) {
@@ -160,44 +170,44 @@ window.checkScramble = function() {
           🎯 Gissa ord
         </button>
       </div>
-    `;
-    result.className = 'result-success';
-    result.style.padding = '15px';
-    result.style.borderRadius = '8px';
-    result.style.marginTop = '15px';
+    `
+    result.className = 'result-success'
+    result.style.padding = '15px'
+    result.style.borderRadius = '8px'
+    result.style.marginTop = '15px'
     
   } else {
-    result.innerHTML = `❌ Tyvärr fel! "${answer}" är inte rätt ord. Försök igen!`;
-    result.className = 'result-error';
-    result.style.padding = '15px';
-    result.style.borderRadius = '8px';
-    result.style.marginTop = '15px';
+    result.innerHTML = `❌ Tyvärr fel! "${answer}" är inte rätt ord. Försök igen!`
+    result.className = 'result-error'
+    result.style.padding = '15px'
+    result.style.borderRadius = '8px'
+    result.style.marginTop = '15px'
   }
-};
+}
 
 window.giveHint = function() {
-  const result = document.getElementById('scrambleResult');
-  const word = window.currentScrambleWord;
-  const firstLetter = word.charAt(0).toUpperCase();
-  const lastLetter = word.charAt(word.length - 1).toUpperCase();
+  const result = document.getElementById('scrambleResult')
+  const word = window.currentScrambleWord
+  const firstLetter = word.charAt(0).toUpperCase()
+  const lastLetter = word.charAt(word.length - 1).toUpperCase()
   
-  result.innerHTML = `💡 <strong>Ledtråd:</strong> Ordet börjar med "${firstLetter}" och slutar med "${lastLetter}"`;
-  result.className = 'result-success';
-  result.style.padding = '15px';
-  result.style.borderRadius = '8px';
-  result.style.marginTop = '15px';
-};
+  result.innerHTML = `💡 <strong>Ledtråd:</strong> Ordet börjar med "${firstLetter}" och slutar med "${lastLetter}"`
+  result.className = 'result-success'
+  result.style.padding = '15px'
+  result.style.borderRadius = '8px'
+  result.style.marginTop = '15px'
+}
 
 window.showScrambleAnswer = function() {
-  const result = document.getElementById('scrambleResult');
-  const word = window.currentScrambleWord;
+  const result = document.getElementById('scrambleResult')
+  const word = window.currentScrambleWord
   
-  result.innerHTML = `👁️ <strong>Svaret var:</strong> ${word.toUpperCase()}<br><em>Testa ett nytt ordpussel för att öva mer!</em>`;
-  result.className = 'result-success';
-  result.style.padding = '15px';
-  result.style.borderRadius = '8px';
-  result.style.marginTop = '15px';
+  result.innerHTML = `👁️ <strong>Svaret var:</strong> ${word.toUpperCase()}<br><em>Testa ett nytt ordpussel för att öva mer!</em>`
+  result.className = 'result-success'
+  result.style.padding = '15px'
+  result.style.borderRadius = '8px'
+  result.style.marginTop = '15px'
   
   // Automatiskt fylla i rätt svar
-  document.getElementById('scrambleInput').value = word;
-};
+  document.getElementById('scrambleInput').value = word
+}

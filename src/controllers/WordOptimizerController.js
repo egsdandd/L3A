@@ -1,6 +1,6 @@
 // src/controllers/WordOptimizerController.js
 
-import TextDocument from 'texttoolkit';
+import TextDocument from 'texttoolkit'
 
 /**
  * Controller-klass för ordoptimering
@@ -8,16 +8,19 @@ import TextDocument from 'texttoolkit';
  */
 class WordOptimizerController {
   // Privata attribut för caching och konfiguration
-  #textDocumentCache;
-  #lastText;
-  #commonWords;
-  #weakWords;
-  #powerVerbs;
+  #textDocumentCache
+  #lastText
+  #commonWords
+  #weakWords
+  #powerVerbs
 
+  /**
+   *
+   */
   constructor() {
-    this.#textDocumentCache = null;
-    this.#lastText = null;
-    this.#initializeWordLists();
+    this.#textDocumentCache = null
+    this.#lastText = null
+    this.#initializeWordLists()
   }
 
   /**
@@ -30,14 +33,14 @@ class WordOptimizerController {
       'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should',
       'i', 'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them',
       'this', 'that', 'these', 'those', 'my', 'your', 'his', 'her', 'its', 'our', 'their'
-    ]);
+    ])
 
     this.#weakWords = [
       'very', 'really', 'quite', 'rather', 'somewhat', 'fairly', 'pretty',
       'just', 'actually', 'basically', 'literally', 'totally', 'completely',
       'absolutely', 'extremely', 'incredibly', 'amazingly', 'definitely',
       'probably', 'maybe', 'perhaps', 'possibly', 'apparently', 'obviously'
-    ];
+    ]
 
     this.#powerVerbs = {
       'big': { normal: 'towers', intensified: 'dominates' },
@@ -61,7 +64,7 @@ class WordOptimizerController {
       'excited': { normal: 'buzzes with energy', intensified: 'buzzes with energy' },
       'tired': { normal: 'droops', intensified: 'collapses' },
       'bored': { normal: 'yawns', intensified: 'yawns' }
-    };
+    }
   }
 
   /**
@@ -71,7 +74,7 @@ class WordOptimizerController {
    */
   #validateText(text) {
     if (!text || typeof text !== 'string' || text.trim().length === 0) {
-      throw new Error('Text is required and must be a non-empty string');
+      throw new Error('Text is required and must be a non-empty string')
     }
   }
 
@@ -81,27 +84,27 @@ class WordOptimizerController {
    * @returns {TextDocument} TextDocument instans
    */
   #getTextDocument(text) {
-    this.#validateText(text);
+    this.#validateText(text)
     
     if (this.#lastText === text && this.#textDocumentCache) {
-      return this.#textDocumentCache;
+      return this.#textDocumentCache
     }
 
-    this.#textDocumentCache = new TextDocument(text);
-    this.#lastText = text;
-    return this.#textDocumentCache;
+    this.#textDocumentCache = new TextDocument(text)
+    this.#lastText = text
+    return this.#textDocumentCache
   }
 
   /**
    * Privat metod för felhantering
    * @param {Error} error - Felet som kastades
-   * @returns {Object} Standardiserat felobjekt
+   * @returns {object} Standardiserat felobjekt
    */
   #handleError(error) {
     return {
       error: error.message || 'An unexpected error occurred',
       success: false
-    };
+    }
   }
 
   /**
@@ -110,7 +113,7 @@ class WordOptimizerController {
    * @returns {Array} Array med ord
    */
   #extractWords(text) {
-    return text.toLowerCase().match(/\b[a-zA-ZåäöÅÄÖ]+\b/g) || [];
+    return text.toLowerCase().match(/\b[a-zA-ZåäöÅÄÖ]+\b/g) || []
   }
 
   /**
@@ -130,9 +133,9 @@ class WordOptimizerController {
       'totally': 'Consider "completely" or remove',
       'definitely': 'Consider being more specific about certainty',
       'probably': 'Consider "likely" or be more specific'
-    };
+    }
     
-    return suggestions[word] || 'Consider using a more specific word';
+    return suggestions[word] || 'Consider using a more specific word'
   }
 
   /**
@@ -142,107 +145,107 @@ class WordOptimizerController {
    * @returns {string|null} Kraftfullare verb eller null
    */
   #getPowerVerb(adjective, hasIntensifier) {
-    const verbOptions = this.#powerVerbs[adjective.toLowerCase()];
-    if (!verbOptions) return null;
+    const verbOptions = this.#powerVerbs[adjective.toLowerCase()]
+    if (!verbOptions) return null
     
-    return hasIntensifier ? verbOptions.intensified : verbOptions.normal;
+    return hasIntensifier ? verbOptions.intensified : verbOptions.normal
   }
 
   /**
    * Hittar överanvända ord i texten
    * @param {string} text - Texten som ska analyseras
    * @param {number} threshold - Minsta antal förekomster (default: 3)
-   * @returns {Object} Resultat med överanvända ord
+   * @returns {object} Resultat med överanvända ord
    */
   async findRepetitions(text, threshold = 3) {
     try {
-      this.#validateText(text);
+      this.#validateText(text)
       
-      const words = this.#extractWords(text);
-      const wordCount = {};
+      const words = this.#extractWords(text)
+      const wordCount = {}
       
       // Räkna ord (exklusive vanliga ord)
       words.forEach(word => {
         if (!this.#commonWords.has(word) && word.length > 2) {
-          wordCount[word] = (wordCount[word] || 0) + 1;
+          wordCount[word] = (wordCount[word] || 0) + 1
         }
-      });
+      })
       
       // Hitta ord som används mer än threshold antal gånger
       const repetitions = Object.entries(wordCount)
         .filter(([word, count]) => count > threshold)
         .sort((a, b) => b[1] - a[1])
-        .map(([word, count]) => ({ word, count }));
+        .map(([word, count]) => ({ word, count }))
       
       return { 
         repetitions, 
         threshold,
         totalAnalyzedWords: words.length,
         success: true 
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
   /**
    * Hittar svaga/fyllnadsord i texten
    * @param {string} text - Texten som ska analyseras
-   * @returns {Object} Resultat med svaga ord och förslag
+   * @returns {object} Resultat med svaga ord och förslag
    */
   async findWeakWords(text) {
     try {
-      this.#validateText(text);
+      this.#validateText(text)
       
-      const foundWeakWords = [];
-      const words = this.#extractWords(text);
+      const foundWeakWords = []
+      const words = this.#extractWords(text)
       
       // Hitta svaga ord och deras positioner
       this.#weakWords.forEach(weakWord => {
-        const regex = new RegExp(`\\b${weakWord}\\b`, 'gi');
-        let match;
+        const regex = new RegExp(`\\b${weakWord}\\b`, 'gi')
+        let match
         while ((match = regex.exec(text)) !== null) {
           foundWeakWords.push({
             word: match[0],
             position: match.index,
             suggestion: this.#getWeakWordSuggestion(weakWord),
             context: this.#getWordContext(text, match.index, match[0].length)
-          });
+          })
         }
-      });
+      })
       
       return { 
         weakWords: foundWeakWords,
         totalFound: foundWeakWords.length,
         success: true 
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
   /**
    * Hittar "is/was + adjektiv" mönster och föreslår kraftfullare verb
    * @param {string} text - Texten som ska analyseras
-   * @returns {Object} Resultat med kraftfulla ordförslag
+   * @returns {object} Resultat med kraftfulla ordförslag
    */
   async findPowerWords(text) {
     try {
-      this.#validateText(text);
+      this.#validateText(text)
       
-      const suggestions = [];
+      const suggestions = []
       
       // Regex för "is/was/are/were + (very) + adjektiv"
-      const weakPattern = /\b(is|was|are|were)\s+(very\s+)?(big|large|huge|small|tiny|good|bad|nice|great|amazing|awful|terrible|beautiful|ugly|fast|slow|strong|weak|happy|sad|angry|excited|tired|bored)\b/gi;
+      const weakPattern = /\b(is|was|are|were)\s+(very\s+)?(big|large|huge|small|tiny|good|bad|nice|great|amazing|awful|terrible|beautiful|ugly|fast|slow|strong|weak|happy|sad|angry|excited|tired|bored)\b/gi
       
-      let match;
+      let match
       while ((match = weakPattern.exec(text)) !== null) {
-        const fullMatch = match[0];
-        const verb = match[1];
-        const intensifier = match[2] || '';
-        const adjective = match[3];
+        const fullMatch = match[0]
+        const verb = match[1]
+        const intensifier = match[2] || ''
+        const adjective = match[3]
         
-        const powerVerb = this.#getPowerVerb(adjective, !!intensifier.trim());
+        const powerVerb = this.#getPowerVerb(adjective, !!intensifier.trim())
         if (powerVerb) {
           suggestions.push({
             original: fullMatch,
@@ -250,7 +253,7 @@ class WordOptimizerController {
             suggestion: powerVerb,
             reason: `Replace weak "${verb} ${intensifier}${adjective}" with stronger verb`,
             context: this.#getWordContext(text, match.index, fullMatch.length)
-          });
+          })
         }
       }
       
@@ -258,9 +261,9 @@ class WordOptimizerController {
         powerWords: suggestions,
         totalSuggestions: suggestions.length,
         success: true 
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
@@ -272,38 +275,38 @@ class WordOptimizerController {
    * @returns {string} Kontext runt ordet
    */
   #getWordContext(text, position, length) {
-    const contextLength = 30;
-    const start = Math.max(0, position - contextLength);
-    const end = Math.min(text.length, position + length + contextLength);
+    const contextLength = 30
+    const start = Math.max(0, position - contextLength)
+    const end = Math.min(text.length, position + length + contextLength)
     
-    let context = text.substring(start, end);
+    let context = text.substring(start, end)
     
     // Lägg till "..." om vi klippte texten
-    if (start > 0) context = '...' + context;
-    if (end < text.length) context = context + '...';
+    if (start > 0) context = '...' + context
+    if (end < text.length) context = context + '...'
     
-    return context;
+    return context
   }
 
   /**
    * Komplett analys av alla ordoptimeringsmöjligheter
    * @param {string} text - Texten som ska analyseras
-   * @returns {Object} Fullständigt resultat med alla analyser
+   * @returns {object} Fullständigt resultat med alla analyser
    */
   async completeAnalysis(text) {
     try {
-      this.#validateText(text);
+      this.#validateText(text)
       
       const [repetitions, weakWords, powerWords] = await Promise.all([
         this.findRepetitions(text),
         this.findWeakWords(text),
         this.findPowerWords(text)
-      ]);
+      ])
       
       const totalIssues = 
         (repetitions.success ? repetitions.repetitions.length : 0) +
         (weakWords.success ? weakWords.totalFound : 0) +
-        (powerWords.success ? powerWords.totalSuggestions : 0);
+        (powerWords.success ? powerWords.totalSuggestions : 0)
       
       return {
         repetitions: repetitions.success ? repetitions : null,
@@ -315,9 +318,9 @@ class WordOptimizerController {
           wordCount: this.#extractWords(text).length
         },
         success: true
-      };
+      }
     } catch (error) {
-      return this.#handleError(error);
+      return this.#handleError(error)
     }
   }
 
@@ -325,13 +328,13 @@ class WordOptimizerController {
    * Rensar cache:n
    */
   clearCache() {
-    this.#textDocumentCache = null;
-    this.#lastText = null;
+    this.#textDocumentCache = null
+    this.#lastText = null
   }
 
   /**
    * Hämtar cache-statistik
-   * @returns {Object} Cache-statistik
+   * @returns {object} Cache-statistik
    */
   getCacheStats() {
     return {
@@ -339,8 +342,8 @@ class WordOptimizerController {
       lastTextLength: this.#lastText ? this.#lastText.length : 0,
       configuredWeakWords: this.#weakWords.length,
       configuredPowerVerbs: Object.keys(this.#powerVerbs).length
-    };
+    }
   }
 }
 
-export default WordOptimizerController;
+export default WordOptimizerController

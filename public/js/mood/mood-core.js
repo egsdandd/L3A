@@ -1,7 +1,10 @@
 // Core mood interface and shared utilities
 
+/**
+ *
+ */
 export function createSimpleMoodInterface() {
-  const container = document.createElement('div');
+  const container = document.createElement('div')
   container.innerHTML = `
     <div class="module-container mood">
       <h1>🎭 Mood & Emotion Engine (Simple Version)</h1>
@@ -33,21 +36,27 @@ export function createSimpleMoodInterface() {
         <div id="moodResultsContent"></div>
       </div>
     </div>
-  `;
+  `
   
-  return container;
+  return container
 }
 
 // Utility function for showing results in mood interface
+/**
+ *
+ * @param containerId
+ * @param contentId
+ * @param content
+ */
 export function showMoodResults(containerId, contentId, content) {
-  const container = document.getElementById(containerId);
-  const contentDiv = document.getElementById(contentId);
+  const container = document.getElementById(containerId)
+  const contentDiv = document.getElementById(contentId)
   
   if (container && contentDiv) {
-    contentDiv.innerHTML = content;
-    container.style.display = 'block';
+    contentDiv.innerHTML = content
+    container.style.display = 'block'
   }
 }
 
 // Make core function globally accessible
-window.showMoodResults = showMoodResults;
+window.showMoodResults = showMoodResults

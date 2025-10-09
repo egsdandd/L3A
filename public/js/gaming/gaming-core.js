@@ -3,22 +3,29 @@
 
 export const textGamingMethods = {
   'Text Gaming Hub': () => createSimpleGamingInterface()
-};
+}
 
 // Game HTML generation helper functions
+/**
+ *
+ * @param actions
+ */
 function generateGameButtonsHTML(actions) {
   return actions.map(action => `
     <button onclick="${action.onclick}" style="background: ${action.color}; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; margin: 5px;">
       ${action.text}
     </button>
-  `).join('');
+  `).join('')
 }
 
 // Make this function available globally for other gaming modules
-window.generateGameButtonsHTML = generateGameButtonsHTML;
+window.generateGameButtonsHTML = generateGameButtonsHTML
 
+/**
+ *
+ */
 function createSimpleGamingInterface() {
-  const container = document.createElement('div');
+  const container = document.createElement('div')
   container.innerHTML = `
     <div class="module-container gaming">
       <h1>🎮 Text Gaming Hub (Simple Version)</h1>
@@ -50,26 +57,30 @@ function createSimpleGamingInterface() {
         <div id="gamingResultsContent"></div>
       </div>
     </div>
-  `;
+  `
   
-  return container;
+  return container
 }
 
+/**
+ *
+ * @param content
+ */
 function showGamingResult(content) {
-  const resultsDiv = document.getElementById('simpleGamingResults');
-  const contentDiv = document.getElementById('gamingResultsContent');
+  const resultsDiv = document.getElementById('simpleGamingResults')
+  const contentDiv = document.getElementById('gamingResultsContent')
   
   if (resultsDiv && contentDiv) {
-    contentDiv.innerHTML = content;
-    resultsDiv.style.display = 'block';
+    contentDiv.innerHTML = content
+    resultsDiv.style.display = 'block'
   }
 }
 
 // Make this function available globally for other gaming modules
-window.showGamingResult = showGamingResult;
+window.showGamingResult = showGamingResult
 
 // Make function available globally for showFile.js
-window.showSimpleTextGaming = () => createSimpleGamingInterface();
+window.showSimpleTextGaming = () => createSimpleGamingInterface()
 
 // Make createSimpleGamingInterface available globally 
-window.createSimpleGamingInterface = createSimpleGamingInterface;
+window.createSimpleGamingInterface = createSimpleGamingInterface

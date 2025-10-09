@@ -2,9 +2,12 @@
 
 export const analyzerMethods = {
   'Text Analyzer': () => createSimpleAnalyzerInterface()
-};
+}
 
 // HTML Helper Functions
+/**
+ *
+ */
 function generateAnalyzerInterfaceHTML() {
   return `
     <div class="module-container analyzer">
@@ -18,9 +21,12 @@ function generateAnalyzerInterfaceHTML() {
         <div id="resultsContent"></div>
       </div>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function generateAnalyzerButtonsHTML() {
   return `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
@@ -34,37 +40,40 @@ function generateAnalyzerButtonsHTML() {
         📄 Räkna Meningar
       </button>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function createSimpleAnalyzerInterface() {
-  const container = document.createElement('div');
-  container.innerHTML = generateAnalyzerInterfaceHTML();
-  return container;
+  const container = document.createElement('div')
+  container.innerHTML = generateAnalyzerInterfaceHTML()
+  return container
 }
 
 // Enkla analysfunktioner - Using utility functions
 window.simpleWordCount = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const words = text.split(/\s+/).length;
-  showResults('simpleAnalyzerResults', 'resultsContent', `Antal ord: ${words}`);
-};
+  const words = text.split(/\s+/).length
+  showResults('simpleAnalyzerResults', 'resultsContent', `Antal ord: ${words}`)
+}
 
 window.simpleCharCount = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const chars = text.length;
-  showResults('simpleAnalyzerResults', 'resultsContent', `Antal tecken: ${chars}`);
-};
+  const chars = text.length
+  showResults('simpleAnalyzerResults', 'resultsContent', `Antal tecken: ${chars}`)
+}
 
 window.simpleSentenceCount = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length;
-  showResults('simpleAnalyzerResults', 'resultsContent', `Antal meningar: ${sentences}`);
-};
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0).length
+  showResults('simpleAnalyzerResults', 'resultsContent', `Antal meningar: ${sentences}`)
+}
 

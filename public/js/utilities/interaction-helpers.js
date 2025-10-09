@@ -10,10 +10,10 @@
  */
 function validateTextLength(text, minLength = 1, errorMessage = 'Text är för kort') {
   if (!text || text.length < minLength) {
-    alert(errorMessage);
-    return false;
+    alert(errorMessage)
+    return false
   }
-  return true;
+  return true
 }
 
 /**
@@ -24,13 +24,13 @@ function validateTextLength(text, minLength = 1, errorMessage = 'Text är för k
 function copyToClipboard(text, successMessage = 'Text kopierad till urklipp!') {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
-      alert(successMessage);
+      alert(successMessage)
     }).catch(err => {
-      console.error('Kunde inte kopiera text:', err);
-      fallbackCopyToClipboard(text, successMessage);
-    });
+      console.error('Kunde inte kopiera text:', err)
+      fallbackCopyToClipboard(text, successMessage)
+    })
   } else {
-    fallbackCopyToClipboard(text, successMessage);
+    fallbackCopyToClipboard(text, successMessage)
   }
 }
 
@@ -40,22 +40,22 @@ function copyToClipboard(text, successMessage = 'Text kopierad till urklipp!') {
  * @param {string} successMessage - Message to show on success
  */
 function fallbackCopyToClipboard(text, successMessage) {
-  const textArea = document.createElement('textarea');
-  textArea.value = text;
-  textArea.style.position = 'fixed';
-  textArea.style.left = '-999999px';
-  textArea.style.top = '-999999px';
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
+  const textArea = document.createElement('textarea')
+  textArea.value = text
+  textArea.style.position = 'fixed'
+  textArea.style.left = '-999999px'
+  textArea.style.top = '-999999px'
+  document.body.appendChild(textArea)
+  textArea.focus()
+  textArea.select()
   
   try {
-    document.execCommand('copy');
-    alert(successMessage);
+    document.execCommand('copy')
+    alert(successMessage)
   } catch (err) {
-    console.error('Fallback copy failed:', err);
-    alert('Kunde inte kopiera text. Markera och kopiera manuellt.');
+    console.error('Fallback copy failed:', err)
+    alert('Kunde inte kopiera text. Markera och kopiera manuellt.')
   }
   
-  document.body.removeChild(textArea);
+  document.body.removeChild(textArea)
 }

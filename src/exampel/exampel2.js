@@ -1,6 +1,6 @@
 // example2.js
 import fs from 'fs'
-import TextDocument from 'texttoolkit';
+import TextDocument from 'texttoolkit'
 
 // Get filename from command line: node example2.js README.md
 const filename = process.argv[2]

@@ -2,9 +2,12 @@
 
 export const searcherMethods = {
   'Text Searcher': () => createSimpleSearcherInterface()
-};
+}
 
 // HTML Helper Functions
+/**
+ *
+ */
 function generateSearcherInterfaceHTML() {
   return `
     <div class="module-container searcher">
@@ -15,9 +18,12 @@ function generateSearcherInterfaceHTML() {
       ${generateSearchButtonsHTML()}
       ${generateSearchResultsHTML()}
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function generateSearchInputHTML() {
   return `
     <div style="margin: 20px 0;">
@@ -28,9 +34,12 @@ function generateSearchInputHTML() {
         🔍 Sök
       </button>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function generateSearchButtonsHTML() {
   return `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
@@ -44,86 +53,92 @@ function generateSearchButtonsHTML() {
         📏 Längsta Ord
       </button>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function generateSearchResultsHTML() {
   return `
     <div id="simpleSearchResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
       <h3>Sökresultat:</h3>
       <div id="searchResultsContent"></div>
     </div>
-  `;
+  `
 }
 
+/**
+ *
+ */
 function createSimpleSearcherInterface() {
-  const container = document.createElement('div');
-  container.innerHTML = generateSearcherInterfaceHTML();
-  return container;
+  const container = document.createElement('div')
+  container.innerHTML = generateSearcherInterfaceHTML()
+  return container
   
-  return container;
+  return container
 }
 
 // Enkla sökfunktioner - Using utility functions  
 window.simpleSearch = function() {
-  const searchTerm = getInputValue('searchInput');
-  const text = getEditorText();
+  const searchTerm = getInputValue('searchInput')
+  const text = getEditorText()
   
   if (!searchTerm) {
-    showResults('simpleSearchResults', 'searchResultsContent', 'Ange en sökterm först!');
-    return;
+    showResults('simpleSearchResults', 'searchResultsContent', 'Ange en sökterm först!')
+    return
   }
   
-  if (!text) return;
+  if (!text) return
   
-  const regex = new RegExp(searchTerm, 'gi');
-  const matches = text.match(regex);
-  const count = matches ? matches.length : 0;
+  const regex = new RegExp(searchTerm, 'gi')
+  const matches = text.match(regex)
+  const count = matches ? matches.length : 0
   
-  showResults('simpleSearchResults', 'searchResultsContent', `Hittade "${searchTerm}" ${count} gånger i texten.`);
-};
+  showResults('simpleSearchResults', 'searchResultsContent', `Hittade "${searchTerm}" ${count} gånger i texten.`)
+}
 
 window.findWords = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const words = text.split(/\s+/);
-  const uniqueWords = [...new Set(words.map(w => w.toLowerCase()))];
+  const words = text.split(/\s+/)
+  const uniqueWords = [...new Set(words.map(w => w.toLowerCase()))]
   
-  showResults('simpleSearchResults', 'searchResultsContent', `Texten innehåller ${words.length} ord totalt och ${uniqueWords.length} unika ord.`);
-};
+  showResults('simpleSearchResults', 'searchResultsContent', `Texten innehåller ${words.length} ord totalt och ${uniqueWords.length} unika ord.`)
+}
 
 window.countOccurrences = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const words = text.toLowerCase().split(/\s+/);
-  const wordCount = {};
+  const words = text.toLowerCase().split(/\s+/)
+  const wordCount = {}
   
   words.forEach(word => {
-    word = word.replace(/[^\w]/g, '');
+    word = word.replace(/[^\w]/g, '')
     if (word) {
-      wordCount[word] = (wordCount[word] || 0) + 1;
+      wordCount[word] = (wordCount[word] || 0) + 1
     }
-  });
+  })
   
   const sortedWords = Object.entries(wordCount)
     .sort(([,a], [,b]) => b - a)
-    .slice(0, 5);
+    .slice(0, 5)
     
   const result = 'Top 5 mest frekventa ord:<br>' + 
-    sortedWords.map(([word, count]) => `${word}: ${count} gånger`).join('<br>');
+    sortedWords.map(([word, count]) => `${word}: ${count} gånger`).join('<br>')
     
-  showResults('simpleSearchResults', 'searchResultsContent', result);
-};
+  showResults('simpleSearchResults', 'searchResultsContent', result)
+}
 
 window.findLongestWord = function() {
-  const text = getEditorText();
-  if (!text) return;
+  const text = getEditorText()
+  if (!text) return
   
-  const words = text.split(/\s+/).map(w => w.replace(/[^\w]/g, ''));
-  const longestWord = words.reduce((a, b) => a.length > b.length ? a : b, '');
+  const words = text.split(/\s+/).map(w => w.replace(/[^\w]/g, ''))
+  const longestWord = words.reduce((a, b) => a.length > b.length ? a : b, '')
   
-  showResults('simpleSearchResults', 'searchResultsContent', `Längsta ordet är: "${longestWord}" med ${longestWord.length} tecken.`);
-};
+  showResults('simpleSearchResults', 'searchResultsContent', `Längsta ordet är: "${longestWord}" med ${longestWord.length} tecken.`)
+}
 
