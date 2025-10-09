@@ -1,33 +1,27 @@
 // src/controllers/TextForensicsController.js
 import texttoolkit from 'texttoolkit'
+import AuthorshipAnalyzer from '../services/forensics/AuthorshipAnalyzer.js'
+import CipherDetector from '../services/forensics/CipherDetector.js'
+import PlagiarismChecker from '../services/forensics/PlagiarismChecker.js'
+import SteganographyDetector from '../services/forensics/SteganographyDetector.js'
+import ForensicsValidator from '../services/forensics/ForensicsValidator.js'
 
-/**
- *
- */
-export default class TextForensicsController {
-  #textDocumentCache = new Map()
-  #lastText = null
-  
-  /**
-   *
-   */
+/** Main controller for text forensics analysis */
+class TextForensicsController {
+  /** Creates a new TextForensicsController instance */
   constructor() {
-    // Privat cache för TextDocument instanser för bättre prestanda
+    // Private cache for TextDocument instances for better performance
+    this.#textDocumentCache = new Map()
+    this.#lastText = null
   }
 
-  /**
-   * Privat metod för att validera inkommande text
-   * @param {string} text - Texten som ska valideras
-   * @returns {boolean} - True om texten är giltig
-   */
-  #validateText(text) {
-    return typeof text === 'string' && text.trim().length > 0
-  }
+  // Private attributes
+  #textDocumentCache
+  #lastText
 
   /**
-   * Privat metod för att få TextDocument instans med caching
-   * @param {string} text - Texten som ska analyseras
-   * @returns {object} - TextDocument instans
+   * @param {string} text Text
+   * @returns {object} TextDocument instance
    */
   #getTextDocument(text) {
     if (this.#lastText === text && this.#textDocumentCache.has(text)) {
@@ -38,7 +32,7 @@ export default class TextForensicsController {
     this.#textDocumentCache.set(text, textDoc)
     this.#lastText = text
     
-    // Begränsa cache-storlek
+    // Limit cache size
     if (this.#textDocumentCache.size > 10) {
       const firstKey = this.#textDocumentCache.keys().next().value
       this.#textDocumentCache.delete(firstKey)
@@ -47,522 +41,271 @@ export default class TextForensicsController {
     return textDoc
   }
 
-  /**
-   * Privat metod för felhantering
-   * @param {Error} error - Felet som uppstod
-   * @returns {object} - Standardiserat felmeddelande
-   */
-  #handleError(error) {
-    console.error('TextForensicsController error:', error)
-    return {
-      success: false,
-      error: error.message || 'An error occurred during forensics analysis'
-    }
-  }
+  // Public methods delegating to specialized services
 
   /**
-   * Analyserar författarskap genom att jämföra skrivstilar
-   * @param {string} text1 - Första texten
-   * @param {string} text2 - Andra texten att jämföra med
-   * @returns {object} - Resultat med likhetsscore och analys
+   * @param {string} text1 First text
+   * @param {string} text2 Second text
+   * @returns {object} Analysis result
    */
   async analyzeAuthorship(text1, text2) {
-    try {
-      if (!this.#validateText(text1) || !this.#validateText(text2)) {
-        return { success: false, error: 'Two valid texts are required for comparison' }
-      }
-
-      // Beräkna skrivstilsmetriker
-      const metrics1 = this.#calculateWritingMetrics(text1)
-      const metrics2 = this.#calculateWritingMetrics(text2)
-      
-      // Beräkna likhetsscore (0-100%)
-      const similarity = this.#calculateSimilarityScore(metrics1, metrics2)
-      
-      return {
-        success: true,
-        similarity: similarity,
-        analysis: {
-          text1_metrics: metrics1,
-          text2_metrics: metrics2,
-          verdict: similarity > 80 ? 'Troligen samma författare' :
-                  similarity > 60 ? 'Möjligen samma författare' :
-                  similarity > 40 ? 'Osäker likhet' : 'Troligen olika författare'
-        }
-      }
-    } catch (error) {
-      return this.#handleError(error)
-    }
+    return await AuthorshipAnalyzer.analyzeAuthorship(text1, text2)
   }
 
   /**
-   * Söker efter dolda meddelanden i text
-   * @param {string} text - Texten som ska analyseras
-   * @returns {object} - Resultat med funna dolda meddelanden
-   */
-  async detectSecretMessage(text) {
-    try {
-      if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' }
-      }
-
-      const secrets = []
-      
-      // Akronym-detektor (första bokstäverna i varje mening)
-      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
-      const acronym = sentences.map(s => s.trim()[0]).join('').toUpperCase()
-      
-      if (acronym.length > 2) {
-        secrets.push({
-          type: 'Akronym från meningar',
-          message: acronym,
-          method: 'Första bokstaven i varje mening'
-        })
-      }
-      
-      // Första bokstav i varje ord
-      const words = text.split(/\s+/)
-      const wordAcronym = words.map(w => w[0]).join('').toUpperCase()
-      if (wordAcronym.length > 5 && wordAcronym.length < 50) {
-        secrets.push({
-          type: 'Akronym från ord',
-          message: wordAcronym,
-          method: 'Första bokstaven i varje ord'
-        })
-      }
-      
-      // Versaler-detektor
-      const capitals = text.match(/[A-Z]/g)
-      if (capitals && capitals.length > 2) {
-        secrets.push({
-          type: 'Versaler',
-          message: capitals.join(''),
-          method: 'Alla versaler i följd'
-        })
-      }
-      
-      // Siffror i text
-      const numbers = text.match(/\d/g)
-      if (numbers && numbers.length > 1) {
-        secrets.push({
-          type: 'Numerisk kod',
-          message: numbers.join(''),
-          method: 'Alla siffror i texten'
-        })
-      }
-      
-      return {
-        success: true,
-        secretsFound: secrets.length,
-        secrets: secrets,
-        analysis: secrets.length > 0 ? 
-          'Potentiella dolda meddelanden hittade!' : 
-          'Inga uppenbara dolda meddelanden funna.'
-      }
-    } catch (error) {
-      return this.#handleError(error)
-    }
-  }
-
-  /**
-   * Dekoderar chiffer (Caesar, ROT13, Atbash)
-   * @param {string} text - Text som ska dekoderas
-   * @param {string} cipherType - Typ av chiffer ('caesar', 'rot13', 'atbash', 'all')
-   * @returns {object} - Resultat med dekodade alternativ
-   */
-  async decodeCipher(text, cipherType = 'caesar') {
-    try {
-      if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' }
-      }
-
-      const results = []
-      
-      if (cipherType === 'caesar' || cipherType === 'all') {
-        // Prova alla Caesar cipher shifts (1-25)
-        for (let shift = 1; shift <= 25; shift++) {
-          const decoded = this.#caesarCipher(text, shift)
-          results.push({
-            type: `Caesar Cipher (shift ${shift})`,
-            decoded: decoded,
-            shift: shift
-          })
-        }
-      }
-      
-      if (cipherType === 'rot13' || cipherType === 'all') {
-        // ROT13
-        const rot13 = this.#caesarCipher(text, 13)
-        results.push({
-          type: 'ROT13',
-          decoded: rot13,
-          shift: 13
-        })
-      }
-      
-      if (cipherType === 'atbash' || cipherType === 'all') {
-        // Atbash cipher (A=Z, B=Y, etc.)
-        const atbash = this.#atbashCipher(text)
-        results.push({
-          type: 'Atbash Cipher',
-          decoded: atbash,
-          shift: 'reverse'
-        })
-      }
-      
-      return {
-        success: true,
-        originalText: text,
-        cipherType: cipherType,
-        results: results,
-        hint: 'Leta efter meningsfull text bland resultaten!'
-      }
-    } catch (error) {
-      return this.#handleError(error)
-    }
-  }
-
-  /**
-   * Kontrollerar plagiat mellan två texter
-   * @param {string} originalText - Originaltext
-   * @param {string} suspectText - Misstänkt plagierad text
-   * @returns {object} - Resultat med plagiatsanalys
-   */
-  async checkPlagiarism(originalText, suspectText) {
-    try {
-      if (!this.#validateText(originalText) || !this.#validateText(suspectText)) {
-        return { success: false, error: 'Both original and suspect texts are required' }
-      }
-
-      // Enkel plagiatanalys baserad på ord-överlappning
-      const originalWords = new Set(originalText.toLowerCase().split(/\s+/))
-      const suspectWords = suspectText.toLowerCase().split(/\s+/)
-      
-      let matchingWords = 0
-      const matches = []
-      
-      suspectWords.forEach(word => {
-        if (originalWords.has(word) && word.length > 3) {
-          matchingWords++
-          matches.push(word)
-        }
-      })
-      
-      const similarity = Math.round((matchingWords / suspectWords.length) * 100)
-      
-      // Hitta längsta gemensamma sekvenser
-      const commonPhrases = this.#findCommonPhrases(originalText, suspectText)
-      
-      return {
-        success: true,
-        similarity: similarity,
-        matchingWords: matchingWords,
-        totalWords: suspectWords.length,
-        uniqueMatches: [...new Set(matches)],
-        commonPhrases: commonPhrases,
-        verdict: similarity > 70 ? '🚨 Hög risk för plagiat' :
-                similarity > 40 ? '⚠️ Måttlig likhet' :
-                similarity > 20 ? '💭 Låg likhet' : '✅ Minimal likhet',
-        confidence: similarity > 50 ? 'Hög' : similarity > 25 ? 'Medium' : 'Låg'
-      }
-    } catch (error) {
-      return this.#handleError(error)
-    }
-  }
-
-  /**
-   * Skapar ett stilfingeravtryck för text
-   * @param {string} text - Text som ska analyseras
-   * @returns {object} - Stilfingeravtryck och metriker
+   * @param {string} text Text to analyze
+   * @returns {object} Style fingerprint
    */
   async createStyleFingerprint(text) {
-    try {
-      if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' }
-      }
-
-      const metrics = this.#calculateWritingMetrics(text)
-      
-      // Skapa en unik "fingerprint" baserad på skrivstil
-      const fingerprint = {
-        avgWordLength: metrics.avgWordLength,
-        avgSentenceLength: metrics.avgSentenceLength,
-        lexicalDiversity: metrics.lexicalDiversity,
-        punctuationDensity: metrics.punctuationDensity,
-        capitalizationPattern: metrics.capitalizationPattern
-      }
-      
-      // Generera stilprofil
-      const styleProfile = this.#generateStyleProfile(metrics)
-      
-      return {
-        success: true,
-        fingerprint: fingerprint,
-        metrics: metrics,
-        styleProfile: styleProfile,
-        uniquenessScore: this.#calculateUniquenessScore(metrics)
-      }
-    } catch (error) {
-      return this.#handleError(error)
-    }
+    return await AuthorshipAnalyzer.createStyleFingerprint(text)
   }
 
   /**
-   * Detekterar steganografi-mönster i text
-   * @param {string} text - Text som ska analyseras
-   * @returns {object} - Resultat med funna mönster
+   * @param {string} text Text to analyze
+   * @returns {object} Secret messages found
+   */
+  async detectSecretMessage(text) {
+    return await SteganographyDetector.detectSecretMessage(text)
+  }
+
+  /**
+   * @param {string} text Text to analyze
+   * @returns {object} Steganography detection results
    */
   async detectSteganography(text) {
-    try {
-      if (!this.#validateText(text)) {
-        return { success: false, error: 'Valid text is required' }
-      }
+    return await SteganographyDetector.detectSteganography(text)
+  }
 
-      const patterns = []
+  /**
+   * @param {string} text Text to decode
+   * @param {string} cipherType Cipher type
+   * @returns {object} Decoded results
+   */
+  async decodeCipher(text, cipherType = 'caesar') {
+    return await CipherDetector.decodeCipher(text, cipherType)
+  }
+
+  /**
+   * @param {string} originalText Original text
+   * @param {string} suspectText Suspect text
+   * @param {number} threshold Similarity threshold
+   * @returns {object} Plagiarism results
+   */
+  async checkPlagiarism(originalText, suspectText, threshold = 0.8) {
+    return await PlagiarismChecker.checkPlagiarism(originalText, suspectText, threshold)
+  }
+
+  /**
+   * @param {string} text Text to analyze
+   * @param {object} options Analysis options
+   * @returns {object} Complete forensic report
+   */
+  async analyzeForensicsComprehensive(text, options = {}) {
+    try {
+      const cleanText = ForensicsValidator.validateText(text)
       
-      // Analysera mellanslag-mönster
-      const spacePatterns = this.#analyzeSpacePatterns(text)
-      if (spacePatterns.suspicious) {
-        patterns.push({
-          type: 'Mellanslag-kodning',
-          description: 'Ovanliga mellanslag-mönster upptäckta',
-          pattern: spacePatterns.pattern
-        })
+      // Determine which analyses to run
+      const runSecretDetection = options.detectSecrets !== false
+      const runSteganography = options.detectSteganography !== false
+      const runCipherDetection = options.detectCiphers !== false
+      const runStyleAnalysis = options.analyzeStyle !== false
+      
+      const analyses = {}
+      
+      // Run selected analyses in parallel
+      const promises = []
+      
+      if (runSecretDetection) {
+        promises.push(
+          this.detectSecretMessage(cleanText).then(result => ({ key: 'secretMessages', result }))
+        )
       }
       
-      // Analysera radlängder
-      const lines = text.split('\n')
-      const lineLengths = lines.map(line => line.length)
-      if (this.#hasPatternInLengths(lineLengths)) {
-        patterns.push({
-          type: 'Radlängd-kodning',
-          description: 'Mönster i radlängder',
-          pattern: lineLengths.join(',')
-        })
+      if (runSteganography) {
+        promises.push(
+          this.detectSteganography(cleanText).then(result => ({ key: 'steganography', result }))
+        )
       }
       
-      // Analysera interpunktion-mönster
-      const punctuationPattern = this.#analyzePunctuationPattern(text)
-      if (punctuationPattern.suspicious) {
-        patterns.push({
-          type: 'Interpunktion-kodning',
-          description: 'Ovanliga interpunktionsmönster',
-          pattern: punctuationPattern.pattern
-        })
+      if (runCipherDetection) {
+        promises.push(
+          this.decodeCipher(cleanText, 'all').then(result => ({ key: 'cipherDecoding', result }))
+        )
       }
       
-      return {
-        success: true,
-        patternsFound: patterns.length,
-        patterns: patterns,
-        analysis: patterns.length > 0 ? 
-          'Misstänkta steganografi-mönster hittade!' : 
-          'Inga uppenbara steganografi-mönster funna.',
-        recommendation: patterns.length > 2 ? 
-          'Text innehåller flera misstänkta mönster - djupare analys rekommenderas' :
-          'Text verkar normal'
+      if (runStyleAnalysis) {
+        promises.push(
+          this.createStyleFingerprint(cleanText).then(result => ({ key: 'styleFingerprint', result }))
+        )
       }
+      
+      // Wait for all analyses to complete
+      const results = await Promise.all(promises)
+      
+      // Organize results
+      results.forEach(({ key, result }) => {
+        analyses[key] = result.success ? result : { error: result.error }
+      })
+      
+      // Generate overall assessment
+      const overallAssessment = this.#generateOverallAssessment(analyses)
+      
+      return ForensicsValidator.createSuccessResponse({
+        comprehensive: analyses,
+        assessment: overallAssessment,
+        textStats: this.#getTextStats(cleanText),
+        options: options
+      })
     } catch (error) {
-      return this.#handleError(error)
+      return ForensicsValidator.handleError(error, 'analyze forensics comprehensive')
     }
   }
 
-  // Privata hjälpmetoder
-  
   /**
-   * Beräknar skrivstilsmetriker för text
-   * @param {string} text - Text som ska analyseras
-   * @returns {object} - Metriker för skrivstil
+   * @param {object} analyses All analysis results
+   * @returns {object} Overall assessment
    */
-  #calculateWritingMetrics(text) {
-    const words = text.split(/\s+/).filter(w => w.length > 0)
+  #generateOverallAssessment(analyses) {
+    const assessment = {
+      suspicionLevel: 'None',
+      findings: [],
+      recommendations: [],
+      confidence: 0
+    }
+
+    let totalSuspicion = 0
+    let analysisCount = 0
+
+    try {
+      // Evaluate secret messages
+      if (analyses.secretMessages && !analyses.secretMessages.error) {
+        if (analyses.secretMessages.secretsFound > 0) {
+          assessment.findings.push(`${analyses.secretMessages.secretsFound} potential hidden messages detected`)
+          totalSuspicion += analyses.secretMessages.confidence || 0.5
+        }
+        analysisCount++
+      }
+
+      // Evaluate steganography
+      if (analyses.steganography && !analyses.steganography.error) {
+        if (analyses.steganography.steganographyDetected) {
+          assessment.findings.push(`Steganographic content detected (${analyses.steganography.suspicionLevel} suspicion)`)
+          totalSuspicion += this.#convertSuspicionToScore(analyses.steganography.suspicionLevel)
+        }
+        analysisCount++
+      }
+
+      // Evaluate cipher decoding
+      if (analyses.cipherDecoding && !analyses.cipherDecoding.error) {
+        if (analyses.cipherDecoding.bestGuess && analyses.cipherDecoding.bestGuess.confidence > 0.7) {
+          assessment.findings.push('High-confidence cipher decoding available')
+          totalSuspicion += analyses.cipherDecoding.bestGuess.confidence
+        }
+        analysisCount++
+      }
+
+      // Evaluate style fingerprint
+      if (analyses.styleFingerprint && !analyses.styleFingerprint.error) {
+        const style = analyses.styleFingerprint.fingerprint?.writingStyle
+        if (style) {
+          assessment.findings.push(`Writing style identified as: ${style}`)
+        }
+        analysisCount++
+      }
+
+      // Calculate overall suspicion
+      const avgSuspicion = analysisCount > 0 ? totalSuspicion / analysisCount : 0
+      assessment.suspicionLevel = this.#calculateSuspicionLevel(avgSuspicion)
+      assessment.confidence = Math.min(0.95, avgSuspicion)
+
+      // Generate recommendations
+      assessment.recommendations = this.#generateForensicRecommendations(assessment, analyses)
+
+    } catch (error) {
+      console.warn('Error generating overall assessment:', error)
+      assessment.findings.push('Assessment generation incomplete due to analysis errors')
+    }
+
+    return assessment
+  }
+
+  /**
+   * @param {string} suspicionLevel Suspicion level string
+   * @returns {number} Numerical score
+   */
+  #convertSuspicionToScore(suspicionLevel) {
+    const levels = {
+      'None': 0,
+      'Low': 0.3,
+      'Medium': 0.6,
+      'High': 0.9
+    }
+    return levels[suspicionLevel] || 0
+  }
+
+  /**
+   * @param {number} score Average suspicion score
+   * @returns {string} Suspicion level
+   */
+  #calculateSuspicionLevel(score) {
+    if (score > 0.7) return 'High'
+    if (score > 0.4) return 'Medium'
+    if (score > 0.1) return 'Low'
+    return 'None'
+  }
+
+  /**
+   * @param {object} assessment Overall assessment
+   * @param {object} analyses All analysis results
+   * @returns {Array} Array of recommendations
+   */
+  #generateForensicRecommendations(assessment, analyses) {
+    const recommendations = []
+
+    if (assessment.suspicionLevel === 'High') {
+      recommendations.push('Multiple forensic indicators detected - detailed investigation recommended')
+      recommendations.push('Consider professional forensic analysis')
+      recommendations.push('Preserve original text for evidence')
+    } else if (assessment.suspicionLevel === 'Medium') {
+      recommendations.push('Some forensic indicators detected - further analysis recommended')
+      recommendations.push('Cross-reference findings with additional tools')
+    } else if (assessment.suspicionLevel === 'Low') {
+      recommendations.push('Minor forensic indicators detected - monitor for additional evidence')
+    } else {
+      recommendations.push('No significant forensic indicators detected')
+      recommendations.push('Text appears to be standard content')
+    }
+
+    // Add specific recommendations from individual analyses
+    Object.values(analyses).forEach(analysis => {
+      if (analysis.recommendations) {
+        recommendations.push(...analysis.recommendations.slice(0, 2)) // Top 2 from each
+      }
+    })
+
+    // Remove duplicates and limit to reasonable number
+    return [...new Set(recommendations)].slice(0, 8)
+  }
+
+  /**
+   * @param {string} text Text to analyze
+   * @returns {object} Text statistics
+   */
+  #getTextStats(text) {
+    const words = text.split(/\s+/)
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
-    const uniqueWords = new Set(words.map(w => w.toLowerCase()))
+    const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0)
+    const characters = text.length
     
     return {
       wordCount: words.length,
       sentenceCount: sentences.length,
-      avgWordLength: words.reduce((sum, word) => sum + word.length, 0) / words.length,
-      avgSentenceLength: words.length / sentences.length,
-      lexicalDiversity: uniqueWords.size / words.length,
-      punctuationDensity: (text.match(/[.!?,:;]/g) || []).length / text.length,
-      capitalizationPattern: (text.match(/[A-Z]/g) || []).length / text.length
-    }
-  }
-
-  /**
-   * Beräknar likhetsscore mellan två metriker
-   * @param {object} metrics1 - Första textens metriker
-   * @param {object} metrics2 - Andra textens metriker
-   * @returns {number} - Likhetsscore (0-100)
-   */
-  #calculateSimilarityScore(metrics1, metrics2) {
-    const weights = {
-      avgWordLength: 0.2,
-      avgSentenceLength: 0.25,
-      lexicalDiversity: 0.3,
-      punctuationDensity: 0.15,
-      capitalizationPattern: 0.1
-    }
-    
-    let totalSimilarity = 0
-    for (const metric in weights) {
-      const diff = Math.abs(metrics1[metric] - metrics2[metric])
-      const maxVal = Math.max(metrics1[metric], metrics2[metric])
-      const similarity = maxVal > 0 ? (1 - diff / maxVal) : 1
-      totalSimilarity += similarity * weights[metric]
-    }
-    
-    return Math.round(totalSimilarity * 100)
-  }
-
-  /**
-   * Caesar cipher implementation
-   * @param {string} text - Text att koda/dekoda
-   * @param {number} shift - Antal steg att skifta
-   * @returns {string} - Kodad/dekodad text
-   */
-  #caesarCipher(text, shift) {
-    return text.replace(/[a-zA-Z]/g, char => {
-      const start = char <= 'Z' ? 65 : 97
-      return String.fromCharCode(((char.charCodeAt(0) - start + shift) % 26) + start)
-    })
-  }
-
-  /**
-   * Atbash cipher implementation
-   * @param {string} text - Text att koda/dekoda
-   * @returns {string} - Kodad/dekodad text
-   */
-  #atbashCipher(text) {
-    return text.replace(/[a-zA-Z]/g, char => {
-      if (char <= 'Z') {
-        return String.fromCharCode(90 - (char.charCodeAt(0) - 65))
-      } else {
-        return String.fromCharCode(122 - (char.charCodeAt(0) - 97))
-      }
-    })
-  }
-
-  /**
-   * Hittar gemensamma fraser mellan två texter
-   * @param {string} text1 - Första texten
-   * @param {string} text2 - Andra texten
-   * @returns {Array} - Lista med gemensamma fraser
-   */
-  #findCommonPhrases(text1, text2) {
-    const phrases1 = this.#extractPhrases(text1)
-    const phrases2 = this.#extractPhrases(text2)
-    
-    return phrases1.filter(phrase => 
-      phrases2.some(p2 => p2.toLowerCase() === phrase.toLowerCase()) && 
-      phrase.split(' ').length >= 3
-    ).slice(0, 10)
-  }
-
-  /**
-   * Extraherar fraser från text
-   * @param {string} text - Text att analysera
-   * @returns {Array} - Lista med fraser
-   */
-  #extractPhrases(text) {
-    const words = text.split(/\s+/)
-    const phrases = []
-    
-    for (let i = 0; i < words.length - 2; i++) {
-      phrases.push(words.slice(i, i + 3).join(' '))
-      if (i < words.length - 3) {
-        phrases.push(words.slice(i, i + 4).join(' '))
-      }
-    }
-    
-    return phrases
-  }
-
-  /**
-   * Genererar stilprofil baserat på metriker
-   * @param {object} metrics - Textmetriker
-   * @returns {Array} - Lista med stilbeskrivningar
-   */
-  #generateStyleProfile(metrics) {
-    const profile = []
-    
-    if (metrics.avgWordLength > 5.5) profile.push('Använder långa ord')
-    if (metrics.avgWordLength < 4) profile.push('Använder korta ord')
-    
-    if (metrics.avgSentenceLength > 20) profile.push('Skriver långa meningar')
-    if (metrics.avgSentenceLength < 10) profile.push('Skriver korta meningar')
-    
-    if (metrics.lexicalDiversity > 0.7) profile.push('Varierat ordförråd')
-    if (metrics.lexicalDiversity < 0.4) profile.push('Begränsat ordförråd')
-    
-    if (metrics.punctuationDensity > 0.1) profile.push('Använder mycket interpunktion')
-    if (metrics.punctuationDensity < 0.03) profile.push('Minimal interpunktion')
-    
-    return profile.length > 0 ? profile : ['Neutral skrivstil']
-  }
-
-  /**
-   * Beräknar unikhetsscore för skrivstil
-   * @param {object} metrics - Textmetriker
-   * @returns {number} - Unikhetsscore (0-100)
-   */
-  #calculateUniquenessScore(metrics) {
-    const score = (metrics.lexicalDiversity * 0.4) + 
-                  (Math.min(metrics.avgWordLength / 10, 1) * 0.3) +
-                  (Math.min(metrics.punctuationDensity * 10, 1) * 0.3)
-    return Math.round(score * 100)
-  }
-
-  /**
-   * Analyserar mellanslag-mönster
-   * @param {string} text - Text att analysera
-   * @returns {object} - Analys av mellanslag-mönster
-   */
-  #analyzeSpacePatterns(text) {
-    const multiSpaces = text.match(/\s{2,}/g) || []
-    return {
-      suspicious: multiSpaces.length > text.length * 0.02,
-      pattern: multiSpaces.join('|')
-    }
-  }
-
-  /**
-   * Kontrollerar om det finns mönster i radlängder
-   * @param {Array} lengths - Lista med radlängder
-   * @returns {boolean} - True om mönster hittas
-   */
-  #hasPatternInLengths(lengths) {
-    if (lengths.length < 5) return false
-    
-    // Kolla efter upprepande mönster
-    const pattern = lengths.slice(0, 3)
-    let matches = 0
-    
-    for (let i = 3; i < lengths.length - 2; i += 3) {
-      if (lengths.slice(i, i + 3).join(',') === pattern.join(',')) {
-        matches++
-      }
-    }
-    
-    return matches > 2
-  }
-
-  /**
-   * Analyserar interpunktionsmönster
-   * @param {string} text - Text att analysera
-   * @returns {object} - Analys av interpunktionsmönster
-   */
-  #analyzePunctuationPattern(text) {
-    const punctuation = text.match(/[.!?,:;]/g) || []
-    const pattern = punctuation.join('')
-    
-    // Kolla efter ovanliga mönster
-    const repeats = pattern.match(/(.)\1{2,}/g) || []
-    
-    return {
-      suspicious: repeats.length > 0,
-      pattern: pattern
+      paragraphCount: paragraphs.length,
+      characterCount: characters,
+      averageWordsPerSentence: sentences.length > 0 ? Math.round((words.length / sentences.length) * 100) / 100 : 0,
+      averageCharactersPerWord: words.length > 0 ? Math.round((characters / words.length) * 100) / 100 : 0
     }
   }
 }
+
+export default TextForensicsController
