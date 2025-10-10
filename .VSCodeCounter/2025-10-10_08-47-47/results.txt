@@ -1,0 +1,73 @@
+Date : 2025-10-10 08:47:47
+Directory : d:\1DV610\L3A\src
+Total : 41 files,  4463 codes, 1585 comments, 906 blanks, all 6954 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         41 |      4,463 |      1,585 |        906 |      6,954 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                 | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                    |         41 |      4,463 |      1,585 |        906 |      6,954 |
+| . (Files)                                                            |          1 |         37 |          1 |          9 |         47 |
+| controllers                                                          |          9 |      1,508 |        657 |        297 |      2,462 |
+| exampel                                                              |          3 |        122 |         20 |         25 |        167 |
+| routes                                                               |         10 |        630 |         50 |        128 |        808 |
+| services                                                             |         18 |      2,166 |        857 |        447 |      3,470 |
+| services (Files)                                                     |          4 |        223 |         77 |         34 |        334 |
+| services\forensics                                                   |          9 |      1,346 |        558 |        305 |      2,209 |
+| services\mood                                                        |          5 |        597 |        222 |        108 |        927 |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                             | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\1DV610\L3A\src\app.js                                             | JavaScript |         37 |          1 |          9 |         47 |
+| d:\1DV610\L3A\src\controllers\FormatterController.js                 | JavaScript |        168 |         83 |         36 |        287 |
+| d:\1DV610\L3A\src\controllers\MoodEngineController.js                | JavaScript |        125 |         53 |         30 |        208 |
+| d:\1DV610\L3A\src\controllers\ReverserController.js                  | JavaScript |         60 |         52 |         19 |        131 |
+| d:\1DV610\L3A\src\controllers\TextAnalyzerController.js              | JavaScript |         98 |         66 |         18 |        182 |
+| d:\1DV610\L3A\src\controllers\TextForensicsController.js             | JavaScript |        189 |         78 |         44 |        311 |
+| d:\1DV610\L3A\src\controllers\TextGamingController.js                | JavaScript |        257 |         81 |         45 |        383 |
+| d:\1DV610\L3A\src\controllers\TextSearcherController.js              | JavaScript |        166 |         87 |         30 |        283 |
+| d:\1DV610\L3A\src\controllers\TransformerController.js               | JavaScript |        221 |         74 |         33 |        328 |
+| d:\1DV610\L3A\src\controllers\WordOptimizerController.js             | JavaScript |        224 |         83 |         42 |        349 |
+| d:\1DV610\L3A\src\exampel\exampel1.js                                | JavaScript |         24 |          5 |          7 |         36 |
+| d:\1DV610\L3A\src\exampel\exampel2.js                                | JavaScript |         69 |          9 |         12 |         90 |
+| d:\1DV610\L3A\src\exampel\exampel3.js                                | JavaScript |         29 |          6 |          6 |         41 |
+| d:\1DV610\L3A\src\routes\analyzer.js                                 | JavaScript |         63 |          5 |         15 |         83 |
+| d:\1DV610\L3A\src\routes\formatter.js                                | JavaScript |         96 |          8 |         17 |        121 |
+| d:\1DV610\L3A\src\routes\moodEngine.js                               | JavaScript |         83 |          7 |         15 |        105 |
+| d:\1DV610\L3A\src\routes\reverser.js                                 | JavaScript |         70 |          5 |         13 |         88 |
+| d:\1DV610\L3A\src\routes\searcher.js                                 | JavaScript |         68 |          7 |         18 |         93 |
+| d:\1DV610\L3A\src\routes\textForensics.js                            | JavaScript |         83 |          7 |         14 |        104 |
+| d:\1DV610\L3A\src\routes\textGaming.js                               | JavaScript |         69 |          5 |         12 |         86 |
+| d:\1DV610\L3A\src\routes\transformer.js                              | JavaScript |         18 |          0 |          5 |         23 |
+| d:\1DV610\L3A\src\routes\upload.js                                   | JavaScript |         23 |          1 |          9 |         33 |
+| d:\1DV610\L3A\src\routes\wordOptimizer.js                            | JavaScript |         57 |          5 |         10 |         72 |
+| d:\1DV610\L3A\src\services\AdvancedReverser.js                       | JavaScript |         70 |         26 |         10 |        106 |
+| d:\1DV610\L3A\src\services\ComplexReverser.js                        | JavaScript |         73 |         11 |         11 |         95 |
+| d:\1DV610\L3A\src\services\ReverserValidator.js                      | JavaScript |         22 |         22 |          4 |         48 |
+| d:\1DV610\L3A\src\services\TextReverser.js                           | JavaScript |         58 |         18 |          9 |         85 |
+| d:\1DV610\L3A\src\services\forensics\AuthorshipAnalyzer.js           | JavaScript |        217 |         85 |         35 |        337 |
+| d:\1DV610\L3A\src\services\forensics\CipherDetector.js               | JavaScript |        183 |         71 |         37 |        291 |
+| d:\1DV610\L3A\src\services\forensics\ForensicsValidator.js           | JavaScript |         57 |         46 |         12 |        115 |
+| d:\1DV610\L3A\src\services\forensics\PlagiarismChecker.js            | JavaScript |        187 |         91 |         46 |        324 |
+| d:\1DV610\L3A\src\services\forensics\SteganographyAnalysis.js        | JavaScript |        152 |         59 |         34 |        245 |
+| d:\1DV610\L3A\src\services\forensics\SteganographyDetector.js        | JavaScript |         53 |         15 |         16 |         84 |
+| d:\1DV610\L3A\src\services\forensics\SteganographyDetectorHelpers.js | JavaScript |        125 |         37 |         31 |        193 |
+| d:\1DV610\L3A\src\services\forensics\SteganographyDetector_Old.js    | JavaScript |        328 |        132 |         82 |        542 |
+| d:\1DV610\L3A\src\services\forensics\SteganographyUtils.js           | JavaScript |         44 |         22 |         12 |         78 |
+| d:\1DV610\L3A\src\services\mood\EmotionDetector.js                   | JavaScript |        202 |         80 |         38 |        320 |
+| d:\1DV610\L3A\src\services\mood\MoodValidator.js                     | JavaScript |         46 |         33 |          8 |         87 |
+| d:\1DV610\L3A\src\services\mood\SentimentAnalyzer.js                 | JavaScript |         90 |         32 |         20 |        142 |
+| d:\1DV610\L3A\src\services\mood\SentimentDictionary.js               | JavaScript |         66 |         26 |         12 |        104 |
+| d:\1DV610\L3A\src\services\mood\StressAnalyzer.js                    | JavaScript |        193 |         51 |         30 |        274 |
+| Total                                                                |            |      4,463 |      1,585 |        906 |      6,954 |
++----------------------------------------------------------------------+------------+------------+------------+------------+------------+
