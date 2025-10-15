@@ -3,8 +3,8 @@
 
 /**
  * Formats API result for display.
- * @param {(string|object)} result - The result to display (string or object)
- * @returns {string} - Formatted result string
+ * @param {string|object} result - The result to display (string or object)
+ * @returns {string} Formatted result string
  */
 function formatResult(result) {
   if (typeof result === 'object' && result !== null) {
@@ -17,16 +17,22 @@ function formatResult(result) {
 }
 
 /**
- * Fetches result from API and displays it in the specified container.
- * @param {object} params - Parameters for the fetch and display
- * @param {string} params.url - API endpoint URL
- * @param {object} params.body - Request body to send
- * @param {string} params.resultsId - ID of the results container
- * @param {string} params.contentId - ID of the content div inside the container
- * @param {Function} [params.formatFn] - Optional function to format the result
+ * Fetches API data and displays it in the specified container.
+ * @param {object} options
+ * @param {string} options.url - API endpoint URL
+ * @param {object} options.body - Payload to send to API
+ * @param {string} options.resultsId - ID of the results container
+ * @param {string} options.contentId - ID of the content div inside the container
+ * @param {Function} [options.formatFn] - Optional function to format the result
  * @returns {Promise<void>}
  */
-async function fetchAndShowResult({ url, body, resultsId, contentId, formatFn }) {
+async function fetchAndShowResult({
+  url,
+  body,
+  resultsId,
+  contentId,
+  formatFn
+}) {
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -35,21 +41,34 @@ async function fetchAndShowResult({ url, body, resultsId, contentId, formatFn })
     })
     const data = await response.json()
 
-    if (response.ok) {
-      const resultText = formatFn ? formatFn(data) : data.result
-      showResults(resultsId, contentId, resultText)
-    } else {
-      showResults(resultsId, contentId, `[Global] Fel: ${data && data.error ? data.error : 'Oväntat fel.'} (status ${response.status})`)
-    }
+    const resultText = response.ok
+      ? (formatFn ? formatFn(data) : formatResult(data.result))
+      : `[Global] Fel: ${data && data.error ? data.error : 'Oväntat fel.'} (status ${response.status})`
+
+    showResults({
+      containerId: resultsId,
+      contentId: contentId,
+      content: resultText
+    })
   } catch (error) {
-    showResults(resultsId, contentId, `[Global] Fel: ${error.message}`)
+    showResults({
+      containerId: resultsId,
+      contentId: contentId,
+      content: `[Global] Fel: ${error.message}`
+    })
   }
 }
+
+// Globala funktioner för onclick-funktioner i UI
 
 window.callAnalyzer = async function(endpoint) {
   const text = getEditorText()
   if (!text) {
-    showResults('analyzerResults', 'analyzerResultsContent', 'Ingen text att analysera')
+    showResults({
+      containerId: 'analyzerResults',
+      contentId: 'analyzerResultsContent',
+      content: 'Ingen text att analysera'
+    })
     return
   }
   await fetchAndShowResult({
@@ -96,3 +115,4 @@ window.callSearcher = async function(endpoint) {
     formatFn: data => JSON.stringify(data.result)
   })
 }
+// export { formatResult}
