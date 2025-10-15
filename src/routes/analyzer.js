@@ -3,50 +3,59 @@ import { TextAnalyzer } from 'texttoolkit'
 
 const router = Router()
 
-// Text Analyzer endpoints using texttoolkit
-router.post('/countwords', (req, res) => {
-  const { text } = req.body
-  if (!text) return res.status(400).json({ error: 'No text provided.' })
+/**
+ * Helper för att skapa DRY och tydliga endpoints för TextAnalyzer-API.
+ * @param {object} options - Options object
+ * @param {function(TextAnalyzer, object): any} options.handler - Funktion för analysoperation
+ * @param {string[]} options.requiredFields - Vilka req.body-fält som krävs
+ * @param {string} options.methodName - Namnet på metoden (returneras i JSON)
+ * @param {string} [options.errorMessage] - Eget felmeddelande vid saknad input
+ * @returns {Function} Express-handler
+ */
+function analyzerEndpoint({ handler, requiredFields, methodName, errorMessage }) {
+  return (req, res) => {
+    const missing = requiredFields.filter(field => !req.body[field])
+    if (missing.length > 0) {
+      return res.status(400).json({ error: errorMessage || `Missing: ${missing.join(', ')}` })
+    }
+    const analyzer = new TextAnalyzer(req.body.text)
+    const result = handler(analyzer, req.body)
+    res.json({ result, method: methodName })
+  }
+}
 
-  const analyzer = new TextAnalyzer(text)
-  const count = analyzer.countWords()
-  res.json({ result: count, method: 'countWords' })
-})
+// Samtliga analyzer endpoints
 
-router.post('/countsentences', (req, res) => {
-  const { text } = req.body
-  if (!text) return res.status(400).json({ error: 'No text provided.' })
+router.post('/countwords', analyzerEndpoint({
+  handler: (analyzer) => analyzer.countWords(),
+  requiredFields: ['text'],
+  methodName: 'countWords'
+}))
 
-  const analyzer = new TextAnalyzer(text)
-  const count = analyzer.countSentences()
-  res.json({ result: count, method: 'countSentences' })
-})
+router.post('/countsentences', analyzerEndpoint({
+  handler: (analyzer) => analyzer.countSentences(),
+  requiredFields: ['text'],
+  methodName: 'countSentences'
+}))
 
-router.post('/countcharacters', (req, res) => {
-  const { text } = req.body
-  if (!text) return res.status(400).json({ error: 'No text provided.' })
+router.post('/countcharacters', analyzerEndpoint({
+  handler: (analyzer) => analyzer.countCharacters(),
+  requiredFields: ['text'],
+  methodName: 'countCharacters'
+}))
 
-  const analyzer = new TextAnalyzer(text)
-  const count = analyzer.countCharacters()
-  res.json({ result: count, method: 'countCharacters' })
-})
+router.post('/letterfrequency', analyzerEndpoint({
+  handler: (analyzer) => analyzer.letterFrequency(),
+  requiredFields: ['text'],
+  methodName: 'letterFrequency'
+}))
 
-router.post('/letterfrequency', (req, res) => {
-  const { text } = req.body
-  if (!text) return res.status(400).json({ error: 'No text provided.' })
+router.post('/findpalindromes', analyzerEndpoint({
+  handler: (analyzer) => analyzer.findPalindromes(),
+  requiredFields: ['text'],
+  methodName: 'findPalindromes'
+}))
 
-  const analyzer = new TextAnalyzer(text)
-  const frequency = analyzer.letterFrequency()
-  res.json({ result: frequency, method: 'letterFrequency' })
-})
-
-router.post('/findpalindromes', (req, res) => {
-  const { text } = req.body
-  if (!text) return res.status(400).json({ error: 'No text provided.' })
-
-  const analyzer = new TextAnalyzer(text)
-  const palindromes = analyzer.findPalindromes()
-  res.json({ result: palindromes, method: 'findPalindromes' })
-})
+// Lägg enkelt till fler analyzer endpoints på samma sätt
 
 export default router

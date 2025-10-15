@@ -8,23 +8,22 @@
   margin-bottom: 20px;
   font-family: monospace;
 }
+
 .categories {
   margin-bottom: 18px;
 }
+
 .categories button {
   margin-right: 8px;
   margin-bottom: 4px;
   padding: 6px 16px;
   font-size: 1em;
 }
+
 #methodList button {
   margin: 3px 6px 10px 0;
   padding: 6px 13px;
   font-size: .98em;
-}
-#methodList button.active {
-  background-color: #007bff;
-  color: white;
 }
 
 /* Module Container Styles */
@@ -49,46 +48,4 @@
 
 .module-container.transformer {
   background: linear-gradient(135deg, #fd7e14 0%, #e55d06 100%);
-}
-
-.module-container.reverser {
-  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-}
-
-.module-container.optimizer {
-  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-  color: #333;
-}
-
-.module-container.gaming {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-}
-
-.module-container.forensics {
-  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-}
-
-.module-container.mood {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* Result Display Styles */
-.result-success {
-  color: green;
-}
-
-.result-error {
-  color: red;
-}
-
-.result-content {
-  white-space: pre-wrap;
-}
-
-.mood-result {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin: 15px 0;
 }
