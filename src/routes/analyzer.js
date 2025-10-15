@@ -1,83 +1,52 @@
-
 import { Router } from 'express'
-import TextAnalyzerController from '../controllers/TextAnalyzerController.js'
+import { TextAnalyzer } from 'texttoolkit'
 
 const router = Router()
-const analyzerController = new TextAnalyzerController()
 
-// Räkna tecken (inklusive mellanslag)
-router.post('/countcharacters', async (req, res) => {
-  const { text } = req.body || {}
-  if (!text) return res.status(400).json({ error: 'Text is missing' })
-  
-  const result = await analyzerController.countCharacters(text, true)
-  if (!result.success) {
-    return res.status(400).json({ error: result.error })
-  }
-  res.json({ count: result.count })
+// Text Analyzer endpoints using texttoolkit
+router.post('/countwords', (req, res) => {
+  const { text } = req.body
+  if (!text) return res.status(400).json({ error: 'No text provided.' })
+
+  const analyzer = new TextAnalyzer(text)
+  const count = analyzer.countWords()
+  res.json({ result: count, method: 'countWords' })
 })
 
-// Bokstavsfrekvens
-router.post('/letterfrequency', async (req, res) => {
-  const { text } = req.body || {}
-  if (!text) return res.status(400).json({ error: 'Text is missing' })
-  
-  const result = await analyzerController.getLetterFrequency(text)
-  if (!result.success) {
-    return res.status(400).json({ error: result.error })
-  }
-  res.json({ frequency: result.frequency })
+router.post('/countsentences', (req, res) => {
+  const { text } = req.body
+  if (!text) return res.status(400).json({ error: 'No text provided.' })
+
+  const analyzer = new TextAnalyzer(text)
+  const count = analyzer.countSentences()
+  res.json({ result: count, method: 'countSentences' })
 })
 
-// Hitta palindromer
-router.post('/findpalindromes', async (req, res) => {
-  const { text } = req.body || {}
-  if (!text) return res.status(400).json({ error: 'Text is missing' })
-  
-  const result = await analyzerController.findPalindromes(text)
-  if (!result.success) {
-    return res.status(400).json({ error: result.error })
-  }
-  res.json({ palindromes: result.palindromes })
+router.post('/countcharacters', (req, res) => {
+  const { text } = req.body
+  if (!text) return res.status(400).json({ error: 'No text provided.' })
+
+  const analyzer = new TextAnalyzer(text)
+  const count = analyzer.countCharacters()
+  res.json({ result: count, method: 'countCharacters' })
 })
 
-router.post('/countwords', async (req, res) => {
-  const { text, word } = req.body || {}
-  if (!text || !word) {
-    return res.status(400).json({ error: 'Text eller ord saknas' })
-  }
-  
-  const result = await analyzerController.countWordOccurrences(text, word)
-  if (!result.success) {
-    return res.status(400).json({ error: result.error })
-  }
-  res.json({ count: result.count })
+router.post('/letterfrequency', (req, res) => {
+  const { text } = req.body
+  if (!text) return res.status(400).json({ error: 'No text provided.' })
+
+  const analyzer = new TextAnalyzer(text)
+  const frequency = analyzer.letterFrequency()
+  res.json({ result: frequency, method: 'letterFrequency' })
 })
 
-// Räkna alla ord i texten
-router.post('/counttotalwords', async (req, res) => {
-  const { text } = req.body || {}
-  if (!text) {
-    return res.status(400).json({ error: 'Text saknas' })
-  }
-  
-  const result = await analyzerController.countTotalWords(text)
-  if (!result.success) {
-    return res.status(400).json({ error: result.error })
-  }
-  res.json({ count: result.count })
-})
+router.post('/findpalindromes', (req, res) => {
+  const { text } = req.body
+  if (!text) return res.status(400).json({ error: 'No text provided.' })
 
-// Räkna meningar i texten
-router.post('/countsentences', async (req, res) => {
-  const { text } = req.body || {}
-  if (!text) return res.status(400).json({ error: 'Text is missing' })
-  
-  const result = await analyzerController.countSentences(text)
-  if (!result.success) {
-    return res.status(400).json({ error: result.error })
-  }
-  res.json({ count: result.count })
+  const analyzer = new TextAnalyzer(text)
+  const palindromes = analyzer.findPalindromes()
+  res.json({ result: palindromes, method: 'findPalindromes' })
 })
 
 export default router

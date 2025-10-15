@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="sv">
+
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/style.css">
   <title>Visar innehåll i textfil</title>
 </head>
+
 <body>
   <div class="categories">
-    <button type="button" onclick="showMethods('TextAnalyzer')" style="background: #007bff; color: white;">📊 Text Analyzer</button>
-    <button type="button" onclick="showMethods('TextFormatter')" style="background: #6f42c1; color: white;">🎨 Text Formatter</button>
-    <button type="button" onclick="showMethods('TextTransformer')" style="background: #fd7e14; color: white;">🔄 Text Transformer</button>
-    <button type="button" onclick="showMethods('TextSearcher')" style="background: #20c997; color: white;">🔍 Text Searcher</button>
-    <button type="button" onclick="showMethods('WordOptimizer')" style="background: #ffc107; color: #333;">✨ Writing Assistant</button>
-    <button type="button" onclick="showMethods('TextGaming')" style="background: #dc3545; color: white;">🎮 Text Gaming Hub</button>
-    <button type="button" onclick="showMethods('TextForensics')" style="background: #17a2b8; color: white;">🕵️ Text Forensics</button>
-    <button type="button" onclick="showMethods('MoodEngine')" style="background: #667eea; color: white;">🎭 Mood & Emotion Engine</button>
-    <button type="button" onclick="showMethods('TextReverser')" style="background: #6c757d; color: white;">↩️ Text Reverser</button>
+    <button type="button" onclick="showMethods('TextAnalyzer')" style="background: #007bff; color: white;">📊 Text
+      Analyzer</button>
+    <button type="button" onclick="showMethods('TextFormatter')" style="background: #6f42c1; color: white;">🎨 Text
+      Formatter</button>
+    <button type="button" onclick="showMethods('TextTransformer')" style="background: #fd7e14; color: white;">🔄 Text
+      Transformer</button>
+    <button type="button" onclick="showMethods('TextSearcher')" style="background: #20c997; color: white;">🔍 Text
+      Searcher</button>
   </div>
 
   <h2>Text content "<%= filename %>"</h2>
@@ -28,7 +29,9 @@
   <script src="/js/utilities/dom-helpers.js"></script>
   <script src="/js/utilities/display-helpers.js"></script>
   <script src="/js/utilities/interaction-helpers.js"></script>
+  <script src="/js/global-functions.js"></script>
   <script type="module" src="/js/showFile.js"></script>
 
 </body>
+
 </html>

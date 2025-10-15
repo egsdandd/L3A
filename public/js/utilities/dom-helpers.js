@@ -72,3 +72,7 @@ function setElementContent(elementId, content) {
   
   element.innerHTML = content
 }
+
+// Gör funktionerna globalt tillgängliga för ES6-moduler
+window.getEditorText = getEditorText
+window.setElementContent = setElementContent

@@ -59,3 +59,8 @@ function fallbackCopyToClipboard(text, successMessage) {
   
   document.body.removeChild(textArea)
 }
+
+// Gör funktionerna globalt tillgängliga för ES6-moduler
+window.validateTextLength = validateTextLength
+window.copyToClipboard = copyToClipboard
+window.fallbackCopyToClipboard = fallbackCopyToClipboard

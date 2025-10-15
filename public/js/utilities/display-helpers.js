@@ -46,3 +46,8 @@ function getButtonStyle(backgroundColor, textColor, borderColor = null) {
 function getGridContainerStyle(minWidth = '200px', gap = '15px') {
   return `display: grid; grid-template-columns: repeat(auto-fit, minmax(${minWidth}, 1fr)); gap: ${gap}; margin: 20px 0;`
 }
+
+// Gör funktionerna globalt tillgängliga för ES6-moduler
+window.showResults = showResults
+window.getButtonStyle = getButtonStyle
+window.getGridContainerStyle = getGridContainerStyle

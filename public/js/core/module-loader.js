@@ -18,21 +18,6 @@ export async function loadModules() {
 
     const transformerModule = await import('../transformerUI.js')
     methods.TextTransformer = transformerModule.transformerMethods
-
-    const reverserModule = await import('../reverserUI.js')
-    methods.TextReverser = reverserModule.reverserMethods
-
-    const wordOptimizerModule = await import('../wordOptimizerUI.js')
-    methods.WordOptimizer = wordOptimizerModule.wordOptimizerMethods
-
-    const textGamingModule = await import('../textGamingUI.js')
-    methods.TextGaming = textGamingModule.textGamingMethods
-
-    const textForensicsModule = await import('../textForensicsUI.js')
-    methods.TextForensics = textForensicsModule.textForensicsMethods
-
-    const moodEngineModule = await import('../moodEngineUI.js')
-    methods.MoodEngine = moodEngineModule.moodEngineMethods
   } catch (error) {
     console.error('Error loading modules:', error)
   }
@@ -64,26 +49,6 @@ export async function loadSingleModule(category) {
       case 'TextTransformer':
         moduleFile = '../transformerUI.js'
         methodsProperty = 'transformerMethods'
-        break
-      case 'TextReverser':
-        moduleFile = '../reverserUI.js'
-        methodsProperty = 'reverserMethods'
-        break
-      case 'WordOptimizer':
-        moduleFile = '../wordOptimizerUI.js'
-        methodsProperty = 'wordOptimizerMethods'
-        break
-      case 'TextGaming':
-        moduleFile = '../textGamingUI.js'
-        methodsProperty = 'textGamingMethods'
-        break
-      case 'TextForensics':
-        moduleFile = '../textForensicsUI.js'
-        methodsProperty = 'textForensicsMethods'
-        break
-      case 'MoodEngine':
-        moduleFile = '../moodEngineUI.js'
-        methodsProperty = 'moodEngineMethods'
         break
       default:
         throw new Error(`Unknown category: ${category}`)
