@@ -1,64 +1,46 @@
-// Module loader - Handles dynamic importing of UI modules
-
+// Module loader – Dynamically imports UI feature modules
 export const methods = {}
 
+const moduleMap = {
+  TextAnalyzer: { file: '../analyzerUI.js', property: 'analyzerMethods' },
+  TextSearcher: { file: '../searcherUI.js', property: 'searcherMethods' },
+  TextFormatter: { file: '../formatterUI.js', property: 'formatterMethods' },
+  TextTransformer: { file: '../transformerUI.js', property: 'transformerMethods' }
+}
+
 /**
- *
+ * Loads all modules dynamically and stores their methods.
+ * @async
+ * @returns {Promise<void>}
  */
 export async function loadModules() {
   try {
-    const analyzerModule = await import('../analyzerUI.js')
-    methods.TextAnalyzer = analyzerModule.analyzerMethods
-
-    const searcherModule = await import('../searcherUI.js')
-    methods.TextSearcher = searcherModule.searcherMethods
-
-    const formatterModule = await import('../formatterUI.js')
-    methods.TextFormatter = formatterModule.formatterMethods
-
-    const transformerModule = await import('../transformerUI.js')
-    methods.TextTransformer = transformerModule.transformerMethods
+    for (const [category, { file, property }] of Object.entries(moduleMap)) {
+      const module = await import(file)
+      methods[category] = module[property]
+    }
   } catch (error) {
-    console.error('Error loading modules:', error)
+    console.error('[ModuleLoader] Failed loading modules:', error)
   }
 }
 
-// Ladda enskild modul vid behov
 /**
- *
- * @param category
+ * Loads a single module dynamically by category.
+ * @async
+ * @param {string} category - The module category (e.g. 'TextAnalyzer').
+ * @returns {Promise<object>} The loaded module’s methods
+ * @throws {Error} If category is unknown or module loading fails.
  */
 export async function loadSingleModule(category) {
   try {
-    let moduleFile = ''
-    let methodsProperty = ''
-    
-    switch(category) {
-      case 'TextAnalyzer':
-        moduleFile = '../analyzerUI.js'
-        methodsProperty = 'analyzerMethods'
-        break
-      case 'TextSearcher':
-        moduleFile = '../searcherUI.js'
-        methodsProperty = 'searcherMethods'
-        break
-      case 'TextFormatter':
-        moduleFile = '../formatterUI.js'
-        methodsProperty = 'formatterMethods'
-        break
-      case 'TextTransformer':
-        moduleFile = '../transformerUI.js'
-        methodsProperty = 'transformerMethods'
-        break
-      default:
-        throw new Error(`Unknown category: ${category}`)
-    }
-    
-    const module = await import(moduleFile)
-    methods[category] = module[methodsProperty]
-    
+    const moduleInfo = moduleMap[category]
+    if (!moduleInfo) throw new Error(`Unknown category: ${category}`)
+
+    const module = await import(moduleInfo.file)
+    methods[category] = module[moduleInfo.property]
+    return methods[category]
   } catch (error) {
-    console.error(`Error loading ${category}:`, error)
+    console.error(`[ModuleLoader] Error loading ${category}:`, error)
     throw error
   }
 }

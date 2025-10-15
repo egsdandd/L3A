@@ -1,10 +1,9 @@
 // UI Renderer - Handles rendering of UI components and error messages
 import { methods } from './module-loader.js'
 
-// Visa felmeddelande om modul inte kan laddas
 /**
- *
- * @param category
+ * Shows an error message when a module can't be loaded.
+ * @param {string} category - The module/category that failed to load.
  */
 export function showErrorMessage(category) {
   const container = document.getElementById('methodList')
@@ -22,52 +21,42 @@ export function showErrorMessage(category) {
   }
 }
 
-// Funktion för att rendera metodknappar
+// Definiera matchning mellan modulnamn och komponentfunktion
+const uiComponentMap = {
+  TextAnalyzer: 'Text Analyzer',
+  TextSearcher: 'Text Searcher',
+  TextFormatter: 'Text Formatter',
+  TextTransformer: 'Text Transformer',
+  TextReverser: 'Text Reverser',
+  WordOptimizer: 'Word Choice Optimizer',
+  TextGaming: 'Text Gaming Hub',
+  TextForensics: 'Text Forensics Detective',
+  MoodEngine: 'Mood & Emotion Engine',
+}
+
 /**
- *
- * @param moduleType
+ * Renders buttons/methods for a given moduleType.
+ * @param {string} moduleType - The type/category of the module.
  */
 export function renderMethods(moduleType) {
   const container = document.getElementById('methodList')
   if (!container) return
 
   container.innerHTML = ''
-  
+
   if (methods[moduleType]) {
-    // Alla moderniserade moduler använder UI-komponent struktur
-    if (moduleType === 'TextAnalyzer' || moduleType === 'TextSearcher' || 
-        moduleType === 'TextFormatter' || moduleType === 'TextTransformer' || 
-        moduleType === 'TextReverser' || moduleType === 'WordOptimizer' || 
-        moduleType === 'TextGaming' || moduleType === 'TextForensics' || 
-        moduleType === 'MoodEngine') {
-      
-      let uiComponent
-      
-      if (moduleType === 'TextAnalyzer') {
-        uiComponent = methods[moduleType]['Text Analyzer']()
-      } else if (moduleType === 'TextSearcher') {
-        uiComponent = methods[moduleType]['Text Searcher']()
-      } else if (moduleType === 'TextFormatter') {
-        uiComponent = methods[moduleType]['Text Formatter']()
-      } else if (moduleType === 'TextTransformer') {
-        uiComponent = methods[moduleType]['Text Transformer']()
-      } else if (moduleType === 'TextReverser') {
-        uiComponent = methods[moduleType]['Text Reverser']()
-      } else if (moduleType === 'WordOptimizer') {
-        uiComponent = methods[moduleType]['Word Choice Optimizer']()
-      } else if (moduleType === 'TextGaming') {
-        uiComponent = methods[moduleType]['Text Gaming Hub']()
-      } else if (moduleType === 'TextForensics') {
-        uiComponent = methods[moduleType]['Text Forensics Detective']()
-      } else if (moduleType === 'MoodEngine') {
-        uiComponent = methods[moduleType]['Mood & Emotion Engine']()
-      }
-      
-      if (uiComponent) {
-        container.appendChild(uiComponent)
-      }
+    // Använd map istället för lång if/else
+    const componentName = uiComponentMap[moduleType]
+    let uiComponent = null
+
+    if (componentName && typeof methods[moduleType][componentName] === 'function') {
+      uiComponent = methods[moduleType][componentName]()
+    }
+
+    if (uiComponent) {
+      container.appendChild(uiComponent)
     } else {
-      // Fallback för moduler som inte är konverterade än
+      // Fallback om modulen inte är konverterad eller komponent saknas
       container.innerHTML = `
         <div style="padding: 40px; text-align: center; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; color: #495057;">
           <h2>🚧 Modul under uppgradering</h2>
@@ -79,27 +68,25 @@ export function renderMethods(moduleType) {
   }
 }
 
-// Funktion för att aktivera Writing Assistant
 /**
- *
+ * Activates the Writing Assistant by rendering WordOptimizer methods.
  */
 export function activateWritingAssistant() {
   renderMethods('WordOptimizer')
 }
 
-// Backup-funktion för moduler som inte konverterats än
 /**
- *
- * @param category
+ * Shows a backup message for modules under development.
+ * @param {string} category - The module/category name.
  */
 export function showBackupModule(category) {
   const colors = {
     TextForensics: '#17a2b8',
     MoodEngine: '#667eea'
   }
-  
+
   const color = colors[category] || '#6c757d'
-  
+
   const container = document.getElementById('methodList')
   if (container) {
     container.innerHTML = `
