@@ -2,8 +2,9 @@
 // These functions need to be available globally for HTML onclick attributes
 
 /**
- *
- * @param result
+ * Displays results in a specified container
+ * @param {(string|object)} result - The result to display (string or object)
+ * @returns {string} - Formatted result string  
  */
 function formatResult(result) {
   if (typeof result === 'object' && result !== null) {

@@ -3,7 +3,8 @@ export const transformerMethods = {
 }
 
 /**
- *
+ * Creates the UI for the text transformer module
+ * @returns {HTMLElement}
  */
 function createTransformerInterface() {
   const container = document.createElement('div')

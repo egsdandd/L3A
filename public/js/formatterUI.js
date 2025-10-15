@@ -3,7 +3,8 @@ export const formatterMethods = {
 }
 
 /**
- *
+ * Creates the UI for the text formatter module
+ * @returns {HTMLElement}
  */
 function createFormatterInterface() {
   const container = document.createElement('div')

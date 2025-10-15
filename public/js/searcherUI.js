@@ -3,7 +3,8 @@ export const searcherMethods = {
 }
 
 /**
- *
+ * Creates the UI for the text searcher module
+ * @returns {HTMLElement}
  */
 function createSearcherInterface() {
   const container = document.createElement('div')

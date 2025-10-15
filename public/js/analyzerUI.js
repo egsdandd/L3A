@@ -5,7 +5,8 @@ export const analyzerMethods = {
 }
 
 /**
- *
+ * Generates the HTML for the text analyzer interface
+ * @returns {string}
  */
 function generateAnalyzerInterfaceHTML() {
   return `
@@ -24,7 +25,8 @@ function generateAnalyzerInterfaceHTML() {
 }
 
 /**
- *
+ * Creates the buttons for the text analyzer module 
+ * @returns {string}
  */
 function generateAnalyzerButtonsHTML() {
   return `
@@ -49,7 +51,8 @@ function generateAnalyzerButtonsHTML() {
 }
 
 /**
- *
+ * Creates the UI for the text analyzer module
+ * @returns {HTMLElement}
  */
 function createTexttoolkitAnalyzerInterface() {
   const container = document.createElement('div')
