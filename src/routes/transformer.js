@@ -36,7 +36,7 @@ router.post('/removewords', (req, res) => {
 })
 
 router.post('/filterwords', (req, res) => {
-  const { text, filterFunc } = req.body
+  const { text} = req.body
   if (!text) return res.status(400).json({ error: 'No text provided.' })
 
   const transformer = new TextTransformer(text)

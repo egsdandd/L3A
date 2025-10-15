@@ -2,6 +2,9 @@ export const searcherMethods = {
   'Text Searcher': () => createSearcherInterface()
 }
 
+/**
+ *
+ */
 function createSearcherInterface() {
   const container = document.createElement('div')
   container.innerHTML = `

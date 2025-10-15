@@ -1,0 +1,54 @@
+Date : 2025-10-15 12:46:36
+Directory : e:\1DV610\L3A\src
+Total : 19 files,  -284 codes, -100 comments, -16 blanks, all -400 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| HTML       |          1 |        -14 |         -1 |         -1 |        -16 |
+| PostCSS    |          1 |        -78 |         -2 |        -14 |        -94 |
+| JavaScript |         17 |       -192 |        -97 |         -1 |       -290 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                     | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                        |         19 |       -284 |       -100 |        -16 |       -400 |
+| . (Files)                                                |          1 |         27 |          3 |          8 |         38 |
+| ..                                                       |         13 |       -541 |       -109 |        -91 |       -741 |
+| ..\public                                                |         13 |       -541 |       -109 |        -91 |       -741 |
+| ..\public (Files)                                        |          2 |        -92 |         -3 |        -15 |       -110 |
+| ..\public\js                                             |         11 |       -449 |       -106 |        -76 |       -631 |
+| ..\public\js (Files)                                     |          6 |       -217 |         -8 |        -28 |       -253 |
+| ..\public\js\core                                        |          2 |       -130 |        -31 |        -20 |       -181 |
+| ..\public\js\utilities                                   |          3 |       -102 |        -67 |        -28 |       -197 |
+| routes                                                   |          5 |        230 |          6 |         67 |        303 |
++----------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                 | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------+------------+------------+------------+------------+------------+
+| e:\1DV610\L3A\public\index.html                          | HTML       |        -14 |         -1 |         -1 |        -16 |
+| e:\1DV610\L3A\public\js\analyzerUI.js                    | JavaScript |        -44 |         -1 |         -6 |        -51 |
+| e:\1DV610\L3A\public\js\core\module-loader.js            | JavaScript |        -46 |         -9 |         -9 |        -64 |
+| e:\1DV610\L3A\public\js\core\ui-renderer.js              | JavaScript |        -84 |        -22 |        -11 |       -117 |
+| e:\1DV610\L3A\public\js\formatterUI.js                   | JavaScript |        -23 |          0 |         -2 |        -25 |
+| e:\1DV610\L3A\public\js\global-functions.js              | JavaScript |        -86 |         -2 |        -11 |        -99 |
+| e:\1DV610\L3A\public\js\searcherUI.js                    | JavaScript |        -24 |          0 |         -2 |        -26 |
+| e:\1DV610\L3A\public\js\showFile.js                      | JavaScript |        -18 |         -5 |         -5 |        -28 |
+| e:\1DV610\L3A\public\js\transformerUI.js                 | JavaScript |        -22 |          0 |         -2 |        -24 |
+| e:\1DV610\L3A\public\js\utilities\display-helpers.js     | JavaScript |        -23 |        -23 |         -7 |        -53 |
+| e:\1DV610\L3A\public\js\utilities\dom-helpers.js         | JavaScript |        -39 |        -24 |        -15 |        -78 |
+| e:\1DV610\L3A\public\js\utilities\interaction-helpers.js | JavaScript |        -40 |        -20 |         -6 |        -66 |
+| e:\1DV610\L3A\public\style.css                           | PostCSS    |        -78 |         -2 |        -14 |        -94 |
+| e:\1DV610\L3A\src\app.js                                 | JavaScript |         27 |          3 |          8 |         38 |
+| e:\1DV610\L3A\src\routes\analyzer.js                     | JavaScript |         39 |          1 |         12 |         52 |
+| e:\1DV610\L3A\src\routes\formatter.js                    | JavaScript |         60 |          1 |         18 |         79 |
+| e:\1DV610\L3A\src\routes\searcher.js                     | JavaScript |         58 |          1 |         14 |         73 |
+| e:\1DV610\L3A\src\routes\transformer.js                  | JavaScript |         50 |          2 |         14 |         66 |
+| e:\1DV610\L3A\src\routes\upload.js                       | JavaScript |         23 |          1 |          9 |         33 |
+| Total                                                    |            |       -284 |       -100 |        -16 |       -400 |
++----------------------------------------------------------+------------+------------+------------+------------+------------+

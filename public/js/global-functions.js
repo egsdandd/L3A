@@ -1,6 +1,10 @@
 // Global functions - Available to all onclick handlers
 // These functions need to be available globally for HTML onclick attributes
 
+/**
+ *
+ * @param result
+ */
 function formatResult(result) {
   if (typeof result === 'object' && result !== null) {
     if (Array.isArray(result)) {

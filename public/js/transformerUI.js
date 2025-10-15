@@ -2,6 +2,9 @@ export const transformerMethods = {
   'Text Transformer': () => createTransformerInterface()
 }
 
+/**
+ *
+ */
 function createTransformerInterface() {
   const container = document.createElement('div')
   container.innerHTML = `

@@ -2,6 +2,9 @@ export const formatterMethods = {
   'Text Formatter': () => createFormatterInterface()
 }
 
+/**
+ *
+ */
 function createFormatterInterface() {
   const container = document.createElement('div')
   container.innerHTML = `

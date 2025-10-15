@@ -24,38 +24,6 @@ function getEditorText(allowEmpty = false) {
   return text
 }
 
-/**
- * Gets value from an input element by ID
- * @param {string} elementId - ID of the input element
- * @param {string} defaultValue - Default value if element not found (default: '')
- * @returns {string} - The input value or default value
- */
-function getInputValue(elementId, defaultValue = '') {
-  const element = document.getElementById(elementId)
-  
-  if (!element) {
-    console.error(`Input element not found: ${elementId}`)
-    return defaultValue
-  }
-  
-  return element.value || defaultValue
-}
-
-/**
- * Sets value for an input element by ID
- * @param {string} elementId - ID of the input element
- * @param {string} value - Value to set
- */
-function setInputValue(elementId, value) {
-  const element = document.getElementById(elementId)
-  
-  if (!element) {
-    console.error(`Input element not found: ${elementId}`)
-    return
-  }
-  
-  element.value = value
-}
 
 /**
  * Sets content for any element by ID

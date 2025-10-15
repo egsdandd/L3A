@@ -4,6 +4,9 @@ export const analyzerMethods = {
   'Text Analyzer': () => createTexttoolkitAnalyzerInterface()
 }
 
+/**
+ *
+ */
 function generateAnalyzerInterfaceHTML() {
   return `
     <div class="module-container analyzer">
@@ -20,6 +23,9 @@ function generateAnalyzerInterfaceHTML() {
   `
 }
 
+/**
+ *
+ */
 function generateAnalyzerButtonsHTML() {
   return `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
@@ -42,6 +48,9 @@ function generateAnalyzerButtonsHTML() {
   `
 }
 
+/**
+ *
+ */
 function createTexttoolkitAnalyzerInterface() {
   const container = document.createElement('div')
   container.innerHTML = generateAnalyzerInterfaceHTML()
