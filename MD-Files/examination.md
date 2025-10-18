@@ -85,7 +85,7 @@ Jag implementerade ett service layer (`/src/services/`) för att minska risken f
 
 ### Git-Användning
 
-Jag har aktivt använt Git för att dokumentera processen. 
+Jag har aktivt använt Git för att dokumentera processen.
 
 ## Reflektion
 
@@ -94,7 +94,6 @@ Att implementera testerna tidigt gjorde refaktorering enklare att test.]
 
 **Vad var utmanande?**
 Att bryta ner och få med alla clean code regler.
-
 
 **Vad skulle jag gjort annorlunda?**
 Jag skulle ha lagt mer tid på designen för att få in mer OOD men jag var så inne i tänket från L2 så det blev inte så.
