@@ -6,7 +6,7 @@ Denna testplan täcker alla funktionella krav för L3A applikationen efter Clean
 
 ## Testmiljö
 
-- **URL**: http://localhost:3000
+- **URL**: <http://localhost:3000>
 
 - **Browser**: Chrome/Firefox/Edge
 - **Node.js Version**: 18+
@@ -46,20 +46,16 @@ Denna testplan täcker alla funktionella krav för L3A applikationen efter Clean
 | T021 | Case-sensitive sökning | TextSearcher | Sök: "HEJ" (case-sensitive) i "Hej" | Ingen träff hittas | ⏳ |
 | T022 | Regex sökning | TextSearcher | Regex: "[0-9]+" i text med siffror | Siffror hittas och markeras | ⏳ |
 | T023 | Ersätt funktion | TextSearcher | Ersätt "hej" med "hallå" | Text uppdateras korrekt | ⏳ |
-|
 | **CLEAN CODE ARKITEKTUR** | | | | | |
 | T024 | Modulariserad struktur | System | Kontrollera filstruktur | Alla moduler under 150 rader | ⏳ |
-| T025 | Gaming moduler fungerar | TextGaming | Testa alla gaming funktioner | Alla spel från gaming/ mappen fungerar | ⏳ |
-| T026 | Mood moduler fungerar | MoodEngine | Testa alla mood funktioner | Alla analyser från mood/ mappen fungerar | ⏳ |
-| T027 | Forensics moduler fungerar | TextForensics | Testa alla forensics funktioner | Alla analyser från forensics/ mappen fungerar | ⏳ |
-| T028 | Core moduler fungerar | System | Testa modul-laddning | module-loader och ui-renderer fungerar | ⏳ |
-| T029 | Utilities moduler fungerar | System | Testa utility funktioner | dom-helpers, display-helpers fungerar | ⏳ |
+| T025 | Core moduler fungerar | System | Testa modul-laddning | module-loader och ui-renderer fungerar | ⏳ |
+| T026 | Utilities moduler fungerar | System | Testa utility funktioner | dom-helpers, display-helpers fungerar | ⏳ |
 | **FELHANTERING & GRÄNSER** | | | | | |
-| T030 | Tom text hantering | Alla moduler | Tom sträng som input | Lämpligt felmeddelande eller hantering | ⏳ |
-| T031 | Mycket lång text | Alla moduler | Text >10,000 tecken | Prestanda acceptabel, inga krascher | ⏳ |
-| T032 | Specialtecken hantering | Alla moduler | Text med åäö, emojis, symboler | Korrekt hantering av Unicode | ⏳ |
-| T033 | Modulfel hantering | System | Om modul inte kan laddas | Felmeddelande visas elegantly | ⏳ |
-| T034 | Nätverksfel hantering | Alla moduler | När backend inte svarar | Timeout-hantering och felmeddelande | ⏳ |
+| T027 | Tom text hantering | Alla moduler | Tom sträng som input | Lämpligt felmeddelande eller hantering | ⏳ |
+| T028 | Mycket lång text | Alla moduler | Text >10,000 tecken | Prestanda acceptabel, inga krascher | ⏳ |
+| T029 | Specialtecken hantering | Alla moduler | Text med åäö, emojis, symboler | Korrekt hantering av Unicode | ⏳ |
+| T030 | Modulfel hantering | System | Om modul inte kan laddas | Felmeddelande visas elegantly | ⏳ |
+| T031 | Nätverksfel hantering | Alla moduler | När backend inte svarar | Timeout-hantering och felmeddelande | ⏳ |
 
 ---
 
@@ -97,9 +93,9 @@ Denna testplan täcker alla funktionella krav för L3A applikationen efter Clean
 
 **Sammanfattning**:
 
-- Totalt antal tester: 34
-- Godkända: ___/34
-- Misslyckade: ___/34
+- Totalt antal tester: 31
+- Godkända: ___/31
+- Misslyckade: ___/31
 - Kritiska fel: ___
 
 **Kommentarer**:

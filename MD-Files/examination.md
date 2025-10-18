@@ -62,15 +62,15 @@ Din arkitektur är **lättare att testa, förstå och underhålla** än traditio
 
 **"Funktionell programmering med ES Modules är den moderna vägen att bygga maintainable JavaScript-applikationer."** 🚀📝✨
 
-Det var ju kanske inte så uppgiften var formulerad men så blev det...
+Det var ju kanske inte så uppgiften var formulerad men så blev det... det skulle ta mycket arbete att göra om koden nu. Jag tog en modul TextAnalysisService och gjorde om men min AI sa att den todde de skulle ta mig 5 dagar att göra om allt. Den tyckte inte min struktur dög...
 
 ## Uppfyllda Krav
 
 Följande krav från projektbeskrivningen har uppfyllts:
 
-1. **[Krav 1]:** Fullständig CRUD-funktionalitet för resursen `[Resursnamn]`. (Se API_REFERENCE.md)
-2. **[Krav 2]:** Använder Node.js med Express. (Se package.json och ARCHITECTURE.md)
-3. **[Krav 3]:** Dokumentation riktad mot målgrupper (Slutanvändare, Apputvecklare, etc.). (Se denna filstruktur)
+1. **[Krav 1]:** Fullständig uppdelning i L2M, L2T och L3A
+2. **[Krav 2]:** Automatisk testning
+3. **[Krav 3]:** Dokumentation riktad mot målgrupper (Slutanvändare, Apputvecklare, Examinator - har fått denna filen, etc.).
 4. **[Krav 4]:** Enhetstester med [Testramverk, t.ex. Jest] för kärnlogiken. (Se `npm test`)
 
 ## Designval & Motivering
@@ -90,10 +90,10 @@ Jag har aktivt använt Git för att dokumentera processen.
 ## Reflektion
 
 **Vad fungerade bra?**
-Att implementera testerna tidigt gjorde refaktorering enklare att test.]
+Att implementera testerna tidigt gjorde refaktorering enklare att testa.
 
 **Vad var utmanande?**
-Att bryta ner och få med alla clean code regler.
+Att bryta ner och få med alla clean code regler. Det krävdes en del omstrukturering.
 
 **Vad skulle jag gjort annorlunda?**
 Jag skulle ha lagt mer tid på designen för att få in mer OOD men jag var så inne i tänket från L2 så det blev inte så.
