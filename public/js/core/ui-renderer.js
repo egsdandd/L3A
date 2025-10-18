@@ -1,5 +1,4 @@
 // UI Renderer - Handles rendering of UI components and error messages
-import { methods } from './module-loader.js'
 
 /**
  * Shows an error message when a module can't be loaded.
@@ -44,28 +43,36 @@ export function renderMethods(moduleType) {
 
   container.innerHTML = ''
 
-  if (methods[moduleType]) {
-    // Använd map istället för lång if/else
-    const componentName = uiComponentMap[moduleType]
-    let uiComponent = null
+  // Importera methods dynamiskt för att undvika circular dependencies
+  import('./module-loader.js').then(moduleLoader => {
+    const methods = moduleLoader.methods
+    
+    if (methods[moduleType]) {
+      // Använd map istället för lång if/else
+      const componentName = uiComponentMap[moduleType]
+      let uiComponent = null
 
-    if (componentName && typeof methods[moduleType][componentName] === 'function') {
-      uiComponent = methods[moduleType][componentName]()
-    }
+      if (componentName && typeof methods[moduleType][componentName] === 'function') {
+        uiComponent = methods[moduleType][componentName]()
+      }
 
-    if (uiComponent) {
-      container.appendChild(uiComponent)
-    } else {
-      // Fallback om modulen inte är konverterad eller komponent saknas
-      container.innerHTML = `
-        <div style="padding: 40px; text-align: center; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; color: #495057;">
-          <h2>🚧 Modul under uppgradering</h2>
-          <p>Denna modul håller på att konverteras till den nya designen.</p>
-          <p>Använd de andra modulerna som redan är klara!</p>
-        </div>
-      `
+      if (uiComponent) {
+        container.appendChild(uiComponent)
+      } else {
+        // Fallback om modulen inte är konverterad eller komponent saknas
+        container.innerHTML = `
+          <div style="padding: 40px; text-align: center; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 15px; color: #495057;">
+            <h2>🚧 Modul under uppgradering</h2>
+            <p>Denna modul håller på att konverteras till den nya designen.</p>
+            <p>Använd de andra modulerna som redan är klara!</p>
+          </div>
+        `
+      }
     }
-  }
+  }).catch(error => {
+    console.error('Failed to load methods:', error)
+    showErrorMessage(moduleType)
+  })
 }
 
 /**

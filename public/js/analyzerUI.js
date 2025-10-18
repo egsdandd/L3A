@@ -12,13 +12,13 @@ function generateAnalyzerInterfaceHTML() {
   return `
     <div class="module-container analyzer">
       <h1>📊 Text Analyzer (texttoolkit)</h1>
-      <p>Använder din texttoolkit npm-modul för textanalys</p>
+      <p>Använder texttoolkit npm-modul för textanalys</p>
 
       ${generateAnalyzerButtonsHTML()}
 
-      <div id="analyzerResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
+      <div id="analyzerResults" class="results-container">
         <h3>Resultat:</h3>
-        <div id="analyzerResultsContent"></div>
+        <div id="analyzerResultsContent" class="results-content"></div>
       </div>
     </div>
   `
@@ -37,10 +37,10 @@ function generateAnalyzerButtonsHTML() {
     { key: 'findpalindromes', icon: '🔄', label: 'Hitta Palindrom' }
   ]
   return `
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+    <div class="btn-grid">
       ${buttons.map(
         btn =>
-          `<button onclick="callAnalyzer('${btn.key}')" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+          `<button onclick="callAnalyzer('${btn.key}')" class="btn-module">
             ${btn.icon} ${btn.label}
           </button>`
       ).join('')}

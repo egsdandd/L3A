@@ -3,7 +3,7 @@
 
 /**
  * Visar resultat i container med objektargument för flexibilitet & läsbarhet.
- * @param {object} options
+ * @param {object} options - Configuration object for showing results
  * @param {string} options.containerId - ID på resultatcontainer
  * @param {string} options.contentId - ID på content-div i containern
  * @param {string} options.content - HTML att visa
@@ -26,33 +26,5 @@ function showResults({ containerId, contentId, content, scrollIntoView = true })
   }
 }
 
-/**
- * Gemensam knappstil, nu med objektarguments för direkt intention.
- * @param {object} options 
- * @param {string} options.backgroundColor
- * @param {string} options.textColor
- * @param {string} [options.borderColor]
- * @returns {string} CSS style string
- */
-function getButtonStyle({ backgroundColor, textColor, borderColor = null }) {
-  const border = borderColor ? `1px solid ${borderColor}` : 'none'
-  return `background: ${backgroundColor}; color: ${textColor}; border: ${border}; padding: 15px; border-radius: 8px; cursor: pointer;`
-}
-
-/**
- * Skapa grid-container-stil – objekt för maximal expansion.
- * @param {object} options
- * @param {string} [options.minWidth='200px']
- * @param {string} [options.gap='15px']
- * @returns {string} CSS style string
- */
-function getGridContainerStyle({ minWidth = '200px', gap = '15px' } = {}) {
-  return `display: grid; grid-template-columns: repeat(auto-fit, minmax(${minWidth}, 1fr)); gap: ${gap}; margin: 20px 0;`
-}
-
-// Gör funktionerna globalt tillgängliga
+// Gör funktionen globalt tillgänglig
 window.showResults = showResults
-window.getButtonStyle = getButtonStyle
-window.getGridContainerStyle = getGridContainerStyle
-
-// export { showResults }

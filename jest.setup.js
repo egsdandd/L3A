@@ -1,14 +1,5 @@
-import { jest } from '@jest/globals'
 import { TextEncoder, TextDecoder } from 'util'
 
+// Polyfills för Node.js testmiljö
 global.TextEncoder = TextEncoder
 global.TextDecoder = TextDecoder
-
-global.window = {}
-global.document = {
-  getElementById: jest.fn(() => ({
-    style: {},
-    innerHTML: '',
-    scrollIntoView: jest.fn()
-  }))
-}

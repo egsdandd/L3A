@@ -25,11 +25,11 @@ export async function loadModules() {
 }
 
 /**
- * Loads a single module dynamically by category.
+ * Dynamically imports a single UI feature module.
  * @async
  * @param {string} category - The module category (e.g. 'TextAnalyzer').
- * @returns {Promise<object>} The loaded module’s methods
- * @throws {Error} If category is unknown or module loading fails.
+ * @returns {Promise<object>} The loaded module’s methods.
+ * @throws {ModuleLoadError} If category is unknown or loading fails.
  */
 export async function loadSingleModule(category) {
   try {

@@ -5,114 +5,104 @@
 [![Clean Code](https://img.shields.io/badge/Clean%20Code-Compliant-brightgreen.svg)](https://github.com/ryanmcdermott/clean-code-javascript)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-En moderna, modulär textanalysapplikation byggd med Clean Code-principer. L3A erbjuder omfattande textbearbetning, analys och interaktiva textspel genom en intuitiv webbgränssnitt.
+En streamlinad, modulär textanalysapplikation byggd med Clean Code-principer och ES modules. L3A fokuserar på kärnfunktionalitet för textbearbetning genom en intuitiv webbgränssnitt med moderna JavaScript-arkitektur.
 
-## 🚀 Funktioner
+## 👤 Projektinformation
+
+| Metadata | Värde |
+| :--- | :--- |
+| **Utvecklare** | [Dan-Håkan Davall] |
+| **Revision (Version)** | 1.0.0 |
+| **Kontakt** | [dd22mk@student.lnu.se] |
+
+---
+
+## 🚀 Huvudfunktioner
 
 ### 📊 **Text Analyzer**
 
-- Ordräkning och teckenanalys
-- Meningslängd och komplexitetsanalys  
-- Ordfrekvens och statistik
-- Läsbarhetsbedömning
+- **Räkna Ord** - Exakt antal ord i texten
+- **Räkna Meningar** - Antal meningar i texten
+- **Räkna Tecken** - Bokstäver, siffror och totalt antal tecken
+- **Bokstavsfrekvens** - Fördelning av bokstäver i texten
+- **Hitta Palindrom** - Hitta ord som stavas likadant fram och bakåt
 
 ### 🎨 **Text Formatter**
 
-- Versalisering och gemener
-- Kapitalisering av ord/meningar
-- Indragning och formatering
-- Textnormalisering
+- **Versaler/gemener** - Konvertera till stora eller små bokstäver
+- **Första bokstaven Stor** - Första bokstaven stor i varje ord
+- **CamelCase** - Formatering för programmeringssyfte
 
 ### 🔄 **Text Transformer**
 
-- ROT13 kryptering/dekryptering
-- Base64 kodning/avkodning
-- Morse kod transformation
-- Textomvändning (reverse)
+- **Vänd Ordning** - Vänd ordning på ord i texten
+- **Sortea Ord** - Alfabetisk sortering av ord
+- **Blanda Ord** - Slumpmässig blandning av ord
 
 ### 🔍 **Text Searcher**
 
-- Enkel och avancerad sökning
-- Regular expressions (RegEx)
-- Case-sensitive/insensitive sökning
-- Sök och ersätt funktionalitet
-
-### ✨ **Writing Assistant**
-
-- Ordförslag och synonymer
-- Grammatikkontroll
-- Stilförbättringar
-- Skrivhjälp och optimering
-
-### 🎮 **Text Gaming Hub**
-
-- **Ordgissning** - Gissa dolda ord med ledtrådar
-- **Ordkryptering** - Dekryptera krypterade ord
-- **Ordbyggare** - Bygg ord från givna bokstäver  
-- **Minnestest** - Memorera och återskapa texter
-- **Rimspel** - Hitta rim till givna ord
-- **Ordkedja** - Skapa kedjor av sammankopplade ord
-
-### 🕵️ **Text Forensics Detective**
-
-- Text fingerprinting och identifiering
-- Mönster detection i texter
-- Stilanalys och författarskap
-- Dold textdetektion
-- Textjämförelse och likhet
-- Språkdetektion
-
-### 🎭 **Mood & Emotion Engine**
-
-- Sentimentanalys (positiv/negativ/neutral)
-- Känslodetektering och kategorisering
-- Stämningsanalys över tid
-- Stressnivådetektering
-- Energinivåanalys
-- Interaktiv stämningskarta
-
-### ↩️ **Text Reverser**
-
-- Teckenvis textomvändning
-- Radvis omvändning
-- Ordvis omvändning
-- Flexibel omkonfigurering
+- **Hitta Första** - Hitta första förekomsten
+- **Hitta Alla** - Hitta alla förekomster
+- **Räkna** - Antal träffar för sökterm
+- **Finns/Existenskontroll** - Kontrollera om text innehåller specifik term, true eller false
 
 ## 🏗️ Arkitektur
 
-Applikationen är byggd enligt **Clean Code-principer** med modulär arkitektur:
+Applikationen använder **ES Modules** och **Clean Code-principer** med en streamlinad modulär arkitektur:
 
+### Backend (Node.js + Express)
+
+```text
+src/
+├── app.js                   # Huvudserver med ES modules
+├── routes/                  # API-endpoints med texttoolkit
+│   ├── analyzer.js          # Text Analyzer API (använder TextAnalysisService)
+│   ├── formatter.js         # Text Formatter API  
+│   ├── transformer.js       # Text Transformer API
+│   ├── searcher.js          # Text Searcher API
+│   └── upload.js            # Filuppladdning och rendering
+└── services/                # Business logic (OOP-tjänster)
+    └── TextAnalysisService.js # Analyzer service-klass
 ```
+
+### Frontend (Modulär JavaScript)
+
+```text
 public/js/
+├── showFile.js              # Huvudkontroller (ES module)
+├── global-functions.js      # Globala DOM-funktioner
+├── constants.js             # Konstanter (ANALYZER_ACTIONS etc.)
 ├── core/                    # Kärnsystem
 │   ├── module-loader.js     # Dynamisk modulladdning
 │   └── ui-renderer.js       # UI-rendering och felhantering
 ├── utilities/               # Delade hjälpfunktioner
 │   ├── dom-helpers.js       # DOM-manipulation
 │   ├── display-helpers.js   # Visningshjälp
-│   └── interaction-helpers.js # Interaktionslogik
-├── gaming/                  # Spelmoduler
-│   ├── gaming-core.js       # Spelgränssnitt
-│   ├── word-games.js        # Ordspel
-│   ├── creative-games.js    # Kreativa spel
-│   └── memory-helpers.js    # Minnesspel och hjälp
-├── mood/                    # Stämningsanalys
-│   ├── mood-core.js         # Känslougränssnitt
-│   ├── mood-analyzers.js    # Analysmetoder
-│   └── mood-renderers.js    # HTML-generering
-├── forensics/               # Forensisk analys
-│   ├── forensics-core.js    # Forensiskt gränssnitt
-│   └── forensics-analyzers.js # Analysverktyg
-└── [module]UI.js           # Huvudmoduler (< 150 rader var)
+│   ├── interaction-helpers.js # Interaktionslogik
+│   └── server-utils.js      # Server-relaterade hjälpfunktioner
+└── UI-moduler/              # Funktionsspecifika gränssnitt
+    ├── analyzerUI.js        # Text Analyzer UI
+    ├── formatterUI.js       # Text Formatter UI
+    ├── transformerUI.js     # Text Transformer UI
+    └── searcherUI.js        # Text Searcher UI
 ```
 
-### Designprinciper
+### Teknisk Stack & Designprinciper
 
-- **Single Responsibility Principle** - Varje modul har ett tydligt ansvar
-- **DRY (Don't Repeat Yourself)** - Återanvändbar kod i utilities/
-- **Separation of Concerns** - Tydlig separation mellan UI, logik och data
-- **Clean Functions** - Små, fokuserade funktioner under 20 rader
-- **Meaningful Names** - Självdokumenterande kod utan onödiga kommentarer
+**Moderna JavaScript:**
+
+- **ES Modules** (`"type": "module"` i package.json)
+- **Dynamic imports** för lazy loading
+- **Async/await** för API-anrop
+- **Modulariserad kodstruktur**
+
+**Clean Code Implementation:**
+
+- **Single Responsibility** - Varje modul och funktion har ett tydligt ansvar
+- **DRY Principle** - Återanvändbar kod i utilities/ och core/
+- **Meaningful Names** - Självdokumenterande funktions- och variabelnamn
+- **Small Functions** - Fokuserade funktioner med begränsad komplexitet
+- **Error Handling** - Robust felhantering med try-catch och user feedback
 
 ## 🛠️ Installation
 
@@ -121,7 +111,7 @@ public/js/
 - Node.js 18+
 - npm (medföljande med Node.js)
 
-### Steg-för-steg installation
+### Steg-för-steg installation för en lokal PC
 
 1. **Klona repositoryt**
 
@@ -142,120 +132,49 @@ npm install
 npm start
 ```
 
-4.**Öppna i webbläsare**
+4.**Öppna lokalt i webbläsare**
 
-```
+```HTML
 http://localhost:3000
 ```
 
+### Driftsatt App
+
+1.**Kör direkt i webbläsare**
+
+```HTML
+http://storemyr14.ddns.net
+```
+
+Denna version av min app går som en docker container på en Raspberry PI. Det finns en port-forward regel i FW som jag måste öppna när någon vill testa. Låt mig veta när det är dags.
+
 ## 📖 Användning
 
-### Grundläggande användning
-
-1. **Ladda upp textfil**
-   - Navigera till startsidan
-   - Välj en textfil (.txt) från din dator
-   - Klicka "Ladda upp fil"
-
-2. **Välj analysverktyg**
-   - Klicka på önskad modulknapp (Text Analyzer, Gaming Hub, etc.)
-   - Modulens gränssnitt laddas automatiskt
-
-3. **Utför analys/aktivitet**
-   - Följ instruktionerna för vald modul
-   - Resultat visas direkt i gränssnittet
-
-### Exempel: Text Gaming Hub
-
-```javascript
-// Starta ordgissningsspel
-1. Klicka "🎮 Text Gaming Hub"
-2. Välj "Ordgissning" 
-3. Gissa dolda ord baserat på din uppladdat text
-4. Använd ledtrådar för hjälp
-5. Se dina resultat och poäng
-```
-
-### Exempel: Mood Engine
-
-```javascript
-// Analysera textens stämning
-1. Klicka "🎭 Mood & Emotion Engine"
-2. Välj "Sentiment Analys"
-3. Se positiv/neutral/negativ fördelning
-4. Utforska känslokarta och energinivåer
-```
+1. **Ladda upp textfil** → Välj .txt/.md fil och klicka "Ladda upp"
+2. **Välj verktyg** → Klicka på önskad modul (Analyzer, Formatter, Transformer, Searcher)
+3. **Utför analys** → Använd knapparna, resultat visas direkt
 
 ## 🧪 Testning
 
-Applikationen inkluderar en omfattande testplan med 63 testfall:
-
 ```bash
-# Visa testplan
-cat TESTPLAN.md
-
-# Testområden som täcks:
-- Grundläggande funktionalitet (4 tester)
-- Alla moduler (40+ tester)  
-- Clean Code arkitektur (6 tester)
-- Felhantering och gränser (5 tester)
+npm test    # Kör 22 Jest tester (backend API, struktur, utilities)
+npm run lint    # ESLint kodkvalitetskontroll
 ```
 
-### Manuell testning
-
-1. Följ instruktionerna i `TESTPLAN.md`
-2. Testa varje modul systematiskt
-3. Verifiera error handling med edge cases
-4. Dokumentera resultat enligt testplanen
+**[Detaljerad testrapport](TEST_REPORT.MD)**
 
 ## 📚 Dokumentation
 
-- **TESTPLAN.md** - Omfattande testplan med 63 testfall
-- **reflection.md** - Clean Code reflektion (kapitel 2-11)
-- **UPPFATTNING.md** - Ärlig bedömning av kvalitetskonflikter
-- **ARCHITECTURE_SUMMARY_CLEAN.md** - Arkitekturöversikt
+- **[reflection.md](reflection.md)** - Clean Code-reflektion och implementering
+- **[TEST_REPORT.MD](TEST_REPORT.MD)** - Komplett testrapport
+- **[UPPFATTNING.md](UPPFATTNING.md)** - Kvalitetsanalys och arkitekturavvägningar
 
-## 🎯 Clean Code Implementation
+## 🎯 Clean Code & Kvalitet
 
-Detta projekt demonstrerar praktisk tillämpning av Clean Code-principer:
-
-### Kapitel 2-11 implementering
-
-- ✅ **Meaningful Names** - Självförklarande variabel- och funktionsnamn
-- ✅ **Functions** - Små, fokuserade funktioner med enstaka ansvar  
-- ✅ **Comments** - Självdokumenterande kod, minimala kommentarer
-- ✅ **Formatting** - Konsekvent kod-formatering och struktur
-- ✅ **Objects and Data Structures** - Tydlig separation av data och beteende
-- ✅ **Error Handling** - Robust felhantering utan return codes
-- ✅ **Boundaries** - Wrapper för externa API:er och bibliotek
-- ✅ **Unit Tests** - Systematisk testplan för kvalitetssäkring
-- ✅ **Classes** - Single Responsibility och high cohesion
-- ✅ **Systems** - Modulär arkitektur med separation of concerns
-
-### Kvalitetsmått
-
-- 🎯 **Alla filer under 150 rader** (ursprungligen 637 rader)
-- 🎯 **9 moduler** med tydliga ansvarsområden
-- 🎯 **63 testfall** för omfattande kvalitetssäkring
-- 🎯 **Zero duplicated code** tack vare utilities-moduler
-
-## 🤝 Bidrag
-
-### Utvecklingsriktlinjer
-
-1. Följ Clean Code-principerna
-2. Håll funktioner under 20 rader
-3. Använd meaningful names
-4. Skriv testfall för nya funktioner
-5. Dokumentera komplexa affärslogik
-
-### Pull Request Process
-
-1. Forka repositoryt
-2. Skapa feature branch (`git checkout -b feature/amazing-feature`)
-3. Commita ändringar (`git commit -m 'Add amazing feature'`)
-4. Pusha till branch (`git push origin feature/amazing-feature`)
-5. Öppna Pull Request
+✅ **Hybrid arkitektur** - Clean Code funktioner + OOP service-lager  
+✅ **ES Modules** - Modern JavaScript genom hela appen  
+✅ **22 automatiserade tester** - Backend API och strukturvalidering  
+✅ **Separation of concerns** - Routes, services, utilities, UI-moduler
 
 ## 📄 Licens
 
@@ -263,14 +182,14 @@ Detta projekt är licensierat under MIT License - se [LICENSE](LICENSE) filen f�
 
 ## 👥 Författare
 
-- Utvecklingsteam - Initial implementation och Clean Code refactoring
+- **Dan-Håkan Davall** - Initial implementation och Clean Code refactoring
 
 ## 🙏 Erkännanden
 
 - **Robert C. Martin** - Clean Code principles och inspiration
-- **Express.js** - Webb-framework
-- **EJS** - Templating engine
-- **texttoolkit** - Core text processing library
+- **Express.js** - Modern webb-framework med ES modules support
+- **EJS** - Flexibel templating engine
+- **texttoolkit** - Core text processing library (egen npm-modul)
 
 ## 📞 Support
 
@@ -278,7 +197,7 @@ För frågor eller support:
 
 - Öppna en issue på GitHub
 - Konsultera dokumentationen i `/docs`
-- Följ testplanen i `TESTPLAN.md`
+- Följ testplanen i [testplan](`TESTPLAN.md`)
 
 ---
 

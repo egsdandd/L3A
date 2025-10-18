@@ -18,7 +18,7 @@ function formatResult(result) {
 
 /**
  * Fetches API data and displays it in the specified container.
- * @param {object} options
+ * @param {object} options - Options for the function
  * @param {string} options.url - API endpoint URL
  * @param {object} options.body - Payload to send to API
  * @param {string} options.resultsId - ID of the results container
@@ -115,4 +115,4 @@ window.callSearcher = async function(endpoint) {
     formatFn: data => JSON.stringify(data.result)
   })
 }
-// export { formatResult}
+

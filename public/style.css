@@ -49,3 +49,74 @@
 .module-container.transformer {
   background: linear-gradient(135deg, #fd7e14 0%, #e55d06 100%);
 }
+
+/* Button Grid Layout */
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+/* Module Buttons */
+.btn-module {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-module:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Results Container */
+.results-container {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: #333 !important;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  display: none;
+}
+
+.results-container h3 {
+  color: #333 !important;
+  margin-top: 0;
+}
+
+.results-content {
+  color: #333 !important;
+}
+
+/* Search Input Styles */
+.search-input {
+  padding: 10px;
+  width: 200px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.search-controls {
+  margin: 20px 0;
+}
+
+.btn-search {
+  background: #20c997;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-search:hover {
+  background: #17a085;
+}

@@ -15,7 +15,7 @@ function createFormatterInterface() {
   ]
 
   const buttonsHTML = buttons.map(
-    btn => `<button onclick="callFormatter('${btn.key}')" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 15px; border-radius: 8px; cursor: pointer;">
+    btn => `<button onclick="callFormatter('${btn.key}')" class="btn-module">
       ${btn.icon} ${btn.label}
     </button>`
   ).join('')
@@ -25,12 +25,12 @@ function createFormatterInterface() {
     <div class="module-container formatter">
       <h1>🎨 Text Formatter (texttoolkit)</h1>
       <p>Använder texttoolkit npm-modul</p>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 20px 0;">
+      <div class="btn-grid">
         ${buttonsHTML}
       </div>
-      <div id="formatterResults" style="background: rgba(255,255,255,0.9); color: #333; padding: 20px; border-radius: 8px; margin-top: 20px; display: none;">
+      <div id="formatterResults" class="results-container">
         <h3>Resultat:</h3>
-        <div id="formatterResultsContent"></div>
+        <div id="formatterResultsContent" class="results-content"></div>
       </div>
     </div>
   `
