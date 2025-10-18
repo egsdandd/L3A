@@ -15,13 +15,8 @@ Dokumentet innehåller en djupgående, ärlig analys som fokuserar på:
 Kvalitetskonflikter i praktiken - konkreta exempel där Clean Code-regler står i konflikt
 DRY vs Explicit Code - medvetet val av tydlighet över abstraktion
 Pure Functions vs DOM-kompatibilitet - pragmatisk avvägning
-Function Size vs Domain Complexity - när man bryter storlek-regler för affärslogik
 
 ### 💡 Särskilt värdefulla insikter
-
-"Progressive error handling" - olika nivåer för olika kritikalitet
-Olika abstraktionsnivåer för olika domäner (gaming vs forensics)
-Medvetna trade-offs mellan teoretisk renhet och praktisk användbarhet
 
 ### 🎨 Ärlighet och nyans
 
@@ -98,7 +93,6 @@ function generateAndShowGameResult(data) {
   showResult(html);
 }
 
-// Men delade upp för SRP:
 function generateGameResultHTML(data) { return html; }
 function showGameResult(html) { /* display logic */ }
 ```
@@ -109,59 +103,39 @@ function showGameResult(html) { /* display logic */ }
 
 #### **Inte allt är perfekt Clean Code:**
 
-- `showFile.js` import-systemet är fortfarande komplext med switch-statements
 - Vissa utility-funktioner som `getEditorText()` brytt mot pure function-principen
 - Error handling kunde vara mer konsekvent över alla moduler
 
 #### **Legacy constraints:**
 
-- HTML onclick-handlers tvingar oss att exponera funktioner globalt
 - EJS template-systemet begränsar våra arkitektur-val
 - Befintlig API-struktur påverkar våra boundary-design
-
-### **4. SÄRSKILT INTRESSANTA DESIGNBESLUT:**
 
 #### **Module Loading Strategy:**
 
 ```javascript
 // Vi valde Dynamic Imports över Static:
-const module = await import('./textGamingUI.js');
 methods[category] = module.textGamingMethods;
 ```
 
 **Varför:** Detta ger **lazy loading** och **better performance**, men går emot "explicitness" eftersom dependencies inte syns direkt i koden. Vi bedömde att prestanda-fördelarna övervägde för en applikation med många moduler.
 
-#### **Global Function Exposure Pattern:**
-
 ```javascript
 // Konsistent pattern för DOM-kompatibilitet:
 window.analyzeSentiment = analyzeSentiment;
-window.createSimpleGamingInterface = createSimpleGamingInterface;
 ```
 
 **Varför:** Vi skapade ett **konsekvent mönster** för global exposure istället för att blanda olika approaches. Detta gör det **förutsägbart för nästa utvecklare** var DOM-funktioner finns.
 
-### **5. UTVECKLBARHET FÖR ANDRA PROGRAMMERARE:**
-
-#### **Styrkor:**
-
-- **Tydlig mappstruktur** - gaming/, mood/, forensics/ är självförklarande
 - **Konsekvent namngivning** - alla moduler följer samma mönster
-- **Separation of concerns** - affärslogik, UI, och data är separerade
 - **Omfattande dokumentation** - TESTPLAN.md och reflection.md
 
 #### **Förbättringsområden:**
 
 - **JSDoc comments** skulle hjälpa enormt för API-dokumentation
 - **TypeScript** skulle förbättra utvecklarupplevelsen drastiskt
-- **Interface definitions** för moduler skulle göra systemet mer förutsägbart
-
-### **6. ICKE-SJÄLVKLART ÖVERVÄGANDE: ABSTRACTION LEVELS**
-
 Vi valde **olika abstraktionsnivåer** för olika moduler:
 
-**Gaming:** Hög abstraktion med game-state objects  
-**Forensics:** Låg abstraktion med direkta DOM-manipulationer  
 **Mood:** Medium abstraktion med data transformation  
 
 **Varför:** Varje domän har olika komplexitet. Gaming behöver state management, medan forensics är mer statiska analyser. **En-size-fits-all abstraktion** skulle ha gjort vissa moduler artificiellt komplexa.
