@@ -11,7 +11,7 @@ En streamlinad, modulär textanalysapplikation byggd med Clean Code-principer oc
 
 | Metadata | Värde |
 | :--- | :--- |
-| **Utvecklare** | [Dan-Håkan Davall] |
+| **Utvecklare** | [ Dan-Håkan Davall ] |
 | **Revision (Version)** | 1.0.0 |
 | **Kontakt** | [dd22mk@student.lnu.se] |
 
