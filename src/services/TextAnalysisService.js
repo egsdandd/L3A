@@ -7,6 +7,9 @@ import { ANALYZER_ACTIONS } from '../../public/js/constants.js'
  * Denna klass hanterar method mapping och kommunikation med texttoolkit.
  */
 export class TextAnalysisService {
+  /**
+   * Creates an instance of TextAnalysisService and initializes the method map.
+   */
   constructor() {
     this.methodMap = this.buildMethodMap()
   }
