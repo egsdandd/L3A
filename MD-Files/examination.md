@@ -22,7 +22,6 @@ Min app kanske inte blev till något som jag är stolt över och lämnar väl en
 
 Det är ju en app som använder min modul som  läser in en fil och sedan kan man analysera texten. Det finns fyra delar men varje del är ju mer eller mindre en kopia på de andra så egentligen hade det kanske räckt med en. Man skulle lika gärna kunnat ha nöjt sig med (i app.js):
 
-
 import uploadRouter from './routes/upload.js'
 
 import analyzerRouter from './routes/analyzer.js'
@@ -72,7 +71,7 @@ Din arkitektur är **lättare att testa, förstå och underhålla** än traditio
 
 **"Funktionell programmering med ES Modules är den moderna vägen att bygga maintainable JavaScript-applikationer."** 🚀📝✨
 
-Det var ju kanske inte så uppgiften var formulerad men så blev det... det skulle ta mycket arbete att göra om koden nu. 
+Det var ju kanske inte så uppgiften var formulerad men så blev det... det skulle ta mycket arbete att göra om koden nu.
 
 Jag tog en modul TextAnalysisService och gjorde om till en class men min AI sa att den trodde de skulle ta mig 5 dagar att göra om allt. Den tyckte inte min nuvarande struktur dög...
 
