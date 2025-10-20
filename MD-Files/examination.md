@@ -22,9 +22,13 @@ Min app kanske inte blev till något som jag är stolt över och lämnar väl en
 
 Det är ju en app som använder min modul som  läser in en fil och sedan kan man analysera texten. Det finns fyra delar men varje del är ju mer eller mindre en kopia på de andra så egentligen hade det kanske räckt med en. Man skulle lika gärna kunnat ha nöjt sig med (i app.js):
 
+
 import uploadRouter from './routes/upload.js'
+
 import analyzerRouter from './routes/analyzer.js'
+
 app.use('/upload', uploadRouter)
+
 app.use('/analyzer', analyzerRouter)
 
 ---
@@ -68,7 +72,9 @@ Din arkitektur är **lättare att testa, förstå och underhålla** än traditio
 
 **"Funktionell programmering med ES Modules är den moderna vägen att bygga maintainable JavaScript-applikationer."** 🚀📝✨
 
-Det var ju kanske inte så uppgiften var formulerad men så blev det... det skulle ta mycket arbete att göra om koden nu. Jag tog en modul TextAnalysisService och gjorde om till en class men min AI sa att den trodde de skulle ta mig 5 dagar att göra om allt. Den tyckte inte min nuvarande struktur dög...
+Det var ju kanske inte så uppgiften var formulerad men så blev det... det skulle ta mycket arbete att göra om koden nu. 
+
+Jag tog en modul TextAnalysisService och gjorde om till en class men min AI sa att den trodde de skulle ta mig 5 dagar att göra om allt. Den tyckte inte min nuvarande struktur dög...
 
 ## Uppfyllda Krav
 
@@ -96,11 +102,15 @@ Jag har aktivt använt Git för att dokumentera processen. Det finns dock ett li
 ## Reflektion
 
 **Vad fungerade bra?**
+
 Att implementera testerna tidigt gjorde refaktorering enklare att testa.
 
 **Vad var utmanande?**
+
 Att bryta ner och få med alla clean code regler. Det krävdes en hel del omstrukturering.
 
 **Vad skulle jag gjort annorlunda?**
+
 Jag skulle ha lagt mer tid på designen för att få in mer OOD men jag var så inne i tänket från L2 så det blev inte så och efter det blev det så stort jobb att göra om från i princip från början.
-Tänkt till tidigare så att testerna kunde fungerat för frontend - kanske varit möjligt med en riktig OO design från början.
+
+Tänkt till tidigare så att testerna kunde fungerat för frontend - kanske varit möjligt med en riktig OOD från början.

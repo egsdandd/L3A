@@ -7,7 +7,7 @@
 
 En streamlinad, modulär textanalysapplikation byggd med Clean Code-principer och ES modules. L3A fokuserar på kärnfunktionalitet för textbearbetning genom en intuitiv webbgränssnitt med moderna JavaScript-arkitektur.
 
-[Till min examinator - läs detta förs](./MD-Files/examination.md)
+[Till min examinator - läs detta först](./MD-Files/examination.md)
 
 ## 👤 Projektinformation
 
