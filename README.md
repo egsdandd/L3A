@@ -198,7 +198,7 @@ För frågor eller support:
 
 - Öppna en issue på GitHub
 - Konsultera dokumentationen i `/MD-Files`
-- Följ testplanen i [testplan](`./MD-Files/TESTPLAN.md`)
+- Följ testplanen i [testplan](./MD-Files/TESTPLAN.md)
 - API referens [API](./MD-Files/API_REFERENCE.md)
 
 ---
