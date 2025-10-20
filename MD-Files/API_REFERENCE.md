@@ -4,7 +4,7 @@ Denna dokumentation beskriver hur du interagerar med API:et för L3A Text Analys
 
 ## Bas-URL
 
-`http://localhost:3000` (eller din driftsatta URL)
+`http://localhost:3000` (eller min driftsatta URL) `storemyr14.ddns.net`
 
 ## Endpoints
 

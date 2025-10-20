@@ -7,6 +7,8 @@
 
 En streamlinad, modulär textanalysapplikation byggd med Clean Code-principer och ES modules. L3A fokuserar på kärnfunktionalitet för textbearbetning genom en intuitiv webbgränssnitt med moderna JavaScript-arkitektur.
 
+[Till min examinator - läs detta förs](./MD-Files/examination.md)
+
 ## 👤 Projektinformation
 
 | Metadata | Värde |
@@ -161,13 +163,12 @@ npm test    # Kör 22 Jest tester (backend API, struktur, utilities)
 npm run lint    # ESLint kodkvalitetskontroll
 ```
 
-**[Detaljerad testrapport](TEST_REPORT.MD)**
+**[Detaljerad testrapport](./MD-Files/TEST_REPORT.MD)**
 
 ## 📚 Dokumentation
 
-- **[reflection.md](reflection.md)** - Clean Code-reflektion och implementering
-- **[TEST_REPORT.MD](TEST_REPORT.MD)** - Komplett testrapport
-- **[UPPFATTNING.md](UPPFATTNING.md)** - Kvalitetsanalys och arkitekturavvägningar
+- **[reflection.md](.MD-Files/reflection.md)** - Clean Code-reflektion och implementering
+- **[TEST_REPORT.MD](./MD-Files/TEST_REPORT.MD)** - Komplett testrapport
 
 ## 🎯 Clean Code & Kvalitet
 
@@ -196,8 +197,9 @@ Detta projekt är licensierat under MIT License - se [LICENSE](LICENSE) filen f�
 För frågor eller support:
 
 - Öppna en issue på GitHub
-- Konsultera dokumentationen i `/docs`
-- Följ testplanen i [testplan](`TESTPLAN.md`)
+- Konsultera dokumentationen i `/MD-Files`
+- Följ testplanen i [testplan](`./MD-Files/TESTPLAN.md`)
+- API referens [API](./MD-Files/API_REFERENCE.md)
 
 ---
 
