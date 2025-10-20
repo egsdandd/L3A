@@ -167,7 +167,7 @@ npm run lint    # ESLint kodkvalitetskontroll
 
 ## 📚 Dokumentation
 
-- **[reflection.md](.MD-Files/reflection.md)** - Clean Code-reflektion och implementering
+- **[reflection.md](./MD-Files/reflection.md)** - Clean Code-reflektion och implementering
 - **[TEST_REPORT.MD](./MD-Files/TEST_REPORT.MD)** - Komplett testrapport
 
 ## 🎯 Clean Code & Kvalitet
