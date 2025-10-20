@@ -6,7 +6,7 @@ Denna testplan täcker alla funktionella krav för L3A applikationen efter Clean
 
 ## Testmiljö
 
-- **URL**: <http://localhost:3000>
+- **URL**: <http://localhost:3000> eller <http://storemyr14.ddns.net>
 - **Browser**: Chrome/Firefox/Edge
 - **Node.js Version**: 18+
 - **Test Type**: Manuella funktionstester
@@ -64,7 +64,7 @@ Denna testplan täcker alla funktionella krav för L3A applikationen efter Clean
 ### Förberedelser
 
 1. Starta applikationen: `npm start` eller kör den driftsatta
-2. Öppna webbläsare och navigera till `http://localhost:3000` eller din driftsatta URL
+2. Öppna webbläsare och navigera till `http://localhost:3000` eller `http://storemyr14.ddns.net`
 3. Förbered testfiler med olika innehåll
 
 ### Testutförande
