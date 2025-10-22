@@ -1,32 +1,17 @@
 {
   "name": "l3a",
-  "version": "1.0.0",
-  "description": "App for texttoolkit",
-  "license": "MIT",
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
-  "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand"
-  },
-  "dependencies": {
-    "ejs": "^3.1.10",
-    "eslint": "^9.35.0",
-    "eslint-plugin-jsdoc": "^56.1.2",
-    "express": "^5.1.0",
-    "express-fileupload": "^1.5.2",
-    "texttoolkit": "^1.0.1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
-    "jest": "^30.2.0",
-    "supertest": "^7.1.4"
+    "vite": "^7.1.7"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.js"
-    ]
+  "dependencies": {
+    "texttoolkit": "^1.0.1"
   }
 }

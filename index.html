@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text Toolkit – Frontend</title>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+  <main class="container">
+    <h1>Text Toolkit</h1>
+    <p class="subtitle">Analysera, formatera, transformera och sök i text – direkt i webbläsaren.</p>
+    <section class="input-section">
+      <label for="file-input"><strong>Ladda in textfil:</strong></label><br>
+      <input type="file" id="file-input" accept=".txt,.md" style="margin-bottom: 1em;">
+      <label for="input-text"><strong>Text att bearbeta:</strong></label><br>
+      <textarea id="input-text" rows="8" cols="70" placeholder="Skriv eller klistra in text här..."></textarea>
+    </section>
+    <section class="modul-section">
+      <h2>Välj modul</h2>
+      <div class="categories">
+        <button id="analyzer-btn">📊 Analyzer</button>
+        <button id="formatter-btn">🎨 Formatter</button>
+        <button id="transformer-btn">🔄 Transformer</button>
+        <button id="searcher-btn">🔍 Searcher</button>
+      </div>
+    </section>
+    <section id="function-panel" class="function-panel"></section>
+    <section class="result-section">
+      <h2>Resultat</h2>
+      <div id="result" class="resultbox"></div>
+    </section>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
