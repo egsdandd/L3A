@@ -13,6 +13,13 @@ const resultDisplay = document.getElementById('result')
 const userInputTextArea = document.getElementById('input-text')
 
 // Hjälpfunktion för att skapa knapp
+/**
+ * Skapar en knapp med angiven text och klickhanterare.
+ *
+ * @param {string} text - knapptext
+ * @param {function} onClick - klickhanterare
+ * @returns {HTMLButtonElement} Den skapade knappen
+ */
 function createButton(text, onClick) {
   const button = document.createElement('button')
   button.textContent = text
@@ -21,6 +28,9 @@ function createButton(text, onClick) {
 }
 
 // Analyzer
+/**
+ *
+ */
 function showAnalyzerFunctions() {
   functionButtonPanel.innerHTML = ''
   functionButtonPanel.append(
@@ -45,6 +55,9 @@ function showAnalyzerFunctions() {
 }
 
 // Formatter
+/**
+ *
+ */
 function showFormatterFunctions() {
   functionButtonPanel.innerHTML = ''
   functionButtonPanel.append(
@@ -64,6 +77,9 @@ function showFormatterFunctions() {
 }
 
 // Transformer
+/**
+ *
+ */
 function showTransformerFunctions() {
   functionButtonPanel.innerHTML = ''
   functionButtonPanel.append(
@@ -80,6 +96,9 @@ function showTransformerFunctions() {
 }
 
 // Searcher
+/**
+ *
+ */
 function showSearcherFunctions() {
   functionButtonPanel.innerHTML = ''
   // Söksträng input
@@ -112,16 +131,16 @@ document.getElementById('transformer-btn').addEventListener('click', showTransfo
 document.getElementById('searcher-btn').addEventListener('click', showSearcherFunctions)
 
 // Läs in textfil och sätt i textarea
-const fileInput = document.getElementById('file-input');
+const fileInput = document.getElementById('file-input')
 if (fileInput) {
   fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (evt) => {
-        userInputTextArea.value = evt.target.result;
-      };
-      reader.readAsText(file, 'utf-8');
+        userInputTextArea.value = evt.target.result
+      }
+      reader.readAsText(file, 'utf-8')
     }
-  });
+  })
 }

@@ -1,67 +1,61 @@
-
 import { TextSearcher } from 'texttoolkit'
+import { isValidInputPair } from './utilities/validation.js'
 
+// src/frontend/TextSearcherModule.js
+/**
+ *
+ */
 export class TextSearcherModule {
   /**
-   * Finds the first occurrence of searchQuery in inputText.
-   * @param {string} inputText
-   * @param {string} searchQuery
-   * @returns {string}
+   * @param {string} inputText text
+   * @param {string} searchQuery s
+   * @returns {string} resultat
    */
   findFirst(inputText, searchQuery) {
-    if (!this.#isValidInput(inputText, searchQuery, 'findFirst')) return ''
+    if (!isValidInputPair(inputText, searchQuery)) {
+      console.error('findFirst: inputText eller searchQuery är inte en sträng eller är tom:', inputText, searchQuery)
+      return ''
+    }
     return new TextSearcher(inputText).findFirst(searchQuery)
   }
 
   /**
-   * Finds all occurrences of searchQuery in inputText.
-   * @param {string} inputText
-   * @param {string} searchQuery
-   * @returns {Array}
+   * @param {string} inputText text
+   * @param {string} searchQuery s
+   * @returns {Array} resultat
    */
   findAll(inputText, searchQuery) {
-    if (!this.#isValidInput(inputText, searchQuery, 'findAll')) return []
+    if (!isValidInputPair(inputText, searchQuery)) {
+      console.error('findAll: inputText eller searchQuery är inte en sträng eller är tom:', inputText, searchQuery)
+      return []
+    }
     return new TextSearcher(inputText).findAll(searchQuery)
   }
 
   /**
-   * Counts the number of occurrences of searchQuery in inputText.
-   * @param {string} inputText
-   * @param {string} searchQuery
-   * @returns {number}
+   * @param {string} inputText text
+   * @param {string} searchQuery s
+   * @returns {number} antal
    */
   count(inputText, searchQuery) {
-    if (!this.#isValidInput(inputText, searchQuery, 'count')) return 0
+    if (!isValidInputPair(inputText, searchQuery)) {
+      console.error('count: inputText eller searchQuery är inte en sträng eller är tom:', inputText, searchQuery)
+      return 0
+    }
     return new TextSearcher(inputText).count(searchQuery)
   }
 
   /**
-   * Checks if searchQuery exists in inputText.
-   * @param {string} inputText
-   * @param {string} searchQuery
-   * @returns {boolean}
+   * @param {string} inputText text
+   * @param {string} searchQuery s
+   * @returns {boolean} finns
    */
   exists(inputText, searchQuery) {
-    if (!this.#isValidInput(inputText, searchQuery, 'exists')) return false
+    if (!isValidInputPair(inputText, searchQuery)) {
+      console.error('exists: inputText eller searchQuery är inte en sträng eller är tom:', inputText, searchQuery)
+      return false
+    }
     return new TextSearcher(inputText).exists(searchQuery)
   }
 
-  /**
-   * Validates input for search operations.
-   * @param {string} inputText
-   * @param {string} searchQuery
-   * @param {string} methodName
-   * @returns {boolean}
-   */
-  #isValidInput(inputText, searchQuery, methodName) {
-    if (typeof inputText !== 'string' || typeof searchQuery !== 'string') {
-      console.error(`${methodName}: inputText eller searchQuery är inte en sträng:`, inputText, searchQuery)
-      return false
-    }
-    if (!inputText.trim() || !searchQuery.trim()) {
-      console.error(`${methodName}: inputText eller searchQuery är tomt`)
-      return false
-    }
-    return true
-  }
 }

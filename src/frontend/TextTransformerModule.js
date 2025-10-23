@@ -1,22 +1,37 @@
+// src/frontend/TextTransformerModule.js
 import { TextTransformer } from 'texttoolkit'
+import { isValidInput } from './utilities/validation.js'
 
+
+/**
+ * @class
+ */
 export class TextTransformerModule {
-  #isValidInput(inputText) {
-    return typeof inputText === 'string' && inputText.trim().length > 0
-  }
 
+  /**
+   * @param {string} inputText text
+   * @returns {string} resultat
+   */
   reverseWords(inputText) {
-    if (!this.#isValidInput(inputText)) return ''
+    if (!isValidInput(inputText)) return ''
     return new TextTransformer(inputText).reverseWordOrder()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {string} resultat
+   */
   sortWords(inputText) {
-    if (!this.#isValidInput(inputText)) return ''
+    if (!isValidInput(inputText)) return ''
     return new TextTransformer(inputText).sortWords()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {string} resultat
+   */
   shuffleWords(inputText) {
-    if (!this.#isValidInput(inputText)) return ''
+    if (!isValidInput(inputText)) return ''
     return new TextTransformer(inputText).shuffleWords()
   }
 }

@@ -1,27 +1,45 @@
+// src/frontend/TextFormatterModule.js
 import { TextFormatter } from 'texttoolkit'
+import { isValidInput } from './utilities/validation.js'
 
+/**
+ * @class
+ */
 export class TextFormatterModule {
-  #isValidInput(inputText) {
-    return typeof inputText === 'string' && inputText.trim().length > 0
-  }
 
+  /**
+   * @param {string} inputText text
+   * @returns {string} resultat
+   */
   toUpperCase(inputText) {
-    if (!this.#isValidInput(inputText)) return ''
+    if (!isValidInput(inputText)) return ''
     return new TextFormatter(inputText).toUpperCase()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {string} resultat
+   */
   toLowerCase(inputText) {
-    if (!this.#isValidInput(inputText)) return ''
+    if (!isValidInput(inputText)) return ''
     return new TextFormatter(inputText).toLowerCase()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {string} resultat
+   */
   capitalize(inputText) {
-    if (!this.#isValidInput(inputText)) return ''
+    if (!isValidInput(inputText)) return ''
     return new TextFormatter(inputText).capitalizeWords()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {string} resultat
+   */
   camelCase(inputText) {
-    if (!this.#isValidInput(inputText)) return ''
+    if (!isValidInput(inputText)) return ''
     return new TextFormatter(inputText).toCamelCase()
   }
 }

@@ -7,9 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
+    "eslint": "^9.38.0",
+    "eslint-plugin-jsdoc": "^61.1.5",
     "vite": "^7.1.7",
     "vitest": "^4.0.1"
   },

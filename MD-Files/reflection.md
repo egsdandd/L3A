@@ -1,83 +1,144 @@
-# Clean Code Reflection - L3A Text Analysis Application
+# Reflektion Clean Code
 
-## Här bad jag min AI kontrollera hur väl jag lever upp till de olika Clean Code reglerna i kap 2-11
-
----
-
-## Projektöversikt
-
-L3A är en modulär textanalysapplikation som använder npm-paketet `texttoolkit` för all textanalys, formatering, transformation och sökning. Applikationen har refaktorerats enligt Clean Code-principer och har en tydlig separation mellan backend (Express API-endpoints) och frontend (ES6-moduler och fetch-baserad UI).
+Denna reflektion beskriver hur varje kapitel i "Clean Code" har påverkat min kodbas. Till varje kapitel ges en kort reflektion och ett konkret kodexempel.
 
 ---
 
-## Meaningful Names 2
+## Kapitel 2: Meaningful Names
 
-Kodbasen använder konsekvent beskrivande och intention-revealing namn. Funktioner och variabler heter t.ex. `performAnalysis`, `transformer`, `requestBody`, `showResults`, och `TextAnalysisService`. Alla moduler och metoder är namngivna efter sin faktiska roll i systemet, och generiska eller missvisande namn har tagits bort.
+Jag har lagt stor vikt vid att använda beskrivande och konsekventa namn på klasser, metoder och variabler. Det gör koden självdokumenterande och lätt att förstå. Exempel:
 
----
-
-## Functions 3
-
-Alla funktioner följer "Do One Thing"-principen. Komplexa operationer är uppdelade i små, testbara funktioner. Funktioner tar objekt som argument där det är relevant, och flag-argument undviks. Pure functions används där det är möjligt, särskilt i utility-modulerna. Side effects är begränsade till DOM-manipulation och API-anrop.
-
----
-
-## Comments 4
-
-Koden är självförklarande och kommenteras endast där det behövs för att förklara komplex logik eller varningar. JSDoc används för att dokumentera service-klasser och publika metoder. Redundanta kommentarer har tagits bort.
+```js
+// TextAnalyserModule.js
+countWords(inputText) {
+  // ...
+}
+```
 
 ---
 
-## Formatting 5
+## Kapitel 3: Functions
 
-Kodstilen är konsekvent med 2 eller 4 mellanslag (beroende på fil), vertikal distans mellan logiska block, och filstruktur med imports först, sedan funktioner/klasser, sist exports. Långa rader undviks och relaterade funktioner grupperas.
+Alla funktioner är små, gör bara en sak och har tydliga namn. Jag undviker sid-effekter och duplicerad logik. Exempel:
 
----
-
-## Objects and Data Structures 6
-
-`TextAnalysisService` kapslar in all interaktion med texttoolkit och exponerar ett enkelt API mot backend. Data transporteras som JSON mellan frontend och backend. Service-lagret hanterar all logik, och datastrukturer är enkla och tydliga.
-
----
-
-## Error Handling 7
-
-Fel hanteras med undantag (try-catch) och tydliga felmeddelanden returneras som JSON. Input valideras alltid innan analys. Null returneras aldrig – istället används tomma objekt eller default-värden.
+```js
+// TextFormatterModule.js
+toUpperCase(inputText) {
+  if (!isValidInput(inputText)) return ''
+  return new TextFormatter(inputText).toUpperCase()
+}
+```
 
 ---
 
-## Boundaries 8
+## Kapitel 4: Comments
 
-All interaktion med tredje part (texttoolkit) sker via service-lagret. Backend är helt frikopplat från implementationen i texttoolkit och kan enkelt bytas ut eller uppgraderas.
+Jag har tagit bort överflödiga kommentarer och istället gjort koden självdokumenterande. Endast nödvändiga JSDoc-kommentarer för publika API:er finns kvar.
+Jag har med avsikt försökt ha så små och korta jsdoc kommentarer då många egentligen är onödiga enligt mitt tycke
+Exempel:
 
----
-
-## Unit Tests 9
-
-Projektet har en komplett testsvit med över 20 tester som täcker alla API-endpoints och viktiga funktioner. Testerna är beskrivande och följer F.I.R.S.T-principen. Enhetstester möjliggör säker refactoring och bevarar funktionalitet vid kodändringar.
-
----
-
-## Classes 10
-
-`TextAnalysisService` har ett tydligt ansvar och är den enda klassen som hanterar textanalyslogik. Övriga moduler är funktionella och fokuserade på UI eller utility-funktioner. Kodbasen är uppdelad i små, sammanhållna moduler.
+```js
+/**
+ * Finds the first occurrence of searchQuery in inputText.
+ */
+findFirst(inputText, searchQuery) { ... }
+```
 
 ---
 
-## Systems 11
+## Kapitel 5: Formatting
 
-Arkitekturen är enkel: Express backend med API-endpoints för analyzer, formatter, transformer, searcher, och upload. Frontend är en SPA med fetch-anrop och dynamisk rendering. Utilities och helpers är separerade i egna moduler.
+Koden är konsekvent indragen, har luft mellan logiska block och är lätt att överblicka. Det gör det enkelt att hitta och förstå kodens struktur. Exempel:
+
+```js
+// TextTransformerModule.js
+reverseWords(inputText) {
+  if (!isValidInput(inputText)) return ''
+  return new TextTransformer(inputText).reverseWordOrder()
+}
+```
 
 ---
 
-## Sammanfattning
+## Kapitel 6: Objects and Data Structures
 
-L3A Text Analysis Application är en modern, modulär och testbar applikation som följer Clean Code-principer. Kodbasen är lätt att förstå, vidareutveckla och testa. Appen använder en texttoolkit-centrerad struktur.
+Alla moduler är implementerade som klasser med tydliga publika metoder och inkapslad data. Ingen onödig exponering sker. Exempel:
 
-- Komplett testsvit med >20 tester
-- Modulär struktur: services/, routes/, utilities/, core/
-- Maximal återanvändning av texttoolkit
-- Tydlig separation mellan backend och frontend
-- Konsekvent formatering och namngivning
+```js
+export class TextAnalyserModule {
+  countWords(inputText) { ... }
+}
+```
 
-**Slutreflektion:** Clean Code är en praktisk filosofi – L3A visar att det går att skapa en robust och underhållbar applikation med enkla, tydliga och testbara moduler.
+---
+
+## Kapitel 7: Error Handling
+
+Fel hanteras robust genom att returnera säkra standardvärden och logga fel där det är motiverat. Ingen tyst felhantering förekommer. Exempel:
+
+```js
+if (!isValidInputPair(inputText, searchQuery)) {
+  console.error('findFirst: inputText eller searchQuery är inte en sträng eller är tom:', inputText, searchQuery)
+  return ''
+}
+```
+
+---
+
+## Kapitel 8: Boundaries
+
+Alla beroenden till externa bibliotek (texttoolkit) är inkapslade i egna moduler. Min kod är skriven mot mina egna API:er, vilket gör det lätt att byta implementation. Exempel:
+
+```js
+import { TextFormatter } from 'texttoolkit'
+// ...
+return new TextFormatter(inputText).toUpperCase()
+```
+
+---
+
+## Kapitel 9: Unit Tests
+
+Testerna är tydliga, täcker både normalfall och edge cases, och är oberoende av varandra. Alla tester går igenom. Exempel:
+
+```js
+it('toUpperCase returnerar versaler', () => {
+  expect(formatter.toUpperCase('hej')).toBe('HEJ')
+})
+```
+
+---
+
+## Kapitel 10: Classes
+
+Klasserna är små, fokuserade och har ett tydligt ansvar. Inga onödiga publika fält eller metoder finns. Exempel:
+
+```js
+export class TextFormatterModule {
+  toUpperCase(inputText) { ... }
+}
+```
+
+---
+
+## Kapitel 11: Systems
+
+Systemet är löst kopplat, har tydlig ansvarsfördelning och är lätt att testa och vidareutveckla. Exempel:
+
+```js
+const formatter = new TextFormatterModule()
+resultDisplay.textContent = formatter.toUpperCase(userInputTextArea.value)
+```
+
+---
+
+## Kapitel 12: Emergent Design
+
+Jag har undvikit duplicering, gjort koden uttrycksfull och minimerat antalet klasser och metoder. Alla tester går igenom. Exempel:
+
+```js
+// utilities/validation.js
+export function isValidInput(inputText) { ... }
+```
+
+---

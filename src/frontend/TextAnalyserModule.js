@@ -1,33 +1,55 @@
-// src/frontend/TextAnalyzerModule.js
+// src/frontend/TextAnalyserModule.js
+
 import { TextAnalyzer } from 'texttoolkit'
+import { isValidInput } from './utilities/validation.js'
 
+/**
+ * @class
+ */
 export class TextAnalyzerModule {
-  #isValidInput(inputText) {
-    return typeof inputText === 'string' && inputText.trim().length > 0
-  }
 
+  /**
+   * @param {string} inputText text
+   * @returns {number} antal
+   */
   countWords(inputText) {
-    if (!this.#isValidInput(inputText)) return 0
+    if (!isValidInput(inputText)) return 0
     return new TextAnalyzer(inputText).countWords()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {number} antal
+   */
   countSentences(inputText) {
-    if (!this.#isValidInput(inputText)) return 0
+    if (!isValidInput(inputText)) return 0
     return new TextAnalyzer(inputText).countSentences()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {number} antal
+   */
   countCharacters(inputText) {
-    if (!this.#isValidInput(inputText)) return 0
+    if (!isValidInput(inputText)) return 0
     return new TextAnalyzer(inputText).countCharacters()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {object} frekvens
+   */
   letterFrequency(inputText) {
-    if (!this.#isValidInput(inputText)) return {}
+    if (!isValidInput(inputText)) return {}
     return new TextAnalyzer(inputText).letterFrequency()
   }
 
+  /**
+   * @param {string} inputText text
+   * @returns {Array} palindromer
+   */
   findPalindromes(inputText) {
-    if (!this.#isValidInput(inputText)) return []
+    if (!isValidInput(inputText)) return []
     return new TextAnalyzer(inputText).findPalindromes()
   }
 }

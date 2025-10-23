@@ -1,11 +1,7 @@
+
 # L3A - Text Analysis Application
 
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-5.1.0-blue.svg)](https://expressjs.com/)
-[![Clean Code](https://img.shields.io/badge/Clean%20Code-Compliant-brightgreen.svg)](https://github.com/ryanmcdermott/clean-code-javascript)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-En streamlinad, modulär textanalysapplikation byggd med Clean Code-principer och ES modules. L3A fokuserar på kärnfunktionalitet för textbearbetning genom en intuitiv webbgränssnitt med moderna JavaScript-arkitektur.
+En modern, modulär textanalysapplikation byggd med Clean Code-principer och ES modules. L3A fokuserar på kärnfunktionalitet för textbearbetning genom ett intuitivt webbgränssnitt och modern JavaScript-arkitektur.
 
 [Till min examinator - läs detta först](./MD-Files/examination.md)
 
@@ -13,193 +9,140 @@ En streamlinad, modulär textanalysapplikation byggd med Clean Code-principer oc
 
 | Metadata | Värde |
 | :--- | :--- |
-| **Utvecklare** | [ Dan-Håkan Davall ] |
-| **Revision (Version)** | 1.0.0 |
-| **Kontakt** | [dd22mk@student.lnu.se] |
+| **Utvecklare** | Dan-Håkan Davall |
+| **Version** | 1.0.0 |
+| **Kontakt** | <dd22mk@student.lnu.se> |
 
 ---
 
 ## 🚀 Huvudfunktioner
 
-### 📊 **Text Analyzer**
+### 📊 Text Analyzer
 
-- **Räkna Ord** - Exakt antal ord i texten
-- **Räkna Meningar** - Antal meningar i texten
-- **Räkna Tecken** - Bokstäver, siffror och totalt antal tecken
-- **Bokstavsfrekvens** - Fördelning av bokstäver i texten
-- **Hitta Palindrom** - Hitta ord som stavas likadant fram och bakåt
+- Räkna ord, meningar och tecken
+- Bokstavsfrekvens
+- Hitta palindrom
 
-### 🎨 **Text Formatter**
+### 🎨 Text Formatter
 
-- **Versaler/gemener** - Konvertera till stora eller små bokstäver
-- **Första bokstaven Stor** - Första bokstaven stor i varje ord
-- **CamelCase** - Formatering för programmeringssyfte
+- Versaler/gemener
+- Första bokstaven stor i varje ord
+- camelCase
 
-### 🔄 **Text Transformer**
+### 🔄 Text Transformer
 
-- **Vänd Ordning** - Vänd ordning på ord i texten
-- **Sortea Ord** - Alfabetisk sortering av ord
-- **Blanda Ord** - Slumpmässig blandning av ord
+- Vänd ordning på ord
+- Sortera ord alfabetiskt
+- Blanda ord slumpmässigt
 
-### 🔍 **Text Searcher**
+### 🔍 Text Searcher
 
-- **Hitta Första** - Hitta första förekomsten
-- **Hitta Alla** - Hitta alla förekomster
-- **Räkna** - Antal träffar för sökterm
-- **Finns/Existenskontroll** - Kontrollera om text innehåller specifik term, true eller false
+- Hitta första/all förekomst av sökterm
+- Räkna antal träffar
+- Finns/Existenskontroll
+
+---
 
 ## 🏗️ Arkitektur
 
-Applikationen använder **ES Modules** och **Clean Code-principer** med en streamlinad modulär arkitektur:
+- **Frontend:** Vanilla JS + Vite + ES Modules
+- **Modulär struktur:** Varje textfunktion är en egen klass/modul
+- **Clean Code:** Små, fokuserade klasser och funktioner, DRY, tydliga namn, robust felhantering
+- **Gemensam valideringsmodul:** All inputvalidering sker via `utilities/validation.js`
+- **Automatiserade tester:** Vitest används för att testa all kärnlogik
 
-### Backend (Node.js + Express)
+**Exempel på struktur:**
 
 ```text
 src/
-├── app.js                   # Huvudserver med ES modules
-├── routes/                  # API-endpoints med texttoolkit
-│   ├── analyzer.js          # Text Analyzer API (använder TextAnalysisService)
-│   ├── formatter.js         # Text Formatter API  
-│   ├── transformer.js       # Text Transformer API
-│   ├── searcher.js          # Text Searcher API
-│   └── upload.js            # Filuppladdning och rendering
-└── services/                # Business logic (OOP-tjänster)
-    └── TextAnalysisService.js # Analyzer service-klass
+  frontend/
+      TextAnalyserModule.js
+      TextFormatterModule.js
+      TextTransformerModule.js
+      TextSearcherModule.js
+      app.js
+      utilities/
+          validation.js
+      tests/
+          TextAnalyserModule.test.js
+          ...
+index.html
+public/
+  favicon.ico
+  vite.svg
+dist/ (skapas vid build)
 ```
 
-### Frontend (Modulär JavaScript)
-
-```text
-public/js/
-├── showFile.js              # Huvudkontroller (ES module)
-├── global-functions.js      # Globala DOM-funktioner
-├── constants.js             # Konstanter (ANALYZER_ACTIONS etc.)
-├── core/                    # Kärnsystem
-│   ├── module-loader.js     # Dynamisk modulladdning
-│   └── ui-renderer.js       # UI-rendering och felhantering
-├── utilities/               # Delade hjälpfunktioner
-│   ├── dom-helpers.js       # DOM-manipulation
-│   ├── display-helpers.js   # Visningshjälp
-│   ├── interaction-helpers.js # Interaktionslogik
-│   └── server-utils.js      # Server-relaterade hjälpfunktioner
-└── UI-moduler/              # Funktionsspecifika gränssnitt
-    ├── analyzerUI.js        # Text Analyzer UI
-    ├── formatterUI.js       # Text Formatter UI
-    ├── transformerUI.js     # Text Transformer UI
-    └── searcherUI.js        # Text Searcher UI
-```
-
-### Teknisk Stack & Designprinciper
-
-**Moderna JavaScript:**
-
-- **ES Modules** (`"type": "module"` i package.json)
-- **Dynamic imports** för lazy loading
-- **Async/await** för API-anrop
-- **Modulariserad kodstruktur**
-
-**Clean Code Implementation:**
-
-- **Single Responsibility** - Varje modul och funktion har ett tydligt ansvar
-- **DRY Principle** - Återanvändbar kod i utilities/ och core/
-- **Meaningful Names** - Självdokumenterande funktions- och variabelnamn
-- **Small Functions** - Fokuserade funktioner med begränsad komplexitet
-- **Error Handling** - Robust felhantering med try-catch och user feedback
+---
 
 ## 🛠️ Installation
 
 ### Förutsättningar
 
 - Node.js 18+
-- npm (medföljande med Node.js)
+- npm
 
-### Steg-för-steg installation för en lokal PC
+### Steg-för-steg
 
-1. **Klona repositoryt**
+1. Klona repositoryt
 
-```bash
-git clone [repository-url]
-cd L3A
-```
+    ```bash
+    git clone [repository-url]
+    cd L3A
+    ```
 
-2.**Installera dependencies**
+2. Installera dependencies
 
-```bash
-npm install
-```
+    ```bash
+    npm install
+    ```
 
-3.**Starta applikationen**
+3. Starta utvecklingsserver
 
-```bash
-npm start
-```
+    ```bash
+    npm run dev
+    ```
 
-4.**Öppna lokalt i webbläsare**
+    Öppna sedan <http://localhost:3000> i webbläsaren.
 
-```HTML
-http://localhost:3000
-```
+4. Bygg för produktion
 
-### Driftsatt App
+    ```bash
+    npm run build
+    ```
 
-1.**Kör direkt i webbläsare**
+    Ladda upp innehållet i `dist/` till din webbserver (t.ex. Raspberry Pi/nginx).
 
-```HTML
-http://storemyr14.ddns.net
-```
-
-Denna version av min app går som en docker container på en Raspberry PI. Det finns en port-forward regel i FW som jag måste öppna när någon vill testa. Låt mig veta när det är dags.
-
-## 📖 Användning
-
-1. **Ladda upp textfil** → Välj .txt/.md fil och klicka "Ladda upp"
-2. **Välj verktyg** → Klicka på önskad modul (Analyzer, Formatter, Transformer, Searcher)
-3. **Utför analys** → Använd knapparna, resultat visas direkt
+---
 
 ## 🧪 Testning
 
 ```bash
-npm test    # Kör 22 Jest tester (backend API, struktur, utilities)
-npm run lint    # ESLint kodkvalitetskontroll
+npm test    # Kör alla Vitest-tester
 ```
 
-**[Detaljerad testrapport](./MD-Files/TEST_REPORT.MD)**
+---
 
 ## 📚 Dokumentation
 
-- **[reflection.md](./MD-Files/reflection.md)** - Clean Code-reflektion och implementering
-- **[TEST_REPORT.MD](./MD-Files/TEST_REPORT.MD)** - Komplett testrapport
+- [examination.md](./MD-Files/examination.md) - Redovisning och designval
+- [reflection.md](./MD-Files/reflection.md) - Clean Code-reflektion
+- [TESTPLAN.md](./MD-Files/TESTPLAN.md) - Testplan
+
+---
 
 ## 🎯 Clean Code & Kvalitet
 
-✅ **Hybrid arkitektur** - Clean Code funktioner + OOP service-lager  
-✅ **ES Modules** - Modern JavaScript genom hela appen  
-✅ **22 automatiserade tester** - Backend API och strukturvalidering  
-✅ **Separation of concerns** - Routes, services, utilities, UI-moduler
+- ✅ Modulär, ES Modules-baserad kod
+- ✅ Clean Code-principer i hela kodbasen
+- ✅ Automatiserade tester för all kärnlogik
+- ✅ Separation av UI, logik och utilities
+
+---
 
 ## 📄 Licens
 
-Detta projekt är licensierat under MIT License - se [LICENSE](LICENSE) filen för detaljer.
-
-## 👥 Författare
-
-- **Dan-Håkan Davall** - Initial implementation och Clean Code refactoring
-
-## 🙏 Erkännanden
-
-- **Robert C. Martin** - Clean Code principles och inspiration
-- **Express.js** - Modern webb-framework med ES modules support
-- **EJS** - Flexibel templating engine
-- **texttoolkit** - Core text processing library (egen npm-modul)
-
-## 📞 Support
-
-För frågor eller support:
-
-- Öppna en issue på GitHub
-- Konsultera dokumentationen i `/MD-Files`
-- Följ testplanen i [testplan](./MD-Files/TESTPLAN.md)
-- API referens [API](./MD-Files/API_REFERENCE.md)
+MIT License - se [LICENSE](LICENSE) för detaljer.
 
 ---
 
