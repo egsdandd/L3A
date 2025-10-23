@@ -13,7 +13,11 @@ export class TextTransformerModule {
    * @returns {string} resultat
    */
   reverseWords(inputText) {
-    if (!isValidInput(inputText)) return ''
+    try {
+      isValidInput(inputText)
+    } catch {
+      return ''
+    }
     return new TextTransformer(inputText).reverseWordOrder()
   }
 
@@ -22,7 +26,11 @@ export class TextTransformerModule {
    * @returns {string} resultat
    */
   sortWords(inputText) {
-    if (!isValidInput(inputText)) return ''
+    try {
+      isValidInput(inputText)
+    } catch {
+      return ''
+    }
     return new TextTransformer(inputText).sortWords()
   }
 
@@ -31,7 +39,11 @@ export class TextTransformerModule {
    * @returns {string} resultat
    */
   shuffleWords(inputText) {
-    if (!isValidInput(inputText)) return ''
+    try {
+      isValidInput(inputText)
+    } catch {
+      return ''
+    }
     return new TextTransformer(inputText).shuffleWords()
   }
 }

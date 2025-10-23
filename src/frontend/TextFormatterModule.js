@@ -12,7 +12,11 @@ export class TextFormatterModule {
    * @returns {string} resultat
    */
   toUpperCase(inputText) {
-    if (!isValidInput(inputText)) return ''
+    try {
+      isValidInput(inputText)
+    } catch {
+      return ''
+    }
     return new TextFormatter(inputText).toUpperCase()
   }
 
@@ -21,7 +25,11 @@ export class TextFormatterModule {
    * @returns {string} resultat
    */
   toLowerCase(inputText) {
-    if (!isValidInput(inputText)) return ''
+    try {
+      isValidInput(inputText)
+    } catch {
+      return ''
+    }
     return new TextFormatter(inputText).toLowerCase()
   }
 
@@ -30,7 +38,11 @@ export class TextFormatterModule {
    * @returns {string} resultat
    */
   capitalize(inputText) {
-    if (!isValidInput(inputText)) return ''
+    try {
+      isValidInput(inputText)
+    } catch {
+      return ''
+    }
     return new TextFormatter(inputText).capitalizeWords()
   }
 
@@ -39,7 +51,11 @@ export class TextFormatterModule {
    * @returns {string} resultat
    */
   camelCase(inputText) {
-    if (!isValidInput(inputText)) return ''
+    try {
+      isValidInput(inputText)
+    } catch {
+      return ''
+    }
     return new TextFormatter(inputText).toCamelCase()
   }
 }

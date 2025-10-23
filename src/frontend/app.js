@@ -109,16 +109,32 @@ function showSearcherFunctions() {
   functionButtonPanel.appendChild(searchQueryInput)
   functionButtonPanel.append(
     createButton('Hitta första', () => {
-      resultDisplay.textContent = 'Första: ' + searcher.findFirst(userInputTextArea.value, searchQueryInput.value)
+      try {
+        resultDisplay.textContent = 'Första: ' + searcher.findFirst(userInputTextArea.value, searchQueryInput.value)
+      } catch (err) {
+        resultDisplay.textContent = 'Fel: ' + err.message
+      }
     }),
     createButton('Hitta alla', () => {
-      resultDisplay.textContent = 'Alla: ' + searcher.findAll(userInputTextArea.value, searchQueryInput.value)
+      try {
+        resultDisplay.textContent = 'Alla: ' + searcher.findAll(userInputTextArea.value, searchQueryInput.value)
+      } catch (err) {
+        resultDisplay.textContent = 'Fel: ' + err.message
+      }
     }),
     createButton('Räkna', () => {
-      resultDisplay.textContent = 'Antal: ' + searcher.count(userInputTextArea.value, searchQueryInput.value)
+      try {
+        resultDisplay.textContent = 'Antal: ' + searcher.count(userInputTextArea.value, searchQueryInput.value)
+      } catch (err) {
+        resultDisplay.textContent = 'Fel: ' + err.message
+      }
     }),
     createButton('Finns?', () => {
-      resultDisplay.textContent = searcher.exists(userInputTextArea.value, searchQueryInput.value) ? 'Ja' : 'Nej'
+      try {
+        resultDisplay.textContent = searcher.exists(userInputTextArea.value, searchQueryInput.value) ? 'Ja' : 'Nej'
+      } catch (err) {
+        resultDisplay.textContent = 'Fel: ' + err.message
+      }
     })
   )
 }

@@ -13,7 +13,11 @@ export class TextAnalyzerModule {
    * @returns {number} antal
    */
   countWords(inputText) {
-    if (!isValidInput(inputText)) return 0
+    try {
+      isValidInput(inputText)
+    } catch {
+      return 0
+    }
     return new TextAnalyzer(inputText).countWords()
   }
 
@@ -22,7 +26,11 @@ export class TextAnalyzerModule {
    * @returns {number} antal
    */
   countSentences(inputText) {
-    if (!isValidInput(inputText)) return 0
+    try {
+      isValidInput(inputText)
+    } catch {
+      return 0
+    }
     return new TextAnalyzer(inputText).countSentences()
   }
 
@@ -31,7 +39,11 @@ export class TextAnalyzerModule {
    * @returns {number} antal
    */
   countCharacters(inputText) {
-    if (!isValidInput(inputText)) return 0
+    try {
+      isValidInput(inputText)
+    } catch {
+      return 0
+    }
     return new TextAnalyzer(inputText).countCharacters()
   }
 
@@ -40,7 +52,11 @@ export class TextAnalyzerModule {
    * @returns {object} frekvens
    */
   letterFrequency(inputText) {
-    if (!isValidInput(inputText)) return {}
+    try {
+      isValidInput(inputText)
+    } catch {
+      return {}
+    }
     return new TextAnalyzer(inputText).letterFrequency()
   }
 
@@ -49,7 +65,11 @@ export class TextAnalyzerModule {
    * @returns {Array} palindromer
    */
   findPalindromes(inputText) {
-    if (!isValidInput(inputText)) return []
+    try {
+      isValidInput(inputText)
+    } catch {
+      return []
+    }
     return new TextAnalyzer(inputText).findPalindromes()
   }
 }

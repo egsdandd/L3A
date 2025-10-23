@@ -6,7 +6,9 @@
  * @returns {boolean}
  */
 export function isValidInput(inputText) {
-    return typeof inputText === 'string' && inputText.trim().length > 0
+    if (typeof inputText !== 'string' || inputText.trim().length === 0) {
+    throw new Error('inputText måste vara en icke-tom sträng')
+    }
 }
 
 /**
@@ -16,10 +18,10 @@ export function isValidInput(inputText) {
  * @returns {boolean}
  */
 export function isValidInputPair(inputText, searchQuery) {
-    return (
-        typeof inputText === 'string' &&
-        typeof searchQuery === 'string' &&
-        inputText.trim().length > 0 &&
-        searchQuery.trim().length > 0
-    )
+    if (typeof inputText !== 'string' || inputText.trim().length === 0) {
+    throw new Error('inputText måste vara en icke-tom sträng')
+    }
+    if (typeof searchQuery !== 'string' || searchQuery.trim().length === 0) {
+    throw new Error('searchQuery måste vara en icke-tom sträng')
+    }
 }
