@@ -14,79 +14,79 @@ export class TextAnalyzerModule {
    *
    * @param text
    */
-  countWords(text) {
-    if (typeof text !== 'string') {
-      console.error('countWords: text är inte en sträng:', text)
+  countWords(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('countWords: inputText är inte en sträng:', inputText)
       return 0
     }
-    if (!text.trim()) {
-      console.error('countWords: text är tomt')
+    if (!inputText.trim()) {
+      console.error('countWords: inputText är tomt')
       return 0
     }
-    return new TextAnalyzer(text).countWords()
+    return new TextAnalyzer(inputText).countWords()
   }
 
   /**
    *
    * @param text
    */
-  countSentences(text) {
-    if (typeof text !== 'string') {
-      console.error('countSentences: text är inte en sträng:', text)
+  countSentences(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('countSentences: inputText är inte en sträng:', inputText)
       return 0
     }
-    if (!text.trim()) {
-      console.error('countSentences: text är tomt')
+    if (!inputText.trim()) {
+      console.error('countSentences: inputText är tomt')
       return 0
     }
-    return new TextAnalyzer(text).countSentences()
+    return new TextAnalyzer(inputText).countSentences()
   }
 
   /**
    *
    * @param text
    */
-  countCharacters(text) {
-    if (typeof text !== 'string') {
-      console.error('countCharacters: text är inte en sträng:', text)
+  countCharacters(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('countCharacters: inputText är inte en sträng:', inputText)
       return 0
     }
-    if (!text.trim()) {
-      console.error('countCharacters: text är tomt')
+    if (!inputText.trim()) {
+      console.error('countCharacters: inputText är tomt')
       return 0
     }
-    return new TextAnalyzer(text).countCharacters()
+    return new TextAnalyzer(inputText).countCharacters()
   }
 
   /**
    *
    * @param text
    */
-  letterFrequency(text) {
-    if (typeof text !== 'string') {
-      console.error('letterFrequency: text är inte en sträng:', text)
+  letterFrequency(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('letterFrequency: inputText är inte en sträng:', inputText)
       return {}
     }
-    if (!text.trim()) {
-      console.error('letterFrequency: text är tomt')
+    if (!inputText.trim()) {
+      console.error('letterFrequency: inputText är tomt')
       return {}
     }
-    return new TextAnalyzer(text).letterFrequency()
+    return new TextAnalyzer(inputText).letterFrequency()
   }
 
   /**
    *
    * @param text
    */
-  findPalindromes(text) {
-    if (typeof text !== 'string') {
-      console.error('findPalindromes: text är inte en sträng:', text)
+  findPalindromes(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('findPalindromes: inputText är inte en sträng:', inputText)
       return []
     }
-    if (!text.trim()) {
-      console.error('findPalindromes: text är tomt')
+    if (!inputText.trim()) {
+      console.error('findPalindromes: inputText är tomt')
       return []
     }
-    return new TextAnalyzer(text).findPalindromes()
+    return new TextAnalyzer(inputText).findPalindromes()
   }
 }

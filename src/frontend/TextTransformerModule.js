@@ -8,47 +8,47 @@ export class TextTransformerModule {
    *
    * @param text
    */
-  reverseWords(text) {
-    if (typeof text !== 'string') {
-      console.error('reverseWords: text är inte en sträng:', text)
+  reverseWords(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('reverseWords: inputText är inte en sträng:', inputText)
       return ''
     }
-    if (!text.trim()) {
-      console.error('reverseWords: text är tomt')
+    if (!inputText.trim()) {
+      console.error('reverseWords: inputText är tomt')
       return ''
     }
-    return new TextTransformer(text).reverseWordOrder()
+    return new TextTransformer(inputText).reverseWordOrder()
   }
 
   /**
    *
    * @param text
    */
-  sortWords(text) {
-    if (typeof text !== 'string') {
-      console.error('sortWords: text är inte en sträng:', text)
+  sortWords(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('sortWords: inputText är inte en sträng:', inputText)
       return ''
     }
-    if (!text.trim()) {
-      console.error('sortWords: text är tomt')
+    if (!inputText.trim()) {
+      console.error('sortWords: inputText är tomt')
       return ''
     }
-    return new TextTransformer(text).sortWords()
+    return new TextTransformer(inputText).sortWords()
   }
 
   /**
    *
    * @param text
    */
-  shuffleWords(text) {
-    if (typeof text !== 'string') {
-      console.error('shuffleWords: text är inte en sträng:', text)
+  shuffleWords(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('shuffleWords: inputText är inte en sträng:', inputText)
       return ''
     }
-    if (!text.trim()) {
-      console.error('shuffleWords: text är tomt')
+    if (!inputText.trim()) {
+      console.error('shuffleWords: inputText är tomt')
       return ''
     }
-    return new TextTransformer(text).shuffleWords()
+    return new TextTransformer(inputText).shuffleWords()
   }
 }

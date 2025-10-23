@@ -9,63 +9,63 @@ export class TextFormatterModule {
    *
    * @param text
    */
-  toUpperCase(text) {
-    if (typeof text !== 'string') {
-      console.error('toUpperCase: text är inte en sträng:', text)
+  toUpperCase(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('toUpperCase: inputText är inte en sträng:', inputText)
       return ''
     }
-    if (!text.trim()) {
-      console.error('toUpperCase: text är tomt')
+    if (!inputText.trim()) {
+      console.error('toUpperCase: inputText är tomt')
       return ''
     }
-    return new TextFormatter(text).toUpperCase()
+    return new TextFormatter(inputText).toUpperCase()
   }
 
   /**
    *
    * @param text
    */
-  toLowerCase(text) {
-    if (typeof text !== 'string') {
-      console.error('toLowerCase: text är inte en sträng:', text)
+  toLowerCase(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('toLowerCase: inputText är inte en sträng:', inputText)
       return ''
     }
-    if (!text.trim()) {
-      console.error('toLowerCase: text är tomt')
+    if (!inputText.trim()) {
+      console.error('toLowerCase: inputText är tomt')
       return ''
     }
-    return new TextFormatter(text).toLowerCase()
+    return new TextFormatter(inputText).toLowerCase()
   }
 
   /**
    *
    * @param text
    */
-  capitalize(text) {
-    if (typeof text !== 'string') {
-      console.error('capitalize: text är inte en sträng:', text)
+  capitalize(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('capitalize: inputText är inte en sträng:', inputText)
       return ''
     }
-    if (!text.trim()) {
-      console.error('capitalize: text är tomt')
+    if (!inputText.trim()) {
+      console.error('capitalize: inputText är tomt')
       return ''
     }
-    return new TextFormatter(text).capitalizeWords()
+    return new TextFormatter(inputText).capitalizeWords()
   }
 
   /**
    *
    * @param text
    */
-  camelCase(text) {
-    if (typeof text !== 'string') {
-      console.error('camelCase: text är inte en sträng:', text)
+  camelCase(inputText) {
+    if (typeof inputText !== 'string') {
+      console.error('camelCase: inputText är inte en sträng:', inputText)
       return ''
     }
-    if (!text.trim()) {
-      console.error('camelCase: text är tomt')
+    if (!inputText.trim()) {
+      console.error('camelCase: inputText är tomt')
       return ''
     }
-    return new TextFormatter(text).toCamelCase()
+    return new TextFormatter(inputText).toCamelCase()
   }
 }

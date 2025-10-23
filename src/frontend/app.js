@@ -8,9 +8,9 @@ const formatter = new TextFormatterModule()
 const transformer = new TextTransformerModule()
 const searcher = new TextSearcherModule()
 
-const functionPanel = document.getElementById('function-panel')
-const resultBox = document.getElementById('result')
-const inputText = document.getElementById('input-text')
+const functionButtonPanel = document.getElementById('function-panel')
+const resultDisplay = document.getElementById('result')
+const userInputTextArea = document.getElementById('input-text')
 
 // Hjälpfunktion för att skapa knapp
 /**
@@ -19,10 +19,10 @@ const inputText = document.getElementById('input-text')
  * @param onClick
  */
 function createButton(text, onClick) {
-  const btn = document.createElement('button')
-  btn.textContent = text
-  btn.addEventListener('click', onClick)
-  return btn
+  const button = document.createElement('button')
+  button.textContent = text
+  button.addEventListener('click', onClick)
+  return button
 }
 
 // Analyzer
@@ -30,24 +30,24 @@ function createButton(text, onClick) {
  *
  */
 function showAnalyzerFunctions() {
-  functionPanel.innerHTML = ''
-  functionPanel.append(
+  functionButtonPanel.innerHTML = ''
+  functionButtonPanel.append(
     createButton('Räkna ord', () => {
-      resultBox.textContent = 'Antal ord: ' + analyzer.countWords(inputText.value)
+      resultDisplay.textContent = 'Antal ord: ' + analyzer.countWords(userInputTextArea.value)
     }),
     createButton('Räkna meningar', () => {
-      resultBox.textContent = 'Antal meningar: ' + analyzer.countSentences(inputText.value)
+      resultDisplay.textContent = 'Antal meningar: ' + analyzer.countSentences(userInputTextArea.value)
     }),
     createButton('Räkna tecken', () => {
-      resultBox.textContent = 'Antal tecken: ' + analyzer.countCharacters(inputText.value)
+      resultDisplay.textContent = 'Antal tecken: ' + analyzer.countCharacters(userInputTextArea.value)
     }),
     createButton('Bokstavsfrekvens', () => {
-      const freq = analyzer.letterFrequency(inputText.value)
-      resultBox.textContent = JSON.stringify(freq)
+      const letterFrequency = analyzer.letterFrequency(userInputTextArea.value)
+      resultDisplay.textContent = JSON.stringify(letterFrequency)
     }),
     createButton('Hitta palindrom', () => {
-      const palindromes = analyzer.findPalindromes(inputText.value)
-      resultBox.textContent = 'Palindrom: ' + palindromes.join(', ')
+      const palindromes = analyzer.findPalindromes(userInputTextArea.value)
+      resultDisplay.textContent = 'Palindrom: ' + palindromes.join(', ')
     })
   )
 }
@@ -57,19 +57,19 @@ function showAnalyzerFunctions() {
  *
  */
 function showFormatterFunctions() {
-  functionPanel.innerHTML = ''
-  functionPanel.append(
+  functionButtonPanel.innerHTML = ''
+  functionButtonPanel.append(
     createButton('Till versaler', () => {
-      resultBox.textContent = formatter.toUpperCase(inputText.value)
+      resultDisplay.textContent = formatter.toUpperCase(userInputTextArea.value)
     }),
     createButton('Till gemener', () => {
-      resultBox.textContent = formatter.toLowerCase(inputText.value)
+      resultDisplay.textContent = formatter.toLowerCase(userInputTextArea.value)
     }),
     createButton('Första bokstaven stor', () => {
-      resultBox.textContent = formatter.capitalize(inputText.value)
+      resultDisplay.textContent = formatter.capitalize(userInputTextArea.value)
     }),
     createButton('camelCase', () => {
-      resultBox.textContent = formatter.camelCase(inputText.value)
+      resultDisplay.textContent = formatter.camelCase(userInputTextArea.value)
     })
   )
 }
@@ -79,16 +79,16 @@ function showFormatterFunctions() {
  *
  */
 function showTransformerFunctions() {
-  functionPanel.innerHTML = ''
-  functionPanel.append(
+  functionButtonPanel.innerHTML = ''
+  functionButtonPanel.append(
     createButton('Vänd ordning', () => {
-      resultBox.textContent = transformer.reverseWords(inputText.value)
+      resultDisplay.textContent = transformer.reverseWords(userInputTextArea.value)
     }),
     createButton('Sortera ord', () => {
-      resultBox.textContent = transformer.sortWords(inputText.value)
+      resultDisplay.textContent = transformer.sortWords(userInputTextArea.value)
     }),
     createButton('Blanda ord', () => {
-      resultBox.textContent = transformer.shuffleWords(inputText.value)
+      resultDisplay.textContent = transformer.shuffleWords(userInputTextArea.value)
     })
   )
 }
@@ -98,25 +98,25 @@ function showTransformerFunctions() {
  *
  */
 function showSearcherFunctions() {
-  functionPanel.innerHTML = ''
+  functionButtonPanel.innerHTML = ''
   // Söksträng input
-  const queryInput = document.createElement('input')
-  queryInput.type = 'text'
-  queryInput.placeholder = 'Sökord...'
-  queryInput.id = 'search-query'
-  functionPanel.appendChild(queryInput)
-  functionPanel.append(
+  const searchQueryInput = document.createElement('input')
+  searchQueryInput.type = 'text'
+  searchQueryInput.placeholder = 'Sökord...'
+  searchQueryInput.id = 'search-query'
+  functionButtonPanel.appendChild(searchQueryInput)
+  functionButtonPanel.append(
     createButton('Hitta första', () => {
-      resultBox.textContent = 'Första: ' + searcher.findFirst(inputText.value, queryInput.value)
+      resultDisplay.textContent = 'Första: ' + searcher.findFirst(userInputTextArea.value, searchQueryInput.value)
     }),
     createButton('Hitta alla', () => {
-      resultBox.textContent = 'Alla: ' + searcher.findAll(inputText.value, queryInput.value)
+      resultDisplay.textContent = 'Alla: ' + searcher.findAll(userInputTextArea.value, searchQueryInput.value)
     }),
     createButton('Räkna', () => {
-      resultBox.textContent = 'Antal: ' + searcher.count(inputText.value, queryInput.value)
+      resultDisplay.textContent = 'Antal: ' + searcher.count(userInputTextArea.value, searchQueryInput.value)
     }),
     createButton('Finns?', () => {
-      resultBox.textContent = searcher.exists(inputText.value, queryInput.value) ? 'Ja' : 'Nej'
+      resultDisplay.textContent = searcher.exists(userInputTextArea.value, searchQueryInput.value) ? 'Ja' : 'Nej'
     })
   )
 }
@@ -136,7 +136,7 @@ if (fileInput) {
     if (file) {
       const reader = new FileReader();
       reader.onload = (evt) => {
-        inputText.value = evt.target.result;
+        userInputTextArea.value = evt.target.result;
       };
       reader.readAsText(file, 'utf-8');
     }

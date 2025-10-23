@@ -9,16 +9,16 @@ export class TextSearcherModule {
    * @param text
    * @param query
    */
-  findFirst(text, query) {
-    if (typeof text !== 'string' || typeof query !== 'string') {
-      console.error('findFirst: text eller query är inte en sträng:', text, query)
+  findFirst(inputText, searchQuery) {
+    if (typeof inputText !== 'string' || typeof searchQuery !== 'string') {
+      console.error('findFirst: inputText eller searchQuery är inte en sträng:', inputText, searchQuery)
       return ''
     }
-    if (!text.trim() || !query.trim()) {
-      console.error('findFirst: text eller query är tomt')
+    if (!inputText.trim() || !searchQuery.trim()) {
+      console.error('findFirst: inputText eller searchQuery är tomt')
       return ''
     }
-    return new TextSearcher(text).findFirst(query)
+    return new TextSearcher(inputText).findFirst(searchQuery)
   }
 
   /**
@@ -26,16 +26,16 @@ export class TextSearcherModule {
    * @param text
    * @param query
    */
-  findAll(text, query) {
-    if (typeof text !== 'string' || typeof query !== 'string') {
-      console.error('findAll: text eller query är inte en sträng:', text, query)
+  findAll(inputText, searchQuery) {
+    if (typeof inputText !== 'string' || typeof searchQuery !== 'string') {
+      console.error('findAll: inputText eller searchQuery är inte en sträng:', inputText, searchQuery)
       return []
     }
-    if (!text.trim() || !query.trim()) {
-      console.error('findAll: text eller query är tomt')
+    if (!inputText.trim() || !searchQuery.trim()) {
+      console.error('findAll: inputText eller searchQuery är tomt')
       return []
     }
-    return new TextSearcher(text).findAll(query)
+    return new TextSearcher(inputText).findAll(searchQuery)
   }
 
   /**
@@ -43,16 +43,16 @@ export class TextSearcherModule {
    * @param text
    * @param query
    */
-  count(text, query) {
-    if (typeof text !== 'string' || typeof query !== 'string') {
-      console.error('count: text eller query är inte en sträng:', text, query)
+  count(inputText, searchQuery) {
+    if (typeof inputText !== 'string' || typeof searchQuery !== 'string') {
+      console.error('count: inputText eller searchQuery är inte en sträng:', inputText, searchQuery)
       return 0
     }
-    if (!text.trim() || !query.trim()) {
-      console.error('count: text eller query är tomt')
+    if (!inputText.trim() || !searchQuery.trim()) {
+      console.error('count: inputText eller searchQuery är tomt')
       return 0
     }
-    return new TextSearcher(text).count(query)
+    return new TextSearcher(inputText).count(searchQuery)
   }
 
   /**
@@ -60,15 +60,15 @@ export class TextSearcherModule {
    * @param text
    * @param query
    */
-  exists(text, query) {
-    if (typeof text !== 'string' || typeof query !== 'string') {
-      console.error('exists: text eller query är inte en sträng:', text, query)
+  exists(inputText, searchQuery) {
+    if (typeof inputText !== 'string' || typeof searchQuery !== 'string') {
+      console.error('exists: inputText eller searchQuery är inte en sträng:', inputText, searchQuery)
       return false
     }
-    if (!text.trim() || !query.trim()) {
-      console.error('exists: text eller query är tomt')
+    if (!inputText.trim() || !searchQuery.trim()) {
+      console.error('exists: inputText eller searchQuery är tomt')
       return false
     }
-    return new TextSearcher(text).exists(query)
+    return new TextSearcher(inputText).exists(searchQuery)
   }
 }
