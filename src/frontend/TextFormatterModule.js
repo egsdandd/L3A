@@ -15,7 +15,7 @@ export class TextFormatterModule {
     try {
       isValidInput(inputText)
     } catch {
-      return ''
+      return 'Ogiltig input'
     }
     return new TextFormatter(inputText).toUpperCase()
   }
@@ -28,7 +28,7 @@ export class TextFormatterModule {
     try {
       isValidInput(inputText)
     } catch {
-      return ''
+      return 'Ogiltig input'
     }
     return new TextFormatter(inputText).toLowerCase()
   }
@@ -41,7 +41,7 @@ export class TextFormatterModule {
     try {
       isValidInput(inputText)
     } catch {
-      return ''
+      return 'Ogiltig input'
     }
     return new TextFormatter(inputText).capitalizeWords()
   }
@@ -54,7 +54,7 @@ export class TextFormatterModule {
     try {
       isValidInput(inputText)
     } catch {
-      return ''
+      return 'Ogiltig input'
     }
     return new TextFormatter(inputText).toCamelCase()
   }

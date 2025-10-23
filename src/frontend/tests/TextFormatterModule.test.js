@@ -8,38 +8,38 @@ describe('TextFormatterModule', () => {
     })
 
     it('toUpperCase returnerar versaler', () => {
-        expect(formatter.toUpperCase('hej')).toBe('HEJ')
-        expect(formatter.toUpperCase('HeJ 123')).toBe('HEJ 123')
-        expect(formatter.toUpperCase('   ')).toBe('')
+    expect(formatter.toUpperCase('hej')).toBe('HEJ')
+    expect(formatter.toUpperCase('HeJ 123')).toBe('HEJ 123')
+    expect(formatter.toUpperCase('   ')).toBe('Ogiltig input')
     })
 
     it('toUpperCase hanterar felaktig input', () => {
-        expect(formatter.toUpperCase(123)).toBe('')
-        expect(formatter.toUpperCase(null)).toBe('')
-        expect(formatter.toUpperCase(undefined)).toBe('')
+    expect(formatter.toUpperCase(123)).toBe('Ogiltig input')
+    expect(formatter.toUpperCase(null)).toBe('Ogiltig input')
+    expect(formatter.toUpperCase(undefined)).toBe('Ogiltig input')
     })
 
     it('toLowerCase returnerar gemener', () => {
-        expect(formatter.toLowerCase('HEJ')).toBe('hej')
-        expect(formatter.toLowerCase('HeJ 123')).toBe('hej 123')
-        expect(formatter.toLowerCase('   ')).toBe('')
+    expect(formatter.toLowerCase('HEJ')).toBe('hej')
+    expect(formatter.toLowerCase('HeJ 123')).toBe('hej 123')
+    expect(formatter.toLowerCase('   ')).toBe('Ogiltig input')
     })
 
     it('toLowerCase hanterar felaktig input', () => {
-        expect(formatter.toLowerCase(123)).toBe('')
-        expect(formatter.toLowerCase(null)).toBe('')
-        expect(formatter.toLowerCase(undefined)).toBe('')
+    expect(formatter.toLowerCase(123)).toBe('Ogiltig input')
+    expect(formatter.toLowerCase(null)).toBe('Ogiltig input')
+    expect(formatter.toLowerCase(undefined)).toBe('Ogiltig input')
     })
 
     it('capitalize returnerar text med stor bokstav i varje ord', () => {
-        expect(formatter.capitalize('hej på dig')).toBe('Hej På Dig')
-        expect(formatter.capitalize('   ')).toBe('')
+    expect(formatter.capitalize('hej på dig')).toBe('Hej På Dig')
+    expect(formatter.capitalize('   ')).toBe('Ogiltig input')
     })
 
     it('capitalize hanterar felaktig input', () => {
-        expect(formatter.capitalize(123)).toBe('')
-        expect(formatter.capitalize(null)).toBe('')
-        expect(formatter.capitalize(undefined)).toBe('')
+    expect(formatter.capitalize(123)).toBe('Ogiltig input')
+    expect(formatter.capitalize(null)).toBe('Ogiltig input')
+    expect(formatter.capitalize(undefined)).toBe('Ogiltig input')
     })
 
     it('capitalize hanterar redan formaterad text', () => {
@@ -48,14 +48,14 @@ describe('TextFormatterModule', () => {
     })
 
     it('camelCase returnerar text i camelCase', () => {
-        expect(formatter.camelCase('hej på dig')).toBe('hejPåDig')
-        expect(formatter.camelCase('   ')).toBe('')
+    expect(formatter.camelCase('hej på dig')).toBe('hejPåDig')
+    expect(formatter.camelCase('   ')).toBe('Ogiltig input')
     })
 
     it('camelCase hanterar felaktig input', () => {
-        expect(formatter.camelCase(123)).toBe('')
-        expect(formatter.camelCase(null)).toBe('')
-        expect(formatter.camelCase(undefined)).toBe('')
+    expect(formatter.camelCase(123)).toBe('Ogiltig input')
+    expect(formatter.camelCase(null)).toBe('Ogiltig input')
+    expect(formatter.camelCase(undefined)).toBe('Ogiltig input')
     })
 
     it('camelCase hanterar svenska tecken och emojis', () => {

@@ -62,16 +62,32 @@ function showFormatterFunctions() {
   functionButtonPanel.innerHTML = ''
   functionButtonPanel.append(
     createButton('Till versaler', () => {
-      resultDisplay.textContent = formatter.toUpperCase(userInputTextArea.value)
+      try {
+        resultDisplay.textContent = formatter.toUpperCase(userInputTextArea.value)
+      } catch (err) {
+        resultDisplay.textContent = 'Fel: ' + err.message
+      }
     }),
     createButton('Till gemener', () => {
-      resultDisplay.textContent = formatter.toLowerCase(userInputTextArea.value)
+      try {
+        resultDisplay.textContent = formatter.toLowerCase(userInputTextArea.value)
+      } catch (err) {
+        resultDisplay.textContent = 'Fel: ' + err.message
+      }
     }),
     createButton('Första bokstaven stor', () => {
-      resultDisplay.textContent = formatter.capitalize(userInputTextArea.value)
+      try {
+        resultDisplay.textContent = formatter.capitalize(userInputTextArea.value)
+      } catch (err) {
+        resultDisplay.textContent = 'Fel: ' + err.message
+      }
     }),
     createButton('camelCase', () => {
-      resultDisplay.textContent = formatter.camelCase(userInputTextArea.value)
+      try {
+        resultDisplay.textContent = formatter.camelCase(userInputTextArea.value)
+      } catch (err) {
+        resultDisplay.textContent = 'Fel: ' + err.message
+      }
     })
   )
 }

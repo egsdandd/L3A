@@ -19,14 +19,16 @@ countWords(inputText) {
 
 ## Kapitel 3: Functions
 
-Alla funktioner är små, har brutit ut så mycket det går, gör bara en sak och har tydliga namn. Jag undviker sid-effekter och duplicerad logik. Har tillämpat "En abstraktionsnivå per funktion", "Få argument" men baserat på typ av applikation genereras inga exceptions utan felmeddelande. Exempel:
+Alla funktioner är små, har brutit ut så mycket det går, gör bara en sak och har tydliga namn. Jag undviker sid-effekter och duplicerad logik. Har tillämpat "En abstraktionsnivå per funktion", "Få argument" och "Tydlig felhantering" med exceptions. Exempel:
 
 ```js
 // TextFormatterModule.js
-toUpperCase(inputText) {
-  if (!isValidInput(inputText)) return ''
-  return new TextFormatter(inputText).toUpperCase()
-}
+  toUpperCase(inputText) {
+    try {
+      isValidInput(inputText)
+    } catch {
+      return 'Ogiltig input'
+    }
 ```
 
 ---
@@ -86,12 +88,20 @@ export class TextAnalyserModule {
 
 ## Kapitel 7: Error Handling
 
-Fel hanteras robust genom att returnera säkra standardvärden och logga fel där det är motiverat. Ingen användning av try/catch – rimligt, eftersom all logik är enkel och bygger på validerad input. Ingen tyst felhantering förekommer. Exempel:
+Innanjag gått igenom kap 7 använde jag inte try/catch men införde det ganska enkelt. Var en del strul med mina tester men det gick bra.
+
+Fel hanteras nu robust genom att valideringsfunktioner kastar undantag vid ogiltig input istället för att returnera standardvärden. Detta gör att fel upptäcks tidigt och hanteras explicit där de uppstår. I frontend fångas undantagen med try/catch och användaren får ett tydligt felmeddelande istället för att applikationen kraschar. Ingen tyst felhantering förekommer längre, och all felhantering är synlig och testbar. Exempel:
 
 ```js
-if (!isValidInputPair(inputText, searchQuery)) {
-  console.error('findFirst: inputText eller searchQuery är inte en sträng eller är tom:', inputText, searchQuery)
-  return ''
+// TextSearcherModule.js
+isValidInputPair(inputText, searchQuery) // kastar undantag vid fel
+return new TextSearcher(inputText).findFirst(searchQuery)
+
+// app.js (UI)
+try {
+  resultDisplay.textContent = 'Första: ' + searcher.findFirst(userInputTextArea.value, searchQueryInput.value)
+} catch (err) {
+  resultDisplay.textContent = 'Fel: ' + err.message
 }
 ```
 
