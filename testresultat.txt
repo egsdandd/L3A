@@ -1,0 +1,63 @@
+
+> l3a@0.0.0 test
+> vitest
+
+
+[1m[44m DEV [49m[22m [34mv4.0.1 [39m[90mE:/1DV610/L3A[39m
+
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mfindFirst hittar första förekomst
+[22m[39mfindFirst: inputText eller searchQuery är inte en sträng eller är tom:     hej
+findFirst: inputText eller searchQuery är inte en sträng eller är tom: hej på dig    
+
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mfindFirst hanterar felaktig input
+[22m[39mfindFirst: inputText eller searchQuery är inte en sträng eller är tom: [33m123[39m hej
+findFirst: inputText eller searchQuery är inte en sträng eller är tom: hej [33m123[39m
+findFirst: inputText eller searchQuery är inte en sträng eller är tom: [1mnull[22m hej
+findFirst: inputText eller searchQuery är inte en sträng eller är tom: hej [1mnull[22m
+
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mfindAll hittar alla förekomster
+[22m[39mfindAll: inputText eller searchQuery är inte en sträng eller är tom:     hej
+findAll: inputText eller searchQuery är inte en sträng eller är tom: hej på dig    
+
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mfindAll hanterar felaktig input
+[22m[39mfindAll: inputText eller searchQuery är inte en sträng eller är tom: [33m123[39m hej
+findAll: inputText eller searchQuery är inte en sträng eller är tom: hej [33m123[39m
+findAll: inputText eller searchQuery är inte en sträng eller är tom: [1mnull[22m hej
+findAll: inputText eller searchQuery är inte en sträng eller är tom: hej [1mnull[22m
+
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mcount räknar antal förekomster
+[22m[39mcount: inputText eller searchQuery är inte en sträng eller är tom:     hej
+count: inputText eller searchQuery är inte en sträng eller är tom: hej på dig    
+
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mcount hanterar felaktig input
+[22m[39mcount: inputText eller searchQuery är inte en sträng eller är tom: [33m123[39m hej
+count: inputText eller searchQuery är inte en sträng eller är tom: hej [33m123[39m
+count: inputText eller searchQuery är inte en sträng eller är tom: [1mnull[22m hej
+count: inputText eller searchQuery är inte en sträng eller är tom: hej [1mnull[22m
+
+ [32m✓[39m src/frontend/tests/TextAnalyserModule.test.js [2m([22m[2m6 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mexists returnerar true om query finns
+[22m[39mexists: inputText eller searchQuery är inte en sträng eller är tom:     hej
+exists: inputText eller searchQuery är inte en sträng eller är tom: hej på dig    
+
+ [32m✓[39m src/frontend/tests/TextFormatterModule.test.js [2m([22m[2m13 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mexists hanterar felaktig input
+[22m[39mexists: inputText eller searchQuery är inte en sträng eller är tom: [33m123[39m hej
+exists: inputText eller searchQuery är inte en sträng eller är tom: hej [33m123[39m
+exists: inputText eller searchQuery är inte en sträng eller är tom: [1mnull[22m hej
+exists: inputText eller searchQuery är inte en sträng eller är tom: hej [1mnull[22m
+
+[90mstderr[2m | src/frontend/tests/TextSearcherModule.test.js[2m > [22m[2mTextSearcherModule[2m > [22m[2mfindFirst och findAll med query som bara är mellanslag eller specialtecken
+[22m[39mfindFirst: inputText eller searchQuery är inte en sträng eller är tom: hej på dig  
+findAll: inputText eller searchQuery är inte en sträng eller är tom: hej på dig  
+
+ [32m✓[39m src/frontend/tests/TextSearcherModule.test.js [2m([22m[2m13 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/frontend/tests/TextTransformerModule.test.js [2m([22m[2m10 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m42 passed[39m[22m[90m (42)[39m
+[2m   Start at [22m 17:22:28
+[2m   Duration [22m 187ms[2m (transform 82ms, setup 0ms, collect 172ms, tests 19ms, environment 0ms, prepare 17ms)[22m
+
+[1m[42m PASS [49m[22m [32mWaiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
