@@ -13,11 +13,6 @@ const resultDisplay = document.getElementById('result')
 const userInputTextArea = document.getElementById('input-text')
 
 // Hjälpfunktion för att skapa knapp
-/**
- *
- * @param text
- * @param onClick
- */
 function createButton(text, onClick) {
   const button = document.createElement('button')
   button.textContent = text
@@ -26,9 +21,6 @@ function createButton(text, onClick) {
 }
 
 // Analyzer
-/**
- *
- */
 function showAnalyzerFunctions() {
   functionButtonPanel.innerHTML = ''
   functionButtonPanel.append(
@@ -53,9 +45,6 @@ function showAnalyzerFunctions() {
 }
 
 // Formatter
-/**
- *
- */
 function showFormatterFunctions() {
   functionButtonPanel.innerHTML = ''
   functionButtonPanel.append(
@@ -75,9 +64,6 @@ function showFormatterFunctions() {
 }
 
 // Transformer
-/**
- *
- */
 function showTransformerFunctions() {
   functionButtonPanel.innerHTML = ''
   functionButtonPanel.append(
@@ -94,9 +80,6 @@ function showTransformerFunctions() {
 }
 
 // Searcher
-/**
- *
- */
 function showSearcherFunctions() {
   functionButtonPanel.innerHTML = ''
   // Söksträng input

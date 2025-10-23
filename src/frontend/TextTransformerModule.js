@@ -1,54 +1,22 @@
 import { TextTransformer } from 'texttoolkit'
 
-/**
- *
- */
 export class TextTransformerModule {
-  /**
-   *
-   * @param text
-   */
+  #isValidInput(inputText) {
+    return typeof inputText === 'string' && inputText.trim().length > 0
+  }
+
   reverseWords(inputText) {
-    if (typeof inputText !== 'string') {
-      console.error('reverseWords: inputText är inte en sträng:', inputText)
-      return ''
-    }
-    if (!inputText.trim()) {
-      console.error('reverseWords: inputText är tomt')
-      return ''
-    }
+    if (!this.#isValidInput(inputText)) return ''
     return new TextTransformer(inputText).reverseWordOrder()
   }
 
-  /**
-   *
-   * @param text
-   */
   sortWords(inputText) {
-    if (typeof inputText !== 'string') {
-      console.error('sortWords: inputText är inte en sträng:', inputText)
-      return ''
-    }
-    if (!inputText.trim()) {
-      console.error('sortWords: inputText är tomt')
-      return ''
-    }
+    if (!this.#isValidInput(inputText)) return ''
     return new TextTransformer(inputText).sortWords()
   }
 
-  /**
-   *
-   * @param text
-   */
   shuffleWords(inputText) {
-    if (typeof inputText !== 'string') {
-      console.error('shuffleWords: inputText är inte en sträng:', inputText)
-      return ''
-    }
-    if (!inputText.trim()) {
-      console.error('shuffleWords: inputText är tomt')
-      return ''
-    }
+    if (!this.#isValidInput(inputText)) return ''
     return new TextTransformer(inputText).shuffleWords()
   }
 }

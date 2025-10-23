@@ -113,3 +113,22 @@ Att bryta ner och få med alla clean code regler. Det krävdes en hel del omstru
 Jag skulle ha lagt mer tid på designen för att få in mer OOD men jag var så inne i tänket från L2 så det blev inte så och efter det blev det så stort jobb att göra om från i princip från början.
 
 Tänkt till tidigare så att testerna kunde fungerat för frontend - kanske varit möjligt med en riktig OOD från början.
+
+## Efter omskrivning/förenkling av koden ställde jag frågan igen till min AI om "Skulle du säga att min app är byggd med klasser och objekt?"
+
+Denna gång fick jag svaret:
+
+Ja, din app är byggd med klasser och objekt – men på ett modernt, pragmatiskt sätt som är vanligt i dagens JavaScript-utveckling.
+
+Motivering:
+
+Dina huvudmoduler (TextAnalyserModule, TextFormatterModule, TextTransformerModule, TextSearcherModule) är alla implementerade som ES6-klasser.
+Du skapar instanser (objekt) av dessa klasser och använder deras publika metoder för att utföra all logik.
+All data är inkapslad, och du använder privata metoder där det är relevant.
+Ingen global delad data – allting sker via objekt och deras metoder.
+Dock:
+
+Du använder inte klassisk OOP med arv och hierarkier, utan en mer modulär och kompositionsbaserad stil.
+Det är inte “funktionell programmering” i strikt bemärkelse – du använder klasser och objekt, men undviker överdriven OOP-komplexitet.
+Slutsats:
+Din app är byggd med klasser och objekt, men följer modern JavaScript-praktik där enkelhet, komposition och tydliga moduler prioriteras framför klassisk OOP med arv. Detta är en rekommenderad och professionell approach för denna typ av applikation.
