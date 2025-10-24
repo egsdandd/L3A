@@ -6,14 +6,18 @@ Denna reflektion beskriver hur varje kapitel i "Clean Code" har påverkat min ko
 
 ## Kapitel 2: Meaningful Names
 
-Jag har lagt stor vikt vid att använda beskrivande och konsekventa namn på klasser, metoder och variabler. Det gör koden självdokumenterande och lätt att förstå. Jag har försökt att tillämpa "Meningsfulla namn ska avslöja funktionalitet" och "Namnet ska vara uttalbart och sökbart".  Exempel:
+Jag har lagt stor vikt vid att använda beskrivande och konsekventa namn på klasser, metoder och variabler. Det gör koden självdokumenterande och lätt att förstå. Jag har försökt att tillämpa "Meningsfulla namn ska avslöja funktionalitet" och "Namnet ska vara uttalbart och sökbart". Jag hade en metod som jag döpt till letter som räknar hur många ggr varje bokstav finns i texen, dvs hur många a och hur många b osv men döpte om den till letterFrequency för att göra det solklart vad den gör. Exempel innan:
 
 ```js
 // TextAnalyserModule.js
-countWords(inputText) {
+letter(inputText) {
   // ...
 }
 ```
+
+Screenshot av hur det blev:
+
+![LetterF](./img/letterF.png)
 
 ---
 
