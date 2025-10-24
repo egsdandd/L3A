@@ -1,7 +1,13 @@
 {
   "name": "l3a",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
+  "description": "App using texttoolkit",
+  "author": {
+    "name": "Dan-Håkan Davall",
+    "email": "dd222mk@student.lnu.se",
+    "url": "https://github.com/egsdandd/l3a"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -19,5 +25,6 @@
   },
   "dependencies": {
     "texttoolkit": "^1.0.1"
-  }
+  },
+  "license": "MIT"
 }
