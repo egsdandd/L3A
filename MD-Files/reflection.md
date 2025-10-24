@@ -200,12 +200,8 @@ Jag har även testat att undantag kastas och hanteras korrekt i moduler där det
 
 ## Kapitel 10: Classes
 
-Klasserna i min kodbas är designade för att vara små, fokuserade och ha ett tydligt ansvar. Varje klass representerar en logisk enhet, t.ex. analys, formattering, transformation eller sökning av text. Jag har undvikit att blanda olika ansvarsområden i samma klass, vilket gör koden lätt att förstå, testa och vidareutveckla.
+Kapitel 11 i Clean Code handlar om hur man bygger system av moduler och komponenter, och vikten av att hålla systemet löst kopplat. Martin betonar att systemdesign är mer än bara kod – det handlar om att hantera integration, gränssnitt och beroenden mellan olika delar. Han lyfter fram principen "Separation of Concerns", där varje modul har ett tydligt ansvar och kommunicerar via väldefinierade gränssnitt. Boken diskuterar också hur man undviker hårda beroenden genom att använda dependency injection, vilket gör det möjligt att byta ut implementationer och underlättar testning. Martin tar upp att system ofta byggs ovanpå ramverk och tredjepartsbibliotek, och att man bör undvika att låsa in sin kod i dessa. Istället ska man kapsla in beroenden och exponera egna gränssnitt. Kapitel 11 betonar att robusta system är flexibla, testbara och enkla att vidareutveckla, och att man bör sträva efter att minimera kopplingen mellan moduler för att underlätta förändringar och förbättra kvaliteten.
 
-- Alla fält är privata eller helt inkapslade – det finns inga publika fält, bara publika metoder.
-- Varje klass har bara de metoder som är relevanta för dess syfte, t.ex. TextFormatterModule har bara formatteringsmetoder.
-- Klasserna är lätta att testa isolerat tack vare tydliga gränssnitt och frånvaro av beroenden mellan moduler.
-- Jag har refaktorerat klasserna för att undvika duplicering och för att följa Single Responsibility Principle.
 - Valideringslogik är utbruten till en separat util-fil, vilket gör klasserna renare och mer fokuserade.
 
 Exempel på en typisk klass:
@@ -239,60 +235,28 @@ Systemet är designat för att vara löst kopplat och modulärt. Varje del har e
 En viktig princip jag har använt är dependency injection för att underlätta testning och utbyte av implementationer. Istället för att hårdkoda beroenden, skickas t.ex. valideringsfunktioner eller externa tjänster in som parametrar till moduler eller metoder. Detta gör det enkelt att mocka eller byta ut implementationer vid testning, till exempel genom att ersätta en riktig valideringsfunktion med en teststub, eller byta ut en textbehandlingsmodul mot en alternativ version. I tester kan jag därmed kontrollera exakt vilka beroenden som används, vilket ger isolerade och pålitliga tester. Samma princip gör det enkelt att vidareutveckla systemet – om en ny implementation behövs kan den injiceras utan att resten av koden behöver ändras. Detta följer Clean Code-principen om att undvika hårda beroenden och främjar både testbarhet och flexibilitet.
 
 Systemet är robust mot förändringar och kan enkelt anpassas till nya krav.
+Det är dock viktigt att påpeka att mitt system använder npm-moduler, till exempel `texttoolkit`, vilket innebär att det finns beroenden mot tredjepartsbibliotek. Enligt Clean Code kapitel 11 bör sådana beroenden kapslas in och hanteras via egna gränssnitt, så att resten av systemet inte direkt påverkas av förändringar i modulen. I min kod försöker jag därför använda npm-moduler på ett sätt där de är isolerade till specifika moduler, och där min applikation kommunicerar med dem via egna metoder och gränssnitt. På så sätt minimeras risken att hela systemet påverkas om ett externt bibliotek skulle ändras eller bytas ut.
 
 Nedan följer några kodexempel som visar hur dessa principer tillämpas:
 
-**Exempel på systemets struktur från app.js:**
-
-```js
-const formatter = new TextFormatterModule()
-const searcher = new TextSearcherModule()
-// ... fler moduler
-resultDisplay.textContent = formatter.toUpperCase(userInputTextArea.value)
-```
-
-**Exempel på dependency injection och testbarhet:**
+**Exempel på inkapsling av npm-modul (texttoolkit):**
 
 ```js
 // TextFormatterModule.js
+import { TextFormatter } from 'texttoolkit'
+
 export class TextFormatterModule {
   constructor(validationFn) {
     this.validate = validationFn
   }
   toUpperCase(inputText) {
     if (!this.validate(inputText)) return 'Ogiltig input'
+    // Inkapsling av npm-modul: all logik går via denna metod
     return new TextFormatter(inputText).toUpperCase()
   }
 }
-
-// Vid testning:
-const alwaysValid = () => true
-const formatterTest = new TextFormatterModule(alwaysValid)
-expect(formatterTest.toUpperCase('test')).toBe('TEST')
-
-// Vid produktion:
-import { isValidInput } from '../utilities/validation.js'
-const formatterProd = new TextFormatterModule(isValidInput)
 ```
 
-*Förklaring:* I exemplet ovan skickas en funktion (validationFn) in till klassen TextFormatterModule. Istället för att klassen själv bestämmer hur validering ska göras, får den en funktion som parameter. Det kallas dependency injection och gör att man enkelt kan byta ut valideringen – till exempel använda en riktig valideringsfunktion i produktion, och en förenklad (alltid godkänd) i tester. På så sätt kan man testa klassen utan att vara beroende av riktig validering, vilket gör testerna enklare och mer pålitliga.
-
-I testet används en "alwaysValid"-funktion som alltid returnerar true, så att testet fokuserar på formatteringen och inte på valideringen. I produktion används istället den riktiga valideringsfunktionen från utilities/validation.js. Detta gör koden flexibel och lätt att testa!
-
-**Exempel på att byta ut implementation:**
-
-```js
-// Byt ut TextFormatter mot en mock i test:
-class MockTextFormatter {
-  toUpperCase() { return 'MOCK' }
-}
-const formatter = new TextFormatterModule(isValidInput)
-formatter.TextFormatter = MockTextFormatter
-expect(formatter.toUpperCase('hej')).toBe('MOCK')
-```
-
-*Förklaring:* I detta exempel skapas en "MockTextFormatter"-klass som bara returnerar "MOCK" istället för att göra riktig formattering. I testet byter man ut den riktiga TextFormatter mot mocken, så att man kan kontrollera att resten av koden fungerar som den ska – utan att vara beroende av den riktiga formatteringen. Detta är ett vanligt sätt att testa systemets olika delar var för sig och är möjligt tack vare att systemet är löst kopplat och använder dependency injection.
-
-Denna struktur gör att systemet är lätt att förstå, underhålla och vidareutveckla – precis enligt Clean Code-principerna.
+*Förklaring:* I exemplet ovan används npm-modulen `texttoolkit` endast inuti TextFormatterModule. Applikationen anropar aldrig texttoolkit direkt, utan kommunicerar alltid via egna metoder och gränssnitt. Om implementationen eller biblioteket skulle ändras, behöver bara TextFormatterModule uppdateras – resten av systemet påverkas inte. Detta följer Clean Code kapitel 11 om att kapsla in beroenden och exponera egna gränssnitt.
 
 ---
