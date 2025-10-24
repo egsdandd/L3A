@@ -127,17 +127,17 @@ Du kan köra projektet som en Docker-container med nginx som statisk server. Det
 
 1. Bygg Docker-image:
 
-  ```bash
-  docker build -t textanalyser-app .
-  ```
+   ```bash
+   docker build -t textanalyser-app .
+   ```
 
 2. Starta containern:
 
-  ```bash
-  docker run -p 8080:80 textanalyser-app
-  ```
+   ```bash
+   docker run -p 8080:80 textanalyser-app
+   ```
 
-Appen är nu tillgänglig på <http://localhost:8080>
+Appen är nu tillgänglig på [http://localhost:8080](http://localhost:8080)
 
 ### Vad händer i Dockerfile?
 
@@ -145,7 +145,7 @@ Appen är nu tillgänglig på <http://localhost:8080>
 - De färdiga statiska filerna kopieras till nginx-image
 - nginx serverar filerna på port 80
 
-Appen finns tillgänglig live som docker container på storemyr14.ddns.net (portöppning kan krävas - säg till)
+Appen finns tillgänglig live som docker container på **storemyr14.ddns.net (portöppning kan krävas - säg till)**
 
 ---
 
@@ -245,19 +245,19 @@ MIT License - se [LICENSE](LICENSE) för detaljer.
 
 ## 🚀 Huvudfunktioner
 
-### 📊 Text Analyzer
+### 📊 Text Analyzer (Analysfunktioner)
 
 - Räkna ord, meningar och tecken
 - Bokstavsfrekvens
 - Hitta palindrom
 
-### 🎨 Text Formatter
+### 🎨 Text Formatter (Formatteringsfunktioner)
 
 - Versaler/gemener
 - Första bokstaven stor i varje ord
 - camelCase
 
-### 🔄 Text Transformer
+### 🔄 Text Transformer (Funktioner)
 
 - Vänd ordning på ord
 - Sortera ord alfabetiskt
@@ -309,12 +309,12 @@ dist/ (skapas vid build)
 
 ## 🛠️ Installation
 
-### Förutsättningar
+### Systemkrav
 
 - Node.js 18+
 - npm
 
-### Steg-för-steg
+### Steg-för-steg (Installation)
 
 1. Klona repositoryt
 

@@ -4,9 +4,7 @@ Endast till min Examinator.
 
 ## 🎓 Redovisning & Examination
 
-Efter omskrivning/förenkling av koden:
-
-Projektet är nu en ren frontend-applikation byggd med Vite och Vitest. All logik ligger i ES-moduler under `src/frontend/` och UI:t är separerat från logik. Ingen backend/server eller Express/Node används längre.
+Helt omskriven och förenklad
 
 Modulen `texttoolkit` används för textmanipulation och är installerad som npm-paket. All testning sker automatiskt med Vitest och testfiler finns under `src/frontend/tests/`.
 
@@ -21,11 +19,11 @@ Projektet är uppdelat i:
 All dokumentation är uppdaterad enligt feedback från L2.
 
 ---
-Jag har bett min AI om kommentarer på koden genom att ställa frågan:
+Jag har åter bett min AI om kommentarer på koden genom att ställa frågan:
 
 ### Är appen byggd med klasser och objekt?
 
-Ja, appen är byggd med ES6-klasser och objekt. Huvudmodulerna är klasser, och all logik sker via instanser och publika metoder. Ingen global delad data används. Dock används ingen klassisk OOP med arv/hierarkier, utan en modulär och kompositionsbaserad stil.
+Ja, appen är byggd med klasser och objekt enligt modern JavaScript-praktik. Huvudmodulerna är ES6-klasser, all logik sker via instanser och publika metoder, och data är inkapslad. Ingen klassisk OOP med arv/hierarkier används, utan en modulär och kompositionsbaserad stil. Detta är en rekommenderad och professionell approach för denna typ av applikation.
 
 Resultatet är en modern, testbar och lättförståelig JavaScript-applikation som följer Clean Code-principer.
 
@@ -58,8 +56,3 @@ Att bryta ner och få med alla Clean Code-regler krävde omstrukturering.
 
 **Vad skulle jag gjort annorlunda?**
 Jag skulle ha lagt mer tid på designen från början för att undvika omstrukturering och fått in testbarhet direkt i frontend.
-
-## Efter omskrivning/förenkling av koden ställde jag frågan igen till min AI om "Skulle du säga att min app är byggd med klasser och objekt?"
-
-Efter omskrivning/förenkling av koden:
-Appen är byggd med klasser och objekt enligt modern JavaScript-praktik. Huvudmodulerna är ES6-klasser, all logik sker via instanser och publika metoder, och data är inkapslad. Ingen klassisk OOP med arv/hierarkier används, utan en modulär och kompositionsbaserad stil. Detta är en rekommenderad och professionell approach för denna typ av applikation.
