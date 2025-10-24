@@ -145,6 +145,8 @@ Appen är nu tillgänglig på <http://localhost:8080>
 - De färdiga statiska filerna kopieras till nginx-image
 - nginx serverar filerna på port 80
 
+Appen finns tillgänglig live som docker container på storemyr14.ddns.net (portöppning kan krävas - säg till)
+
 ---
 
 ---
