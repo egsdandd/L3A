@@ -23,25 +23,28 @@ Screenshot av hur det blev:
 
 ## Kapitel 3: Functions
 
-Alla funktioner är små, har brutit ut så mycket det går, gör bara en sak och har tydliga namn. Jag undviker sid-effekter och duplicerad logik. Har tillämpat "En abstraktionsnivå per funktion", "Få argument" och "Tydlig felhantering" med exceptions. Exempel:
+Alla funktioner är små, har brutit ut så mycket det går, gör bara en sak och har tydliga namn. Jag undviker sid-effekter och duplicerad logik. Har tillämpat "En abstraktionsnivå per funktion", "Få argument" och "Tydlig felhantering" med exceptions. Innan innhöll varje metod en validering kod per metod men jag bröt ut den först som en privat function per modul fil men la den till slut i en egen fil (utilities/validation.js). Koden såg ut så här när jag startade:
 
 ```js
 // TextFormatterModule.js
-  toUpperCase(inputText) {
-    try {
-      isValidInput(inputText)
-    } catch {
-      return 'Ogiltig input'
-    }
+toUpperCase(inputText) {
+  if (typeof inputText !== 'string' || inputText.trim().length === 0) {
+    return ''
+  }
+  return new TextFormatter(inputText).toUpperCase()
+}
 ```
+
+Screenshot av ändringen blev det så här:
+
+![toUpperCase](./img/toUpperCase.png)
 
 ---
 
 ## Kapitel 4: Comments
 
 Jag har tagit bort överflödiga kommentarer och istället gjort koden självdokumenterande. Endast nödvändiga JSDoc-kommentarer för publika metoder finns kvar.
-Jag har med avsikt försökt ha så små och korta jsdoc kommentarer som möjligt då många egentligen är onödiga enligt mitt tycke men ESLint och jag är inte alltid överens...
-Exempel:
+Jag har med avsikt försökt ha så små och korta jsdoc kommentarer som möjligt då många egentligen är onödiga enligt mitt tycke men ESLint och jag är inte alltid överens där. Jag hade från början till exempel:
 
 ```js
 /**
@@ -50,11 +53,16 @@ Exempel:
 findFirst(inputText, searchQuery) { ... }
 ```
 
+Men efter att ha kört lint blev det följande screenshot:
+
+![findFirst](./img/findFirst.png)
+
+Personligen tyckte jag nog det var bättre innan...
 ---
 
 ## Kapitel 5: Formatting
 
-Koden är konsekvent indragen, har luft mellan logiska block och är lätt att överblicka. Det gör det enkelt att hitta och förstå kodens struktur.
+Koden är konsekvent indragen, har luft mellan logiska block och är lätt att överblicka. Det gör det enkelt att hitta och förstå kodens struktur. Mycket av formatteringen sköter ju VSC med automatik så detta är egentligen inget problem år 2025 men kanske var ett större problem när boken skrevs i böran av 2000-talet
 Indrag är konsekvent (2 blanksteg).
 Tomrader används för att separera metoder och logiska block.
 Relaterade metoder är grupperade.
