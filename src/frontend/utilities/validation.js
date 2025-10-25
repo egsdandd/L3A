@@ -1,7 +1,7 @@
 // src/frontend/utilities/validation.js
 
 /**
- * Kontrollera om input är en icke-tom sträng
+ * Kontrollera om EN input är en icke-tom sträng
  * @param {string} inputText - Texten som ska valideras
  * @returns {boolean}
  */
@@ -12,7 +12,7 @@ export function isValidInput(inputText) {
 }
 
 /**
- * Kontrollera om två inputs är icke-tomma strängar
+ * Kontrollera om TVÅ inputs är icke-tomma strängar
  * @param {string} inputText - Den första texten som ska valideras
  * @param {string} searchQuery - Den andra texten som ska valideras
  * @returns {boolean}

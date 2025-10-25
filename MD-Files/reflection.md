@@ -200,9 +200,9 @@ Jag har även testat att undantag kastas och hanteras korrekt i moduler där det
 
 ## Kapitel 10: Classes
 
-Kapitel 11 i Clean Code handlar om hur man bygger system av moduler och komponenter, och vikten av att hålla systemet löst kopplat. Martin betonar att systemdesign är mer än bara kod – det handlar om att hantera integration, gränssnitt och beroenden mellan olika delar. Han lyfter fram principen "Separation of Concerns", där varje modul har ett tydligt ansvar och kommunicerar via väldefinierade gränssnitt. Boken diskuterar också hur man undviker hårda beroenden genom att använda dependency injection, vilket gör det möjligt att byta ut implementationer och underlättar testning. Martin tar upp att system ofta byggs ovanpå ramverk och tredjepartsbibliotek, och att man bör undvika att låsa in sin kod i dessa. Istället ska man kapsla in beroenden och exponera egna gränssnitt. Kapitel 11 betonar att robusta system är flexibla, testbara och enkla att vidareutveckla, och att man bör sträva efter att minimera kopplingen mellan moduler för att underlätta förändringar och förbättra kvaliteten.
+Jag har även dokumenterat klasserna med JSDoc för att tydliggöra syfte och användning. Denna struktur gör det enkelt att lägga till nya funktioner eller ändra befintliga utan att påverka andra delar av systemet.
 
-- Valideringslogik är utbruten till en separat util-fil, vilket gör klasserna renare och mer fokuserade.
+Kapitel 10 i Clean Code handlar om att klasser ska vara små, ha ett tydligt ansvar och vara lätta att förstå och underhålla. En klass ska representera en enda abstraktion och inte blanda flera syften. Jag har försökt följa detta genom att skapa modulklasser som bara hanterar en typ av textoperation, till exempel formattering eller analys. All logik som inte hör till klassens kärnsyfte har brutits ut till util-filer, vilket gör klasserna renare och mer fokuserade. Jag undviker att blanda data och logik, och har inga onödiga publika fält eller metoder. Klasserna är enkla att utöka med nya metoder utan att påverka befintlig funktionalitet. Jag har även dokumenterat publika metoder med JSDoc för att tydliggöra syfte och användning.
 
 Exempel på en typisk klass:
 
@@ -218,13 +218,11 @@ export class TextFormatterModule {
 }
 ```
 
-Jag har även dokumenterat klasserna med JSDoc för att tydliggöra syfte och användning. Denna struktur gör det enkelt att lägga till nya funktioner eller ändra befintliga utan att påverka andra delar av systemet.
-
 ---
 
 ## Kapitel 11: Systems
 
-Systemet är designat för att vara löst kopplat och modulärt. Varje del har ett tydligt ansvar och kommunicerar via väldefinierade gränssnitt. Det innebär att:
+Systemet är designat för att vara löst kopplat och modulärt. Varje del har ett tydligt ansvar och kommunicerar via väldefinierade gränssnitt (känns nästan överambitiöst att säga så...). Det innebär att:
 
 - Moduler kan bytas ut, testas eller vidareutvecklas utan att påverka resten av systemet.
 - UI:t är separerat från logik – all textbehandling sker i moduler, och gränssnittet anropar bara publika metoder.
@@ -235,7 +233,7 @@ Systemet är designat för att vara löst kopplat och modulärt. Varje del har e
 En viktig princip jag har använt är dependency injection för att underlätta testning och utbyte av implementationer. Istället för att hårdkoda beroenden, skickas t.ex. valideringsfunktioner eller externa tjänster in som parametrar till moduler eller metoder. Detta gör det enkelt att mocka eller byta ut implementationer vid testning, till exempel genom att ersätta en riktig valideringsfunktion med en teststub, eller byta ut en textbehandlingsmodul mot en alternativ version. I tester kan jag därmed kontrollera exakt vilka beroenden som används, vilket ger isolerade och pålitliga tester. Samma princip gör det enkelt att vidareutveckla systemet – om en ny implementation behövs kan den injiceras utan att resten av koden behöver ändras. Detta följer Clean Code-principen om att undvika hårda beroenden och främjar både testbarhet och flexibilitet.
 
 Systemet är robust mot förändringar och kan enkelt anpassas till nya krav.
-Det är dock viktigt att påpeka att mitt system använder npm-moduler, till exempel `texttoolkit`, vilket innebär att det finns beroenden mot tredjepartsbibliotek. Enligt Clean Code kapitel 11 bör sådana beroenden kapslas in och hanteras via egna gränssnitt, så att resten av systemet inte direkt påverkas av förändringar i modulen. I min kod försöker jag därför använda npm-moduler på ett sätt där de är isolerade till specifika moduler, och där min applikation kommunicerar med dem via egna metoder och gränssnitt. På så sätt minimeras risken att hela systemet påverkas om ett externt bibliotek skulle ändras eller bytas ut.
+Det är dock viktigt att påpeka att mitt system använder min npm-modul `texttoolkit`, vilket innebär att det finns beroenden mot tredjepartsbibliotek. Enligt Clean Code kapitel 11 bör sådana beroenden kapslas in och hanteras via egna gränssnitt, så att resten av systemet inte direkt påverkas av förändringar i modulen. I min kod försöker jag därför använda npm-moduler på ett sätt där de är isolerade till specifika moduler, och där min applikation kommunicerar med dem via egna metoder och gränssnitt. På så sätt minimeras risken att hela systemet påverkas om ett externt bibliotek skulle ändras eller bytas ut.
 
 Nedan följer några kodexempel som visar hur dessa principer tillämpas:
 
