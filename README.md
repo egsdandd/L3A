@@ -5,7 +5,7 @@ En modern, modulär textanalysapplikation byggd med Clean Code-principer och ES 
 
 Detta är revision 2.0.0 av min app och är helt omskriven från 1.0.0. Backend och serverdel är borttaget – allt körs som en ren frontend-applikation med Vite och Vitest. Appen är modulär, testbar och följer Clean Code-principer. All logik ligger i ES-moduler och UI:t är separerat från kärnlogik.
 
-[Till min examinator - läs detta först](./MD-Files/examination.md)
+[Till min examinator - läs detta först - UPPDATERAD](./MD-Files/examination.md)
 ---
 
 ### Projektinformation

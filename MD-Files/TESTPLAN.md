@@ -48,14 +48,11 @@ Denna testplan täcker alla funktionella krav för L3A applikationen efter Clean
 | T024 | Finns | TextSearcher | Sök: "hej" i text: "hej världen" | Returnerar true om "hej" finns, annars false | ⏳ |
 | **CLEAN CODE ARKITEKTUR** | | | | | |
 | T025 | Modulariserad struktur | System | Kontrollera filstruktur | Alla moduler under 150 rader | ⏳ |
-| T026 | Core moduler fungerar | System | Testa modul-laddning | module-loader och ui-renderer fungerar | ⏳ |
-| T027 | Utilities moduler fungerar | System | Testa utility funktioner | dom-helpers, display-helpers fungerar | ⏳ |
 | **FELHANTERING & GRÄNSER** | | | | | |
-| T028 | Tom text hantering | Alla moduler | Tom sträng som input | Lämpligt felmeddelande eller hantering | ⏳ |
-| T029 | Mycket lång text | Alla moduler | Text >10,000 tecken | Prestanda acceptabel, inga krascher | ⏳ |
-| T030 | Specialtecken hantering | Alla moduler | Text med åäö, emojis, symboler | Korrekt hantering av Unicode | ⏳ |
-| T031 | Modulfel hantering | System | Om modul inte kan laddas | Felmeddelande visas | ⏳ |
-| T032 | Nätverksfel hantering | Alla moduler | När backend inte svarar | Timeout-hantering och felmeddelande | ⏳ |
+| T026 | Tom text hantering | Alla moduler | Tom sträng som input | Lämpligt felmeddelande eller hantering | ⏳ |
+| T027 | Mycket lång text | Alla moduler | Text >10,000 tecken | Prestanda acceptabel, inga krascher | ⏳ |
+| T028 | Specialtecken hantering | Alla moduler | Text med åäö, emojis, symboler | Korrekt hantering av Unicode | ⏳ |
+| T029 | Modulfel hantering | System | Om modul inte kan laddas | Felmeddelande visas | ⏳ |
 
 ---
 
@@ -63,7 +60,7 @@ Denna testplan täcker alla funktionella krav för L3A applikationen efter Clean
 
 ### Förberedelser
 
-1. Starta applikationen: `npm start` eller kör den driftsatta
+1. Starta applikationen: `npm start dev` eller kör den driftsatta
 2. Öppna webbläsare och navigera till `http://localhost:3000` eller `http://storemyr14.ddns.net`
 3. Förbered testfiler med olika innehåll
 
@@ -92,9 +89,9 @@ Denna testplan täcker alla funktionella krav för L3A applikationen efter Clean
 
 **Sammanfattning**:
 
-- Totalt antal tester: 32
-- Godkända: ___/32
-- Misslyckade: ___/32
+- Totalt antal tester: 29
+- Godkända: ___/29
+- Misslyckade: ___/29
 - Kritiska fel: ___
 
 **Kommentarer**:
